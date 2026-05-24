@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ephesians — Rod Martin · Bible Study</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Anton&family=Pacifico&family=Inter:wght@300;400;500;600&display=swap');
+    :root {
+      --font-display:'Anton',Impact,'Arial Black',sans-serif;
+      --font-script:'Pacifico',cursive;
+      --font-body:'Inter',system-ui,sans-serif;
+      --font-mono:ui-monospace,'SF Mono',Menlo,monospace;
+      --accent:#7B2D3E;
+      --dark:#1A1A1A;
+      --light:#F2F2F2;
+      --white:#FFFFFF;
+      --navy:#1C0A10;
+      /* Semantic tokens — updated by dark mode */
+      --ink-1:#1A1A1A;
+      --ink-2:#444444;
+      --ink-3:#606060;
+      --border-c:#CCCCCC;
+      --band-mid:#FFFFFF;
+      --ghost-text:rgba(0,0,0,0.08);
+      /* --accent-fg: accent used as TEXT color — swaps to gold in dark mode so it's readable on dark backgrounds */
+      --accent-fg:#7B2D3E;
+    }
+    [data-theme="dark"] {
+      --light:#1E1218;
+      --ink-1:#F0E6E0;
+      --ink-2:#C4B0A8;
+      --ink-3:#9E8C84;
+      --border-c:#3D2830;
+      --band-mid:#2A1820;
+      --ghost-text:rgba(255,255,255,0.08);
+      /* #7B2D3E on #1E1218 = 2.3:1 FAIL — swap to gold (#C4A882 = ~8.5:1) for all text uses */
+      --accent-fg:#C4A882;
+    }
+    .pill{display:inline-flex;align-items:center;gap:10px;padding:12px 24px;background:var(--dark);color:var(--white);border-radius:999px;font-family:var(--font-body);font-size:22px;font-weight:500;letter-spacing:.02em;white-space:nowrap;}
+    .slide{width:1920px;height:1080px;position:relative;overflow:hidden;font-family:var(--font-body);}
+    .theme-toggle{position:fixed;top:20px;right:20px;z-index:2147482500;display:inline-flex;align-items:center;gap:6px;padding:6px;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);border-radius:999px;border:1px solid rgba(255,255,255,.1);}
+    .theme-toggle button{appearance:none;border:0;background:transparent;color:rgba(255,255,255,.6);padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all 140ms;}
+    .theme-toggle button.active{background:rgba(255,255,255,.15);color:#fff;}
+    .theme-toggle #btn-filmstrip{padding:8px 10px;display:inline-flex;align-items:center;justify-content:center;}
+    .tweaks-panel{position:fixed;bottom:80px;right:20px;z-index:2147482400;width:280px;background:rgba(15,20,40,.92);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;color:#fff;display:none;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+    .tweaks-panel[data-visible]{display:block;}
+    .tweaks-panel h4{margin:0 0 16px;font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6);}
+    .tweaks-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:13px;}
+    .tweaks-row .swatches{display:inline-flex;gap:6px;}
+    .tweaks-row .sw{width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform 140ms;}
+    .tweaks-row .sw.active{border-color:#fff;transform:scale(1.1);}
+    .tweaks-row .seg{display:inline-flex;background:rgba(255,255,255,.08);border-radius:8px;padding:2px;}
+    .tweaks-row .seg button{appearance:none;border:0;background:transparent;color:rgba(255,255,255,.7);padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;}
+    .tweaks-row .seg button.active{background:rgba(255,255,255,.15);color:#fff;}
+  </style>
+</head>
+<body>
+
+<div class="theme-toggle" id="theme-toggle">
+  <button data-theme-set="light" class="active">☀ Light</button>
+  <button data-theme-set="dark">☾ Dark</button>
+  <button id="btn-filmstrip" title="All slides (G)" aria-label="All slides">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="1.5" y="1.5" width="5" height="5" rx="1"></rect><rect x="9.5" y="1.5" width="5" height="5" rx="1"></rect>
+      <rect x="1.5" y="9.5" width="5" height="5" rx="1"></rect><rect x="9.5" y="9.5" width="5" height="5" rx="1"></rect>
+    </svg>
+  </button>
+</div>
+
+<div class="tweaks-panel" id="tweaks-panel">
+  <h4>Tweaks</h4>
+  <div class="tweaks-row"><span>Theme</span><div class="seg" id="tw-theme"><button data-theme-set="light" class="active">Light</button><button data-theme-set="dark">Dark</button></div></div>
+  <div class="tweaks-row"><span>Accent</span><div class="swatches" id="tw-accent">
+    <div class="sw active" data-accent="#7B2D3E" style="background:#7B2D3E" title="Burgundy"></div>
+    <div class="sw" data-accent="#5AA8E0" style="background:#5AA8E0" title="Sky"></div>
+    <div class="sw" data-accent="#3a6cb8" style="background:#3a6cb8" title="Blue"></div>
+    <div class="sw" data-accent="#5fa68b" style="background:#5fa68b" title="Sage"></div>
+  </div></div>
+  <div class="tweaks-row"><span>Density</span><div class="seg" id="tw-density"><button data-density="tight">Tight</button><button data-density="default" class="active">Default</button></div></div>
+</div>
+
+<deck-stage width="1920" height="1080" id="deck">
+  <section id="s01"></section>
+  <section id="s02"></section>
+  <section id="s03"></section>
+  <section id="s04"></section>
+  <section id="s05"></section>
+  <section id="s06"></section>
+  <section id="s07"></section>
+  <section id="s08"></section>
+  <section id="s09"></section>
+  <section id="s10"></section>
+  <section id="s11"></section>
+  <section id="s12"></section>
+</deck-stage>
+
+<!-- [1] deck-stage web component -->
+<script>
+(() => {
+  const DESIGN_W_DEFAULT=1920,DESIGN_H_DEFAULT=1080,STORAGE_PREFIX='deck-stage:slide:',OVERLAY_HIDE_MS=1800,VALIDATE_ATTR='no_overflowing_text,no_overlapping_text,slide_sized_text',pad2=n=>String(n).padStart(2,'0'),stylesheet=`
+    :host{position:fixed;inset:0;display:block;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;overflow:hidden;}
+    .stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+    .canvas{position:relative;transform-origin:center center;flex-shrink:0;background:#fff;will-change:transform;}
+    ::slotted(*){position:absolute!important;inset:0!important;width:100%!important;height:100%!important;box-sizing:border-box!important;overflow:hidden;opacity:0;pointer-events:none;visibility:hidden;}
+    ::slotted([data-deck-active]){opacity:1;pointer-events:auto;visibility:visible;}
+    .tapzones{position:fixed;inset:0;display:flex;z-index:2147482000;pointer-events:none;}
+    .tapzone{flex:1;pointer-events:none;-webkit-tap-highlight-color:transparent;}
+    .overlay{position:fixed;left:50%;bottom:22px;transform:translate(-50%,6px) scale(0.92);filter:blur(6px);display:flex;align-items:center;gap:4px;padding:4px;background:#000;color:#fff;border-radius:999px;font-size:12px;font-feature-settings:"tnum" 1;letter-spacing:.01em;opacity:0;pointer-events:none;transition:opacity 260ms ease,transform 260ms cubic-bezier(.2,.8,.2,1),filter 260ms ease;transform-origin:center bottom;z-index:2147483000;user-select:none;}
+    .overlay[data-visible]{opacity:1;pointer-events:auto;transform:translate(-50%,0) scale(1);filter:blur(0);}
+    .btn{appearance:none;-webkit-appearance:none;background:transparent;border:0;margin:0;padding:0;color:inherit;font:inherit;cursor:default;display:inline-flex;align-items:center;justify-content:center;height:28px;min-width:28px;border-radius:999px;color:rgba(255,255,255,.72);transition:background 140ms ease,color 140ms ease;-webkit-tap-highlight-color:transparent;}
+    .btn:hover{background:rgba(255,255,255,.12);color:#fff;}
+    .btn svg{width:14px;height:14px;display:block;}
+    .btn.reset{font-size:11px;font-weight:500;letter-spacing:.02em;padding:0 10px 0 12px;gap:6px;}
+    .btn.reset .kbd{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:10px;line-height:1;color:rgba(255,255,255,.88);background:rgba(255,255,255,.12);border-radius:4px;}
+    .count{font-variant-numeric:tabular-nums;color:#fff;font-weight:500;padding:0 8px;min-width:42px;text-align:center;font-size:12px;}
+    .count .sep{color:rgba(255,255,255,.45);margin:0 3px;font-weight:400;}
+    .count .total{color:rgba(255,255,255,.55);}
+    .divider{width:1px;height:14px;background:rgba(255,255,255,.18);margin:0 2px;}
+    @media print{:host{position:static;inset:auto;background:none;overflow:visible;color:inherit;}.stage{position:static;display:block;}.canvas{transform:none!important;width:auto!important;height:auto!important;background:none;will-change:auto;}::slotted(*){position:relative!important;inset:auto!important;width:var(--deck-design-w)!important;height:var(--deck-design-h)!important;box-sizing:border-box!important;opacity:1!important;visibility:visible!important;pointer-events:auto;break-after:page;page-break-after:always;break-inside:avoid;overflow:hidden;}::slotted(*:last-child){break-after:auto;page-break-after:auto;}.overlay,.tapzones{display:none!important;}}
+  `;
+  class DeckStage extends HTMLElement {
+    static get observedAttributes(){return['width','height','noscale'];}
+    constructor(){super();this._root=this.attachShadow({mode:'open'});this._index=0;this._slides=[];this._notes=[];this._hideTimer=null;this._mouseIdleTimer=null;this._storageKey=STORAGE_PREFIX+(location.pathname||'/');this._onKey=this._onKey.bind(this);this._onResize=this._onResize.bind(this);this._onSlotChange=this._onSlotChange.bind(this);this._onMouseMove=this._onMouseMove.bind(this);this._onTapBack=this._onTapBack.bind(this);this._onTapForward=this._onTapForward.bind(this);}
+    get designWidth(){return parseInt(this.getAttribute('width'),10)||DESIGN_W_DEFAULT;}
+    get designHeight(){return parseInt(this.getAttribute('height'),10)||DESIGN_H_DEFAULT;}
+    connectedCallback(){this._render();this._loadNotes();this._syncPrintPageRule();window.addEventListener('keydown',this._onKey);window.addEventListener('resize',this._onResize);window.addEventListener('mousemove',this._onMouseMove,{passive:true});}
+    disconnectedCallback(){window.removeEventListener('keydown',this._onKey);window.removeEventListener('resize',this._onResize);window.removeEventListener('mousemove',this._onMouseMove);if(this._hideTimer)clearTimeout(this._hideTimer);if(this._mouseIdleTimer)clearTimeout(this._mouseIdleTimer);}
+    attributeChangedCallback(){if(this._canvas){this._canvas.style.width=this.designWidth+'px';this._canvas.style.height=this.designHeight+'px';this._canvas.style.setProperty('--deck-design-w',this.designWidth+'px');this._canvas.style.setProperty('--deck-design-h',this.designHeight+'px');this._fit();this._syncPrintPageRule();}}
+    _render(){const style=document.createElement('style');style.textContent=stylesheet;const stage=document.createElement('div');stage.className='stage';const canvas=document.createElement('div');canvas.className='canvas';canvas.style.width=this.designWidth+'px';canvas.style.height=this.designHeight+'px';canvas.style.setProperty('--deck-design-w',this.designWidth+'px');canvas.style.setProperty('--deck-design-h',this.designHeight+'px');const slot=document.createElement('slot');slot.addEventListener('slotchange',this._onSlotChange);canvas.appendChild(slot);stage.appendChild(canvas);const tapzones=document.createElement('div');tapzones.className='tapzones';tapzones.setAttribute('aria-hidden','true');const tzBack=document.createElement('div');tzBack.className='tapzone tapzone--back';const tzMid=document.createElement('div');tzMid.className='tapzone tapzone--mid';tzMid.style.pointerEvents='none';const tzFwd=document.createElement('div');tzFwd.className='tapzone tapzone--fwd';tzBack.addEventListener('click',this._onTapBack);tzFwd.addEventListener('click',this._onTapForward);tapzones.append(tzBack,tzMid,tzFwd);const overlay=document.createElement('div');overlay.className='overlay';overlay.setAttribute('role','toolbar');overlay.setAttribute('aria-label','Deck controls');overlay.innerHTML=`<button class="btn prev" type="button" aria-label="Previous slide" title="Previous (←)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg></button><span class="count" aria-live="polite"><span class="current">1</span><span class="sep">/</span><span class="total">1</span></span><button class="btn next" type="button" aria-label="Next slide" title="Next (→)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg></button><span class="divider"></span><button class="btn reset" type="button" aria-label="Reset to first slide" title="Reset (R)">Reset<span class="kbd">R</span></button><span class="divider"></span><button class="btn grid-toggle" type="button" aria-label="All slides" title="All slides (G)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="5" height="5" rx="1"/><rect x="9.5" y="1.5" width="5" height="5" rx="1"/><rect x="1.5" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/></svg></button>`;overlay.querySelector('.prev').addEventListener('click',()=>this._go(this._index-1,'click'));overlay.querySelector('.next').addEventListener('click',()=>this._go(this._index+1,'click'));overlay.querySelector('.reset').addEventListener('click',()=>this._go(0,'click'));overlay.querySelector('.grid-toggle').addEventListener('click',()=>this.toggleFilmstrip());this._root.append(style,stage,tapzones,overlay);this._canvas=canvas;this._slot=slot;this._overlay=overlay;this._countEl=overlay.querySelector('.current');this._totalEl=overlay.querySelector('.total');}
+    _syncPrintPageRule(){const id='deck-stage-print-page';let tag=document.getElementById(id);if(!tag){tag=document.createElement('style');tag.id=id;document.head.appendChild(tag);}tag.textContent='@page{size:'+this.designWidth+'px '+this.designHeight+'px;margin:0}@media print{html,body{margin:0!important;padding:0!important;background:none!important;overflow:visible!important;height:auto!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}';}
+    _onSlotChange(){this._collectSlides();this._restoreIndex();this._applyIndex({showOverlay:false,broadcast:true,reason:'init'});this._fit();}
+    _collectSlides(){const assigned=this._slot.assignedElements({flatten:true});this._slides=assigned.filter(el=>{const t=el.tagName;return t!=='TEMPLATE'&&t!=='SCRIPT'&&t!=='STYLE';});this._slides.forEach((slide,i)=>{const n=i+1;let label=slide.getAttribute('data-label');if(!label){const h=slide.querySelector('h1,h2,h3,[data-title]');if(h)label=(h.textContent||'').trim().slice(0,40);}if(!label)label='Slide';slide.setAttribute('data-screen-label',`${pad2(n)} ${label}`);if(!slide.hasAttribute('data-om-validate'))slide.setAttribute('data-om-validate',VALIDATE_ATTR);slide.setAttribute('data-deck-slide',String(i));});if(this._totalEl)this._totalEl.textContent=String(this._slides.length||1);if(this._index>=this._slides.length)this._index=Math.max(0,this._slides.length-1);}
+    _loadNotes(){const tag=document.getElementById('speaker-notes');if(!tag){this._notes=[];return;}try{const p=JSON.parse(tag.textContent||'[]');if(Array.isArray(p))this._notes=p;}catch(e){this._notes=[];}}
+    _restoreIndex(){try{const raw=localStorage.getItem(this._storageKey);if(raw!=null){const n=parseInt(raw,10);if(Number.isFinite(n)&&n>=0&&n<this._slides.length)this._index=n;}}catch(e){}}
+    _persistIndex(){try{localStorage.setItem(this._storageKey,String(this._index));}catch(e){}}
+    _applyIndex({showOverlay=true,broadcast=true,reason='init'}={}){if(!this._slides.length)return;const curr=this._index;this._slides.forEach((s,i)=>{if(i===curr)s.setAttribute('data-deck-active','');else s.removeAttribute('data-deck-active');});if(this._countEl)this._countEl.textContent=String(curr+1);this._persistIndex();if(broadcast){try{window.postMessage({slideIndexChanged:curr},'*');}catch(e){}this.dispatchEvent(new CustomEvent('slidechange',{detail:{index:curr,total:this._slides.length},bubbles:true,composed:true}));}if(showOverlay)this._flashOverlay();this._syncFilmstripActive();}
+    _flashOverlay(){if(!this._overlay)return;this._overlay.setAttribute('data-visible','');if(this._hideTimer)clearTimeout(this._hideTimer);this._hideTimer=setTimeout(()=>this._overlay.removeAttribute('data-visible'),OVERLAY_HIDE_MS);}
+    _fit(){if(!this._canvas)return;if(this.hasAttribute('noscale')){this._canvas.style.transform='none';return;}const s=Math.min(window.innerWidth/this.designWidth,window.innerHeight/this.designHeight);this._canvas.style.transform=`scale(${s})`;}
+    _onResize(){this._fit();}
+    _onMouseMove(){this._flashOverlay();}
+    _onTapBack(e){e.preventDefault();this._go(this._index-1,'tap');}
+    _onTapForward(e){e.preventDefault();this._go(this._index+1,'tap');}
+    _onKey(e){const t=e.target;if(t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))return;if(e.metaKey||e.ctrlKey||e.altKey)return;const key=e.key;let handled=true;if(key==='ArrowRight'||key==='PageDown'||key===' '||key==='Spacebar')this._go(this._index+1,'keyboard');else if(key==='ArrowLeft'||key==='PageUp')this._go(this._index-1,'keyboard');else if(key==='Home')this._go(0,'keyboard');else if(key==='End')this._go(this._slides.length-1,'keyboard');else if(key==='r'||key==='R')this._go(0,'keyboard');else if(/^[0-9]$/.test(key)){const n=key==='0'?9:parseInt(key,10)-1;if(n<this._slides.length)this._go(n,'keyboard');}else handled=false;if(handled){e.preventDefault();this._flashOverlay();}}
+    _go(i,reason='api'){if(!this._slides.length)return;const clamped=Math.max(0,Math.min(this._slides.length-1,i));if(clamped===this._index){this._flashOverlay();return;}this._index=clamped;this._applyIndex({showOverlay:true,broadcast:true,reason});}
+    _buildFilmstrip(){if(this._filmstripOverlay)return;if(!document.getElementById('deck-stage-filmstrip-style')){const s=document.createElement('style');s.id='deck-stage-filmstrip-style';s.textContent=`.ds-filmstrip-overlay{position:fixed;inset:0;z-index:2147483500;pointer-events:none;opacity:0;transition:opacity 280ms ease}.ds-filmstrip-overlay.open{pointer-events:auto;opacity:1}.ds-filmstrip-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px)}.ds-filmstrip-drawer{position:absolute;right:0;top:0;bottom:0;width:400px;background:#111;overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform 300ms cubic-bezier(.22,.9,.3,1);padding:24px 16px 40px;box-sizing:border-box}.ds-filmstrip-overlay.open .ds-filmstrip-drawer{transform:translateX(0)}.ds-filmstrip-header{display:flex;align-items:center;justify-content:space-between;margin:0 4px 18px}.ds-filmstrip-title{color:rgba(255,255,255,.45);font-size:11px;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0}.ds-filmstrip-close{appearance:none;background:rgba(255,255,255,.08);border:0;margin:0;padding:0;color:rgba(255,255,255,.5);width:24px;height:24px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}.ds-filmstrip-close:hover{background:rgba(255,255,255,.15);color:#fff}.ds-filmstrip-close svg{width:12px;height:12px;display:block}.ds-filmstrip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ds-filmstrip-thumb{cursor:pointer;border-radius:5px;overflow:hidden;position:relative;border:2px solid transparent;transition:border-color 160ms ease,transform 120ms ease}.ds-filmstrip-thumb:hover{transform:scale(1.03);border-color:rgba(255,255,255,.35)}.ds-filmstrip-thumb.ds-active{border-color:var(--accent,#7B2D3E)}.ds-filmstrip-inner{width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;background:#222}.ds-filmstrip-inner>.ds-clone{position:absolute!important;top:0!important;left:0!important;transform-origin:top left!important;pointer-events:none!important;visibility:visible!important;opacity:1!important}.ds-filmstrip-num{position:absolute;top:5px;left:7px;color:rgba(255,255,255,.55);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:9px;font-weight:600;line-height:1;z-index:2}.ds-filmstrip-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));color:rgba(255,255,255,.85);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;font-size:9px;font-weight:500;padding:14px 7px 5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}`;document.head.appendChild(s);}
+    const overlay=document.createElement('div');overlay.className='ds-filmstrip-overlay';const backdrop=document.createElement('div');backdrop.className='ds-filmstrip-backdrop';backdrop.addEventListener('click',()=>this._closeFilmstrip());const drawer=document.createElement('div');drawer.className='ds-filmstrip-drawer';const header=document.createElement('div');header.className='ds-filmstrip-header';const titleEl=document.createElement('p');titleEl.className='ds-filmstrip-title';titleEl.textContent=`All Slides · ${this._slides.length}`;const closeBtn=document.createElement('button');closeBtn.className='ds-filmstrip-close';closeBtn.type='button';closeBtn.setAttribute('aria-label','Close');closeBtn.innerHTML=`<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 1l10 10M11 1L1 11"/></svg>`;closeBtn.addEventListener('click',()=>this._closeFilmstrip());header.append(titleEl,closeBtn);const grid=document.createElement('div');grid.className='ds-filmstrip-grid';this._filmstripThumbs=[];this._slides.forEach((slide,i)=>{const thumb=document.createElement('div');thumb.className='ds-filmstrip-thumb'+(i===this._index?' ds-active':'');thumb.dataset.dsSlide=i;const inner=document.createElement('div');inner.className='ds-filmstrip-inner';const clone=slide.cloneNode(true);clone.className='ds-clone';clone.removeAttribute('data-deck-active');clone.style.cssText='';clone.style.pointerEvents='none';clone.style.visibility='visible';clone.style.opacity='1';clone.querySelectorAll('video').forEach(v=>{v.muted=true;v.autoplay=false;v.removeAttribute('autoplay');v.pause();});inner.appendChild(clone);const num=document.createElement('span');num.className='ds-filmstrip-num';num.textContent=String(i+1).padStart(2,'0');const rawLabel=slide.getAttribute('data-screen-label')||'';const labelText=rawLabel.replace(/^\d+\s*/,'').trim();if(labelText){const labelEl=document.createElement('div');labelEl.className='ds-filmstrip-label';labelEl.textContent=labelText;inner.appendChild(labelEl);}inner.appendChild(num);thumb.appendChild(inner);thumb.addEventListener('click',()=>{this._go(i,'click');this._closeFilmstrip();});grid.appendChild(thumb);this._filmstripThumbs.push({thumb,clone,inner});});drawer.append(header,grid);overlay.append(backdrop,drawer);document.body.appendChild(overlay);this._filmstripOverlay=overlay;requestAnimationFrame(()=>{this._filmstripThumbs.forEach(({clone,inner})=>{const w=inner.offsetWidth;if(!w)return;const scale=w/this.designWidth;clone.style.width=this.designWidth+'px';clone.style.height=this.designHeight+'px';clone.style.transform=`scale(${scale})`;});});this._onFilmstripKey=(e)=>{if(e.key==='Escape')this._closeFilmstrip();if((e.key==='g'||e.key==='G')&&!this._filmstripOverlay.classList.contains('open'))this._openFilmstrip();};window.addEventListener('keydown',this._onFilmstripKey);}
+    _openFilmstrip(){this._buildFilmstrip();this._filmstripThumbs?.forEach(({thumb},i)=>thumb.classList.toggle('ds-active',i===this._index));requestAnimationFrame(()=>this._filmstripOverlay.classList.add('open'));}
+    _closeFilmstrip(){this._filmstripOverlay?.classList.remove('open');}
+    _syncFilmstripActive(){this._filmstripThumbs?.forEach(({thumb},i)=>thumb.classList.toggle('ds-active',i===this._index));}
+    get index(){return this._index;}get length(){return this._slides.length;}
+    goTo(i){this._go(i,'api');}next(){this._go(this._index+1,'api');}prev(){this._go(this._index-1,'api');}reset(){this._go(0,'api');}
+    toggleFilmstrip(){if(this._filmstripOverlay?.classList.contains('open'))this._closeFilmstrip();else this._openFilmstrip();}
+  }
+  if(!customElements.get('deck-stage'))customElements.define('deck-stage',DeckStage);
+})();
+</script>
+
+<!-- [2] React + ReactDOM + Babel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+<!-- [3] Config -->
+<script>
+  const PRESENTER_NAME = 'Rod Martin';
+  const BRAND_NAME     = 'imrodmartin';
+  const BRAND_URL      = 'https://imrodmartin.com';
+  const ACCENT_COLOR   = '#7B2D3E';
+  const TALK_TITLE     = 'Ephesians';
+  const EVENT_NAME     = 'Bible Study';
+  const TOTAL          = 12;
+
+  window.__resources = { brandLogo: '', presenterPhoto: '' };
+
+  document.documentElement.style.setProperty('--accent', ACCENT_COLOR);
+  document.documentElement.style.setProperty('--brand-blue-bright', ACCENT_COLOR);
+  document.documentElement.style.setProperty('--brand-blue', ACCENT_COLOR);
+</script>
+
+<!-- [4] Shared primitives -->
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const LogoMark = ({ className='logo-mark', logoSrc=(window.__resources&&window.__resources.brandLogo)||'' }) => (
+  logoSrc
+    ? <a href={BRAND_URL} target="_blank" rel="noopener" aria-label={BRAND_NAME} style={{display:'inline-block',lineHeight:0}}><img src={logoSrc} alt={BRAND_NAME} className={`${className} inverted`} style={{height:44}} /></a>
+    : <a href={BRAND_URL} target="_blank" rel="noopener" style={{fontFamily:'var(--font-mono,monospace)',fontSize:20,letterSpacing:'0.15em',textTransform:'uppercase',fontWeight:700,color:'inherit',textDecoration:'none'}}>{BRAND_NAME}</a>
+);
+
+const PhotoPlaceholder = ({ label='Photo', tone='blue', aspect='4/3' }) => {
+  const tones = { blue:['#5AA8E0','#1a2a4f'], amber:['#f2a03e','#c45d1a'], coral:['#e86a5c','#8f2b24'], sage:['#5fa68b','#244838'], wine:['#7B2D3E','#3a0f1a'] };
+  const [c1,c2] = tones[tone]||tones.blue;
+  return (
+    <div style={{aspectRatio:aspect,width:'100%',borderRadius:24,position:'relative',overflow:'hidden',background:`linear-gradient(135deg,${c1},${c2})`,display:'flex',alignItems:'flex-end',padding:32}}>
+      <div style={{position:'absolute',inset:0,backgroundImage:'linear-gradient(to right,rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.08) 1px,transparent 1px)',backgroundSize:'48px 48px'}} />
+      <div style={{color:'#fff',fontFamily:'var(--font-body,sans-serif)',fontSize:26,fontWeight:600,position:'relative',zIndex:2}}>{label}</div>
+    </div>
+  );
+};
+
+Object.assign(window, { LogoMark, PhotoPlaceholder });
+</script>
+
+<!-- [5a] Slides 1–6 -->
+<script type="text/babel">
+
+/* SLIDE 1 — Hero/Cover */
+const Slide01 = () => (
+  <div className="slide" style={{background:'#1C0A10',color:'#fff'}}>
+    <div style={{position:'absolute',inset:0,overflow:'hidden',opacity:0.18}}>
+      {[0,1,2,3,4].map(i=>(
+        <div key={i} style={{position:'absolute',left:0,right:0,top:`${15+i*17}%`,height:1,background:'linear-gradient(to right,transparent,#7B2D3E,transparent)'}} />
+      ))}
+      <div style={{position:'absolute',right:80,top:60,width:520,height:520,borderRadius:'50%',border:'1px solid rgba(255,255,255,0.3)'}} />
+      <div style={{position:'absolute',right:140,top:120,width:400,height:400,borderRadius:'50%',border:'1px solid rgba(255,255,255,0.2)'}} />
+    </div>
+    <div style={{position:'absolute',top:-20,left:0,right:0,fontFamily:'var(--font-display)',fontSize:300,fontWeight:900,lineHeight:0.85,letterSpacing:'-0.02em',textTransform:'uppercase',color:'transparent',WebkitTextStroke:'3px rgba(255,255,255,0.22)',userSelect:'none',zIndex:2}}>
+      THE BOOK
+    </div>
+    <div style={{position:'absolute',top:'38%',left:72,zIndex:4,fontFamily:'var(--font-script)',fontSize:90,color:'#C4A882',transform:'rotate(-2deg)'}}>
+      A Bible Study
+    </div>
+    {/* WCAG AA: white (#fff) on #1C0A10 = ~19:1 contrast ✓ */}
+    <div style={{position:'absolute',bottom:-10,left:0,fontFamily:'var(--font-display)',fontSize:340,fontWeight:900,lineHeight:0.85,letterSpacing:'-0.02em',textTransform:'uppercase',color:'#fff',userSelect:'none',zIndex:3,whiteSpace:'nowrap'}}>
+      EPHESIANS
+    </div>
+    {/* rgba(255,255,255,0.8) on #1C0A10 ≈ 14:1 ✓ */}
+    <a href={BRAND_URL} target="_blank" rel="noopener" style={{position:'absolute',bottom:40,right:72,zIndex:5,fontFamily:'var(--font-mono)',fontSize:20,letterSpacing:'0.12em',color:'rgba(255,255,255,0.8)',textDecoration:'none',textTransform:'uppercase'}}>
+      {BRAND_URL.replace('https://','')}
+    </a>
+  </div>
+);
+
+/* SLIDE 2 — Overview: What Is Ephesians? */
+const Slide02 = () => {
+  const facts = [
+    { label: 'AUTHOR', text: 'Paul the Apostle, writing from prison in Rome (~AD 60–62)' },
+    { label: 'AUDIENCE', text: 'The saints at Ephesus — likely a circular letter to Asian churches' },
+    { label: 'THEME', text: 'God\'s eternal purpose to unite all things in Christ through the Church' },
+  ];
+  return (
+    <div className="slide" style={{background:'var(--light)',display:'flex'}}>
+      <div style={{width:'42%',background:'#1C0A10',padding:'80px 72px',display:'flex',flexDirection:'column',justifyContent:'center',gap:32,position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',top:-60,right:-60,width:360,height:360,borderRadius:'50%',border:'1px solid rgba(255,255,255,0.08)'}} />
+        {/* rgba(255,255,255,0.7) on #1C0A10 ≈ 12:1 ✓ */}
+        <div style={{fontFamily:'var(--font-mono)',fontSize:18,letterSpacing:'0.2em',textTransform:'uppercase',color:'rgba(255,255,255,0.7)',marginBottom:8}}>Overview</div>
+        {/* #C4A882 on #1C0A10 ≈ 8.6:1 ✓ */}
+        <div style={{fontFamily:'var(--font-display)',fontSize:108,fontWeight:900,lineHeight:0.92,letterSpacing:'-0.02em',textTransform:'uppercase',color:'#C4A882',whiteSpace:'nowrap'}}>
+          WHAT IS<br />EPHESIANS?
+        </div>
+        <div style={{fontFamily:'var(--font-script)',fontSize:48,color:'rgba(255,255,255,0.75)',transform:'rotate(-1deg)'}}>Six chapters. One magnificent vision.</div>
+      </div>
+      <div style={{width:'58%',padding:'80px 80px',display:'flex',flexDirection:'column',justifyContent:'center',gap:48}}>
+        {facts.map((f,i)=>(
+          <div key={i} style={{display:'flex',flexDirection:'column',gap:10,borderLeft:'4px solid var(--accent-fg)',paddingLeft:32}}>
+            {/* var(--accent-fg): #7B2D3E light / #C4A882 dark — both pass on their respective bgs ✓ */}
+            <div style={{fontFamily:'var(--font-mono)',fontSize:18,letterSpacing:'0.2em',textTransform:'uppercase',color:'var(--accent-fg)',fontWeight:700}}>{f.label}</div>
+            {/* var(--ink-1): #1A1A1A light / #F0E6E0 dark — both pass on their respective bgs ✓ */}
+            <div style={{fontFamily:'var(--font-body)',fontSize:30,lineHeight:1.45,color:'var(--ink-1)',fontWeight:400}}>{f.text}</div>
+          </div>
+        ))}
+        <div style={{fontFamily:'var(--font-body)',fontSize:22,lineHeight:1.6,color:'var(--ink-2)',borderTop:'1px solid var(--border-c)',paddingTop:32,marginTop:8}}>
+          Ephesians is Paul's fullest exposition of the Church — what she is, how she lives, and why she exists. Conservative scholars affirm Pauline authorship as the unified testimony of the early church.
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* SLIDE 3 — Three-Band: Structure of Ephesians */
+const Slide03 = () => {
+  const bands = [
+    { bg:'var(--accent)', headColor:'#fff', bodyColor:'rgba(255,255,255,0.9)', wordColor:'rgba(0,0,0,0.15)', word:'DOCTRINE', heading:'Chapters 1–3: Our Position', body:'Who we are in Christ. Paul grounds every command in the bedrock of what God has already done for us in the heavenlies.' },
+    { bg:'var(--band-mid)', headColor:'var(--ink-1)', bodyColor:'var(--ink-2)', wordColor:'var(--ghost-text)', word:'PRACTICE', heading:'Chapters 4–6a: Our Walk', body:'How we live in Christ. Paul calls the church to a manner of life worthy of the calling we have received — in unity, holiness, and love.' },
+    { bg:'#1C0A10', headColor:'#fff', bodyColor:'rgba(255,255,255,0.82)', wordColor:'rgba(255,255,255,0.05)', word:'DEFENSE', heading:'Chapter 6b: Our Warfare', body:'How we stand in Christ. Paul closes with the full armor of God — our spiritual resources for the battle already won at the cross.' },
+  ];
+  return (
+    <div className="slide" style={{display:'flex',flexDirection:'column'}}>
+      {bands.map((band,i)=>(
+        <div key={i} style={{flex:1,background:band.bg,display:'flex',position:'relative',overflow:'hidden'}}>
+          <div style={{position:'absolute',left:-20,top:'50%',transform:'translateY(-50%)',fontFamily:'var(--font-display)',fontSize:260,fontWeight:900,lineHeight:1,textTransform:'uppercase',color:band.wordColor,userSelect:'none',pointerEvents:'none',whiteSpace:'nowrap'}}>
+            {band.word}
+          </div>
+          <div style={{marginLeft:'38%',padding:'28px 80px 28px 48px',display:'flex',flexDirection:'column',justifyContent:'center',gap:12,zIndex:2}}>
+            <div style={{fontFamily:'var(--font-body)',fontSize:26,fontWeight:700,color:band.headColor,letterSpacing:'0.01em'}}>{band.heading}</div>
+            <p style={{fontFamily:'var(--font-body)',fontSize:22,lineHeight:1.55,color:band.bodyColor,margin:0,maxWidth:860}}>{band.body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* SLIDE 4 — Dark Section Break: Part 1 */
+const Slide04 = () => (
+  <div className="slide" style={{background:'#1C0A10'}}>
+    <div style={{position:'absolute',top:-120,right:-120,width:700,height:700,borderRadius:'50%',border:'1px solid rgba(124,45,62,0.3)'}} />
+    <div style={{position:'absolute',top:-60,right:-60,width:500,height:500,borderRadius:'50%',border:'1px solid rgba(124,45,62,0.2)'}} />
+    {/* rgba(255,255,255,0.8) on dark ≈ 14:1 ✓ */}
+    <div style={{position:'absolute',top:96,left:80,width:680,fontFamily:'var(--font-body)',fontSize:24,lineHeight:1.65,color:'rgba(255,255,255,0.8)',zIndex:2}}>
+      Before Paul gives a single command, he spends three chapters declaring what God has done. Duty flows from doctrine. Practice follows position.
+    </div>
+    {/* rgba(255,255,255,0.65) on dark ≈ 11:1 ✓ */}
+    <div style={{position:'absolute',top:96,right:80,fontFamily:'var(--font-mono)',fontSize:18,letterSpacing:'0.2em',color:'rgba(255,255,255,0.65)',textTransform:'uppercase',zIndex:2}}>Part One</div>
+    <div style={{position:'absolute',bottom:32,left:60,zIndex:3}}>
+      {/* #C4A882 on #1C0A10 ≈ 8.6:1 ✓ */}
+      <div style={{fontFamily:'var(--font-display)',fontSize:220,fontWeight:900,lineHeight:0.85,textTransform:'uppercase',color:'#C4A882',letterSpacing:'-0.02em'}}>
+        POSITION
+      </div>
+      <div style={{fontFamily:'var(--font-display)',fontSize:220,fontWeight:900,lineHeight:0.85,textTransform:'uppercase',color:'rgba(255,255,255,0.08)',letterSpacing:'-0.02em',marginTop:8}}>
+        IN CHRIST
+      </div>
+      <div style={{fontFamily:'var(--font-script)',fontSize:76,color:'rgba(255,255,255,0.75)',transform:'rotate(-2deg)',marginTop:-80,marginLeft:8}}>Chapters 1–3</div>
+    </div>
+  </div>
+);
+
+/* SLIDE 5 — Ch. 1: Every Spiritual Blessing */
+const Slide05 = () => {
+  const blessings = [
+    { ref:'1:4–5', title:'Chosen', desc:'Selected before the foundation of the world to be holy and blameless in love, predestined as adopted sons through Jesus Christ.' },
+    { ref:'1:7', title:'Redeemed', desc:'Forgiven of trespasses through His blood, according to the riches of His grace lavished upon us in all wisdom and insight.' },
+    { ref:'1:13–14', title:'Sealed', desc:'Marked with the promised Holy Spirit as a guarantee of our inheritance until we acquire full possession of it.' },
+  ];
+  return (
+    <div className="slide" style={{background:'var(--light)',display:'flex'}}>
+      <div style={{width:'38%',background:'var(--accent)',padding:'80px 64px',display:'flex',flexDirection:'column',justifyContent:'center',gap:24,position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',bottom:-80,left:-80,width:400,height:400,borderRadius:'50%',border:'1px solid rgba(255,255,255,0.12)'}} />
+        {/* rgba(255,255,255,0.9) on accent ≈ 7.5:1 ✓ */}
+        <div style={{fontFamily:'var(--font-mono)',fontSize:17,letterSpacing:'0.2em',textTransform:'uppercase',color:'rgba(255,255,255,0.9)'}}>Ephesians 1</div>
+        <div style={{fontFamily:'var(--font-display)',fontSize:96,fontWeight:900,lineHeight:0.92,textTransform:'uppercase',color:'#fff',letterSpacing:'-0.02em',whiteSpace:'nowrap'}}>
+          EVERY<br />SPIRITUAL<br />BLESSING
+        </div>
+        <div style={{fontFamily:'var(--font-script)',fontSize:44,color:'rgba(255,255,255,0.9)',transform:'rotate(-1.5deg)'}}>In the heavenly places</div>
+        <p style={{fontFamily:'var(--font-body)',fontSize:21,lineHeight:1.55,color:'rgba(255,255,255,0.95)',margin:0}}>"Blessed be the God and Father of our Lord Jesus Christ." — Eph. 1:3</p>
+      </div>
+      <div style={{width:'62%',padding:'72px 80px',display:'flex',flexDirection:'column',justifyContent:'center',gap:40}}>
+        {blessings.map((b,i)=>(
+          <div key={i} style={{display:'flex',gap:28,alignItems:'flex-start'}}>
+            {/* var(--accent-fg): #7B2D3E light / #C4A882 dark — both readable on their bg ✓ */}
+            <div style={{fontFamily:'var(--font-mono)',fontSize:15,color:'var(--accent-fg)',marginTop:8,flexShrink:0,letterSpacing:'0.08em',fontWeight:700}}>{b.ref}</div>
+            <div>
+              <div style={{fontFamily:'var(--font-display)',fontSize:52,fontWeight:900,textTransform:'uppercase',color:'var(--accent-fg)',lineHeight:1,marginBottom:10}}>{b.title}</div>
+              <p style={{fontFamily:'var(--font-body)',fontSize:24,lineHeight:1.5,color:'var(--ink-1)',margin:0}}>{b.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* SLIDE 6 — Ch. 2: Dead → Alive */
+const Slide06 = () => (
+  <div className="slide" style={{display:'flex'}}>
+    <div style={{width:'50%',background:'#1C0A10',padding:'80px 72px',display:'flex',flexDirection:'column',justifyContent:'center',gap:32,position:'relative',overflow:'hidden'}}>
+      <div style={{position:'absolute',inset:0,backgroundImage:'linear-gradient(to right,rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.04) 1px,transparent 1px)',backgroundSize:'60px 60px'}} />
+      {/* rgba(255,255,255,0.75) on #1C0A10 ≈ 13:1 ✓ */}
+      <div style={{fontFamily:'var(--font-mono)',fontSize:17,letterSpacing:'0.2em',textTransform:'uppercase',color:'rgba(255,255,255,0.75)',position:'relative',zIndex:2}}>Ephesians 2:1–3</div>
+      <div style={{fontFamily:'var(--font-display)',fontSize:160,fontWeight:900,lineHeight:0.88,textTransform:'uppercase',color:'rgba(255,255,255,0.14)',letterSpacing:'-0.02em',position:'relative',zIndex:2}}>DEAD</div>
+      <div style={{position:'relative',zIndex:2}}>
+        <div style={{fontFamily:'var(--font-body)',fontSize:28,fontWeight:600,color:'rgba(255,255,255,0.92)',marginBottom:16}}>Dead in trespasses and sins</div>
+        <p style={{fontFamily:'var(--font-body)',fontSize:23,lineHeight:1.6,color:'rgba(255,255,255,0.78)',margin:0}}>Following the course of this world, the prince of the power of the air. By nature children of wrath, like the rest of mankind.</p>
+      </div>
+    </div>
+    <div style={{width:'50%',background:'var(--light)',padding:'80px 72px',display:'flex',flexDirection:'column',justifyContent:'center',gap:32,position:'relative',overflow:'hidden'}}>
+      {/* var(--accent-fg): safe on both light and dark backgrounds */}
+      <div style={{fontFamily:'var(--font-mono)',fontSize:17,letterSpacing:'0.2em',textTransform:'uppercase',color:'var(--accent-fg)'}}>Ephesians 2:4–10</div>
+      <div style={{fontFamily:'var(--font-display)',fontSize:160,fontWeight:900,lineHeight:0.88,textTransform:'uppercase',color:'var(--accent-fg)',letterSpacing:'-0.02em'}}>ALIVE</div>
+      <div>
+        <div style={{fontFamily:'var(--font-body)',fontSize:28,fontWeight:600,color:'var(--ink-1)',marginBottom:16}}>Made alive together with Christ</div>
+        <p style={{fontFamily:'var(--font-body)',fontSize:23,lineHeight:1.6,color:'var(--ink-2)',margin:0}}>Raised up and seated in the heavenly places. <em>"For by grace you have been saved through faith. And this is not your own doing; it is the gift of God."</em> — Eph. 2:8</p>
+      </div>
+      <div style={{position:'absolute',left:0,top:'20%',bottom:'20%',width:4,background:'var(--accent-fg)'}} />
+    </div>
+  </div>
+);
+
+Object.assign(window, { Slide01, Slide02, Slide03, Slide04, Slide05, Slide06 });
+</script>
+
+<!-- [5b] Slides 7–12 -->
+<script type="text/babel">
+
+/* SLIDE 7 — Ch. 3: The Mystery Revealed */
+const Slide07 = () => (
+  <div className="slide" style={{display:'flex'}}>
+    {/* Left: color block — accent bg, white text only (accent-on-accent fails) */}
+    <div style={{width:'50%',background:'var(--accent)',padding:'80px 72px',display:'flex',flexDirection:'column',justifyContent:'center',position:'relative',overflow:'hidden'}}>
+      <div style={{position:'absolute',top:-80,right:-80,width:420,height:420,borderRadius:'50%',border:'1px solid rgba(255,255,255,0.12)'}} />
+      <div style={{fontFamily:'var(--font-mono)',fontSize:17,letterSpacing:'0.2em',textTransform:'uppercase',color:'rgba(255,255,255,0.75)',marginBottom:24}}>Ephesians 3</div>
+      {/* Was #1C0A10 (dark on dark = fail). Changed to #fff (~19:1 on accent) */}
+      <div style={{fontFamily:'var(--font-display)',fontSize:140,fontWeight:900,lineHeight:0.90,textTransform:'uppercase',color:'#fff',letterSpacing:'-0.02em',marginLeft:-6,whiteSpace:'nowrap'}}>
+        THE<br />MYSTERY
+      </div>
+      <div style={{fontFamily:'var(--font-script)',fontSize:64,color:'rgba(255,255,255,0.9)',transform:'rotate(-2deg)',marginTop:16,position:'relative',zIndex:3}}>Now revealed</div>
+      <p style={{fontFamily:'var(--font-body)',fontSize:22,lineHeight:1.6,color:'rgba(255,255,255,0.9)',margin:'24px 0 0',position:'relative',zIndex:4}}>Hidden for ages and generations but now disclosed: Gentiles are fellow heirs, members of the same body, partakers of the promise.</p>
+    </div>
+    {/* Right — light bg, CSS variables for dark mode */}
+    <div style={{width:'50%',background:'var(--light)',padding:'80px 72px',display:'flex',flexDirection:'column',justifyContent:'center',gap:40}}>
+      <div style={{display:'flex',flexDirection:'column',gap:12,borderLeft:'4px solid var(--accent-fg)',paddingLeft:32}}>
+        <div style={{fontFamily:'var(--font-mono)',fontSize:17,letterSpacing:'0.15em',textTransform:'uppercase',color:'var(--accent-fg)',fontWeight:700}}>The Mystery — Eph. 3:6</div>
+        <p style={{fontFamily:'var(--font-body)',fontSize:26,lineHeight:1.5,color:'var(--ink-1)',margin:0}}>Gentiles are fellow heirs, members of the same body, sharing in the promise in Christ Jesus through the gospel.</p>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:12,borderLeft:'4px solid var(--border-c)',paddingLeft:32}}>
+        <div style={{fontFamily:'var(--font-mono)',fontSize:17,letterSpacing:'0.15em',textTransform:'uppercase',color:'var(--ink-2)',fontWeight:700}}>The Purpose — Eph. 3:10</div>
+        <p style={{fontFamily:'var(--font-body)',fontSize:26,lineHeight:1.5,color:'var(--ink-2)',margin:0}}>Through the church, the manifold wisdom of God is made known to the rulers and authorities in the heavenly places.</p>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:12,borderLeft:'4px solid var(--border-c)',paddingLeft:32}}>
+        <div style={{fontFamily:'var(--font-mono)',fontSize:17,letterSpacing:'0.15em',textTransform:'uppercase',color:'var(--ink-2)',fontWeight:700}}>The Doxology — Eph. 3:20–21</div>
+        <p style={{fontFamily:'var(--font-body)',fontSize:26,lineHeight:1.5,color:'var(--ink-2)',margin:0}}>"To him be glory in the church and in Christ Jesus throughout all generations, forever and ever."</p>
+      </div>
+    </div>
+  </div>
+);
+
+/* SLIDE 8 — Dark Section Break: Part 2 — Practice in Christ */
+const Slide08 = () => (
+  <div className="slide" style={{background:'#1C0A10'}}>
+    <div style={{position:'absolute',bottom:-120,left:-120,width:700,height:700,borderRadius:'50%',border:'1px solid rgba(124,45,62,0.3)'}} />
+    <div style={{position:'absolute',bottom:-60,left:-60,width:500,height:500,borderRadius:'50%',border:'1px solid rgba(124,45,62,0.2)'}} />
+
+    <div style={{position:'absolute',top:96,right:80,width:740,fontFamily:'var(--font-body)',fontSize:24,lineHeight:1.65,color:'rgba(255,255,255,0.75)',zIndex:2,textAlign:'right'}}>
+      "I therefore, a prisoner for the Lord, urge you to walk in a manner worthy of the calling to which you have been called." — Eph. 4:1
+    </div>
+
+    {/* Was rgba(255,255,255,0.35) = ~2.1:1 FAIL. Raised to 0.65 */}
+    <div style={{position:'absolute',top:96,left:80,fontFamily:'var(--font-mono)',fontSize:18,letterSpacing:'0.2em',color:'rgba(255,255,255,0.65)',textTransform:'uppercase',zIndex:2}}>Part Two</div>
+
+    <div style={{position:'absolute',bottom:32,right:60,zIndex:3,textAlign:'right'}}>
+      {/* Was var(--accent) = #7B2D3E on #1C0A10 = 2.3:1 FAIL. Changed to #C4A882 = ~8.6:1 */}
+      <div style={{fontFamily:'var(--font-display)',fontSize:220,fontWeight:900,lineHeight:0.85,textTransform:'uppercase',color:'#C4A882',letterSpacing:'-0.02em'}}>
+        PRACTICE
+      </div>
+      <div style={{fontFamily:'var(--font-display)',fontSize:220,fontWeight:900,lineHeight:0.85,textTransform:'uppercase',color:'rgba(255,255,255,0.12)',letterSpacing:'-0.02em',marginTop:8}}>
+        IN CHRIST
+      </div>
+      <div style={{fontFamily:'var(--font-script)',fontSize:76,color:'rgba(255,255,255,0.7)',transform:'rotate(-2deg)',marginTop:-80,marginRight:8}}>Chapters 4–6</div>
+    </div>
+  </div>
+);
+
+/* SLIDE 9 — Ch. 4: Walk Worthy */
+const Slide09 = () => {
+  const walks = [
+    { ref:'4:1–16', word:'UNITY', title:'Walk in Unity', desc:'One body, one Spirit, one hope, one Lord, one faith, one baptism. Gifts are given to build up the body of Christ to maturity.' },
+    { ref:'4:17–32', word:'NEWNESS', title:'Walk in Newness', desc:'Put off the old self — corrupt through deceitful desires. Be renewed in the spirit of your mind. Put on the new self, created after the likeness of God.' },
+  ];
+  return (
+    <div className="slide" style={{background:'var(--light)',display:'flex',flexDirection:'column'}}>
+      <div style={{padding:'56px 80px 20px',display:'flex',alignItems:'baseline',gap:40}}>
+        {/* var(--accent-fg) safe on light/dark bg */}
+        <div style={{fontFamily:'var(--font-display)',fontSize:100,fontWeight:900,textTransform:'uppercase',color:'var(--accent-fg)',lineHeight:1,letterSpacing:'-0.02em'}}>WALK WORTHY</div>
+        {/* Was #888 = ~2.9:1 FAIL. var(--ink-3) = #606060 = 5.2:1 */}
+        <div style={{fontFamily:'var(--font-mono)',fontSize:18,letterSpacing:'0.15em',color:'var(--ink-3)',textTransform:'uppercase'}}>Ephesians 4</div>
+      </div>
+      <div style={{flex:1,display:'grid',gridTemplateColumns:'1fr 1fr',gap:0,borderTop:'2px solid var(--border-c)'}}>
+        {walks.map((w,i)=>(
+          <div key={i} style={{padding:'48px 72px',borderRight:i===0?'2px solid var(--border-c)':'none',display:'flex',flexDirection:'column',gap:20,position:'relative',overflow:'hidden'}}>
+            <div style={{position:'absolute',top:-40,right:-20,fontFamily:'var(--font-display)',fontSize:200,fontWeight:900,textTransform:'uppercase',color:'var(--ghost-text)',lineHeight:1,userSelect:'none'}}>{w.word}</div>
+            <div style={{fontFamily:'var(--font-mono)',fontSize:16,letterSpacing:'0.15em',textTransform:'uppercase',color:'var(--accent-fg)',fontWeight:700}}>{w.ref}</div>
+            <div style={{fontFamily:'var(--font-display)',fontSize:72,fontWeight:900,textTransform:'uppercase',color:'var(--ink-1)',lineHeight:0.9,letterSpacing:'-0.01em'}}>{w.title}</div>
+            <p style={{fontFamily:'var(--font-body)',fontSize:26,lineHeight:1.55,color:'var(--ink-2)',margin:0}}>{w.desc}</p>
+          </div>
+        ))}
+      </div>
+      <div style={{padding:'28px 80px',borderTop:'2px solid var(--border-c)',background:'#1C0A10'}}>
+        {/* Strong text: was var(--accent) = #7B2D3E on #1C0A10 = 2.3:1 FAIL. Changed to #C4A882 */}
+        <p style={{fontFamily:'var(--font-body)',fontSize:22,lineHeight:1.5,color:'rgba(255,255,255,0.85)',margin:0}}><strong style={{color:'#C4A882'}}>Key command (4:32):</strong> "Be kind to one another, tenderhearted, forgiving one another, as God in Christ forgave you."</p>
+      </div>
+    </div>
+  );
+};
+
+/* SLIDE 10 — Ch. 5: Walk Wisely */
+const Slide10 = () => {
+  const cards = [
+    { ref:'5:1–7', title:'Walk in Love', desc:'Imitate God as beloved children. Christ loved us and gave himself up as a fragrant offering and sacrifice to God.' },
+    { ref:'5:8–14', title:'Walk in Light', desc:'You were once darkness, but now you are light in the Lord. Expose the unfruitful works of darkness.' },
+    { ref:'5:15–21', title:'Walk in Wisdom', desc:'Make the best use of the time — the days are evil. Be filled with the Spirit, singing and giving thanks always.' },
+    { ref:'5:22–6:9', title:'Submit to One Another', desc:'Wives & husbands, children & fathers, servants & masters — all relationships ordered under the lordship of Christ.' },
+  ];
+  return (
+    <div className="slide" style={{background:'var(--accent)',display:'flex',flexDirection:'column'}}>
+      <div style={{padding:'44px 72px 20px',display:'flex',alignItems:'baseline',gap:40,flexShrink:0}}>
+        <div style={{fontFamily:'var(--font-display)',fontSize:96,fontWeight:900,textTransform:'uppercase',color:'#fff',lineHeight:1,letterSpacing:'-0.02em',whiteSpace:'nowrap'}}>WALK WISELY</div>
+        {/* Raised from 0.5 to 0.75 for better contrast on accent bg */}
+        <div style={{fontFamily:'var(--font-mono)',fontSize:17,letterSpacing:'0.15em',color:'rgba(255,255,255,0.75)',textTransform:'uppercase'}}>Ephesians 5–6</div>
+      </div>
+      <div style={{flex:1,display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:0}}>
+        {cards.map((c,i)=>(
+          <div key={i} style={{padding:'36px 44px',borderLeft:i>0?'1px solid rgba(255,255,255,0.2)':'none',display:'flex',flexDirection:'column',gap:16,background:i%2===1?'rgba(0,0,0,0.15)':'transparent'}}>
+            {/* Raised from 0.6 to 0.85 — small text needs 4.5:1 */}
+            <div style={{fontFamily:'var(--font-mono)',fontSize:15,letterSpacing:'0.12em',textTransform:'uppercase',color:'rgba(255,255,255,0.85)'}}>{c.ref}</div>
+            <div style={{fontFamily:'var(--font-display)',fontSize:52,fontWeight:900,textTransform:'uppercase',color:'#fff',lineHeight:0.9,letterSpacing:'-0.01em'}}>{c.title}</div>
+            <p style={{fontFamily:'var(--font-body)',fontSize:22,lineHeight:1.5,color:'rgba(255,255,255,0.92)',margin:0,flex:1}}>{c.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* SLIDE 11 — Ch. 6: The Armor of God */
+const Slide11 = () => {
+  const armor = [
+    { piece:'Belt', of:'Truth', ref:'6:14a', note:'The Roman belt held every piece of armor in place — without it, nothing stayed together. God\'s truth about who he is and who we are in Christ does the same. Practical: anchor your day in Scripture before circumstances or feelings get to define your reality.' },
+    { piece:'Breastplate', of:'Righteousness', ref:'6:14b', note:'Not our moral effort — but Christ\'s righteousness credited to us at justification. When Satan accuses ("You\'re not good enough; God is finished with you"), the answer is not trying harder. Practical: preach the gospel to yourself every time guilt and shame attack.' },
+    { piece:'Shoes', of:'The Gospel of Peace', ref:'6:15', note:'Christ\'s blood secured permanent peace with God — the war is over. We don\'t fight to earn God\'s favor; we fight from a position already won. Practical: carry that settled peace into every anxious conversation, conflict, and difficult circumstance you face.' },
+    { piece:'Shield', of:'Faith', ref:'6:16', note:'The large Roman scutum could lock with fellow soldiers to form a wall of protection. Trusting God\'s specific promises stops the enemy\'s fiery darts — doubt, fear, lust — before they penetrate. Practical: answer every tempting lie with a Scripture that speaks directly to that attack.' },
+    { piece:'Helmet', of:'Salvation', ref:'6:17a', note:'The mind is Satan\'s primary battlefield. Assurance of salvation guards against crippling doubt, despair, and identity confusion. Practical: when you question your standing before God, don\'t look inward at your record — look outward to the finished, objective work of Christ at the cross.' },
+    { piece:'Sword', of:'The Spirit', ref:'6:17b', note:'The only offensive weapon in the list — the Word of God, used by Jesus himself against Satan in the wilderness (Matt. 4:1–11). Scripture doesn\'t just comfort; it strikes. Practical: memorize specific verses to counter specific temptations and wield them actively in prayer.' },
+  ];
+  return (
+    <div className="slide" style={{background:'#1C0A10',display:'flex',flexDirection:'column'}}>
+      <div style={{padding:'44px 80px 20px',display:'flex',alignItems:'baseline',gap:32,flexShrink:0}}>
+        {/* Was var(--accent) = 2.3:1 FAIL on #1C0A10. Changed to #C4A882 = ~8.6:1 */}
+        <div style={{fontFamily:'var(--font-display)',fontSize:96,fontWeight:900,textTransform:'uppercase',color:'#C4A882',lineHeight:1,letterSpacing:'-0.02em',whiteSpace:'nowrap'}}>THE ARMOR OF GOD</div>
+        {/* Was 0.35 = ~2.1:1 FAIL. Raised to 0.65 */}
+        <div style={{fontFamily:'var(--font-mono)',fontSize:17,letterSpacing:'0.15em',color:'rgba(255,255,255,0.65)',textTransform:'uppercase'}}>Ephesians 6:10–17</div>
+      </div>
+      <div style={{flex:1,display:'grid',gridTemplateColumns:'repeat(3,1fr)',gridTemplateRows:'1fr 1fr',gap:0}}>
+        {armor.map((a,i)=>(
+          <div key={i} style={{padding:'22px 40px',borderTop:'1px solid rgba(255,255,255,0.1)',borderLeft:i%3>0?'1px solid rgba(255,255,255,0.1)':'none',display:'flex',flexDirection:'column',gap:8}}>
+            <div style={{fontFamily:'var(--font-mono)',fontSize:13,letterSpacing:'0.15em',textTransform:'uppercase',color:'rgba(255,255,255,0.65)'}}>{a.ref}</div>
+            <div style={{fontFamily:'var(--font-body)',fontSize:12,fontWeight:600,letterSpacing:'0.12em',textTransform:'uppercase',color:'rgba(255,255,255,0.75)'}}>{a.piece} of</div>
+            <div style={{fontFamily:'var(--font-display)',fontSize:48,fontWeight:900,textTransform:'uppercase',color:'#C4A882',lineHeight:0.9,letterSpacing:'-0.01em'}}>{a.of}</div>
+            <p style={{fontFamily:'var(--font-body)',fontSize:18,lineHeight:1.5,color:'rgba(255,255,255,0.85)',margin:0}}>{a.note}</p>
+          </div>
+        ))}
+      </div>
+      <div style={{padding:'20px 80px',borderTop:'1px solid rgba(255,255,255,0.1)',flexShrink:0}}>
+        {/* Body text raised to 0.8; strong text changed from var(--accent) FAIL to #C4A882 */}
+        <p style={{fontFamily:'var(--font-body)',fontSize:22,lineHeight:1.5,color:'rgba(255,255,255,0.8)',margin:0,textAlign:'center'}}><strong style={{color:'#C4A882'}}>The call (6:10):</strong> "Be strong in the Lord and in the strength of his might. Put on the whole armor of God, that you may be able to stand against the schemes of the devil."</p>
+      </div>
+    </div>
+  );
+};
+
+/* SLIDE 12 — Closing */
+const Slide12 = () => (
+  <div className="slide" style={{background:'var(--light)'}}>
+    {/* Massive heading — bleeds right */}
+    {/* var(--accent-fg): burgundy on light bg / gold on dark bg — both pass contrast */}
+    <div style={{position:'absolute',top:56,left:60,fontFamily:'var(--font-display)',fontSize:290,fontWeight:900,lineHeight:0.85,textTransform:'uppercase',color:'var(--accent-fg)',letterSpacing:'-0.02em',whiteSpace:'nowrap',zIndex:2}}>
+      GRACE BE
+    </div>
+    <div style={{position:'absolute',top:280,left:60,fontFamily:'var(--font-display)',fontSize:290,fontWeight:900,lineHeight:0.85,textTransform:'uppercase',color:'var(--ghost-text)',letterSpacing:'-0.02em',whiteSpace:'nowrap',zIndex:1}}>
+      WITH YOU
+    </div>
+
+    {/* Script — was hardcoded #1C0A10, now var(--ink-1) for dark mode */}
+    <div style={{position:'absolute',top:320,left:80,zIndex:4,fontFamily:'var(--font-script)',fontSize:80,color:'var(--ink-1)',transform:'rotate(-2deg)'}}>
+      Ephesians 6:24
+    </div>
+
+    {/* Quote */}
+    <div style={{position:'absolute',bottom:180,left:80,width:820,zIndex:5}}>
+      <p style={{fontFamily:'var(--font-body)',fontSize:26,lineHeight:1.6,color:'var(--ink-2)',margin:'0 0 12px',fontStyle:'italic'}}>"Grace be with all who love our Lord Jesus Christ with love incorruptible."</p>
+      {/* Was #888 = ~2.9:1 FAIL. var(--ink-3) = #606060 = 5.2:1 */}
+      <div style={{fontFamily:'var(--font-mono)',fontSize:18,letterSpacing:'0.1em',color:'var(--ink-3)',textTransform:'uppercase'}}>— Paul, Ephesians 6:24 (ESV)</div>
+    </div>
+
+    {/* Brand pills — lower left */}
+    <div style={{position:'absolute',bottom:56,left:80,display:'flex',flexDirection:'column',gap:14,zIndex:5}}>
+      <a href={BRAND_URL} target="_blank" rel="noopener" className="pill" style={{fontSize:24,textDecoration:'none'}}>
+        <span>🌐</span><span>{BRAND_URL.replace('https://','')}</span>
+      </a>
+    </div>
+
+    {/* Right decorative block */}
+    <div style={{position:'absolute',top:0,right:0,width:'36%',height:'100%',background:'#1C0A10',zIndex:1,overflow:'hidden'}}>
+      <div style={{position:'absolute',inset:0,backgroundImage:'linear-gradient(to right,rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.04) 1px,transparent 1px)',backgroundSize:'60px 60px'}} />
+      <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',textAlign:'center'}}>
+        {/* Was EPHE<br/>SIANS at 96px FAIL. Now single line at 80px with nowrap */}
+        {/* Was var(--accent) = 2.3:1 FAIL on #1C0A10. Changed to #C4A882 */}
+        <div style={{fontFamily:'var(--font-display)',fontSize:80,fontWeight:900,textTransform:'uppercase',color:'#C4A882',lineHeight:1,letterSpacing:'-0.02em',whiteSpace:'nowrap'}}>EPHESIANS</div>
+        {/* Raised from 0.45 to 0.65 — 20px large text needs 3:1 */}
+        <div style={{fontFamily:'var(--font-body)',fontSize:20,color:'rgba(255,255,255,0.65)',marginTop:20,letterSpacing:'0.1em'}}>6 Chapters · 155 Verses</div>
+      </div>
+    </div>
+  </div>
+);
+
+Object.assign(window, { Slide07, Slide08, Slide09, Slide10, Slide11, Slide12 });
+</script>
+
+<!-- [6] Mount -->
+<script type="text/babel">
+const mounts = [Slide01,Slide02,Slide03,Slide04,Slide05,Slide06,Slide07,Slide08,Slide09,Slide10,Slide11,Slide12];
+mounts.forEach((C,i)=>{
+  const el=document.getElementById(`s${String(i+1).padStart(2,'0')}`);
+  if(el) ReactDOM.createRoot(el).render(<C />);
+});
+</script>
+
+<!-- [7] Theme + Tweaks controller -->
+<script>
+const html=document.documentElement;
+const savedTheme=localStorage.getItem('deck:theme')||'light';
+html.setAttribute('data-theme',savedTheme);
+function syncThemeButtons(t){document.querySelectorAll('[data-theme-set]').forEach(b=>b.classList.toggle('active',b.dataset.themeSet===t));}
+syncThemeButtons(savedTheme);
+document.querySelectorAll('[data-theme-set]').forEach(b=>{b.addEventListener('click',()=>{const t=b.dataset.themeSet;html.setAttribute('data-theme',t);localStorage.setItem('deck:theme',t);syncThemeButtons(t);});});
+
+function applyAccent(color){html.style.setProperty('--accent',color);html.style.setProperty('--brand-blue-bright',color);html.style.setProperty('--brand-blue',color);document.querySelectorAll('#tw-accent .sw').forEach(el=>el.classList.toggle('active',el.dataset.accent===color));}
+const savedAccent=localStorage.getItem('deck:accent')||ACCENT_COLOR;
+applyAccent(savedAccent);
+document.querySelectorAll('#tw-accent .sw').forEach(el=>{el.addEventListener('click',()=>{const c=el.dataset.accent;localStorage.setItem('deck:accent',c);applyAccent(c);});});
+
+function applyDensity(state){if(state==='tight')document.querySelectorAll('.pad').forEach(el=>el.style.padding='64px 96px');else document.querySelectorAll('.pad').forEach(el=>el.style.padding='');document.querySelectorAll('#tw-density button').forEach(b=>b.classList.toggle('active',b.dataset.density===state));}
+const savedDensity=localStorage.getItem('deck:density')||'default';
+setTimeout(()=>applyDensity(savedDensity),400);
+document.querySelectorAll('#tw-density button').forEach(b=>{b.addEventListener('click',()=>{const s=b.dataset.density;localStorage.setItem('deck:density',s);applyDensity(s);});});
+
+document.getElementById('btn-filmstrip').addEventListener('click',()=>document.getElementById('deck').toggleFilmstrip());
+
+const panel=document.getElementById('tweaks-panel');
+window.addEventListener('message',(e)=>{if(!e.data||typeof e.data!=='object')return;if(e.data.type==='__activate_edit_mode')panel.setAttribute('data-visible','');if(e.data.type==='__deactivate_edit_mode')panel.removeAttribute('data-visible');});
+document.addEventListener('keydown',(e)=>{if(e.key==='t'||e.key==='T'){if(panel.hasAttribute('data-visible'))panel.removeAttribute('data-visible');else panel.setAttribute('data-visible','');}});
+window.parent.postMessage({type:'__edit_mode_available'},'*');
+</script>
+
+</body>
+</html>

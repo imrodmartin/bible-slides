@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Genesis — An Overview · Rod Martin</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Anton&family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --font-display: 'Anton', Impact, 'Arial Black', sans-serif;
+      --font-script:  'Pacifico', cursive;
+      --font-body:    'Inter', system-ui, sans-serif;
+      --font-mono:    ui-monospace, 'SF Mono', Menlo, monospace;
+      --accent:  #5AA8E0;
+      --dark:    #1A1A1A;
+      --light:   #F2F2F2;
+      --white:   #FFFFFF;
+      --navy:    #121C4D;
+    }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 28px;
+      background: var(--dark); color: var(--white);
+      border-radius: 999px;
+      font-family: var(--font-body); font-size: 22px;
+      font-weight: 600; letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .slide {
+      width: 1920px; height: 1080px;
+      position: relative; overflow: hidden;
+      font-family: var(--font-body);
+    }
+
+    .slide a { pointer-events: auto !important; cursor: pointer; position: relative; z-index: 10; text-decoration: none; }
+
+    /* Theme toggle */
+    .theme-toggle { position:fixed;top:20px;right:20px;z-index:2147482500;display:inline-flex;align-items:center;gap:6px;padding:6px;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);border-radius:999px;border:1px solid rgba(255,255,255,.1); }
+    .theme-toggle button { appearance:none;border:0;background:transparent;color:rgba(255,255,255,.6);padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all 140ms; }
+    .theme-toggle button.active { background:rgba(255,255,255,.15);color:#fff; }
+    .theme-toggle #btn-filmstrip { padding:8px 10px;display:inline-flex;align-items:center;justify-content:center; }
+
+    /* Tweaks panel */
+    .tweaks-panel { position:fixed;bottom:80px;right:20px;z-index:2147482400;width:280px;background:rgba(15,20,40,.92);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;color:#fff;display:none;box-shadow:0 20px 60px rgba(0,0,0,.4); }
+    .tweaks-panel[data-visible] { display:block; }
+    .tweaks-panel h4 { margin:0 0 16px;font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6); }
+    .tweaks-row { display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:13px; }
+    .tweaks-row .swatches { display:inline-flex;gap:6px; }
+    .tweaks-row .sw { width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform 140ms; }
+    .tweaks-row .sw.active { border-color:#fff;transform:scale(1.1); }
+    .tweaks-row .seg { display:inline-flex;background:rgba(255,255,255,.08);border-radius:8px;padding:2px; }
+    .tweaks-row .seg button { appearance:none;border:0;background:transparent;color:rgba(255,255,255,.7);padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer; }
+    .tweaks-row .seg button.active { background:rgba(255,255,255,.15);color:#fff; }
+  </style>
+</head>
+<body>
+
+  <div class="theme-toggle" id="theme-toggle">
+    <button data-theme-set="light" class="active">☀ Light</button>
+    <button data-theme-set="dark">☾ Dark</button>
+    <button id="btn-filmstrip" title="All slides (G)" aria-label="All slides">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="5" height="5" rx="1"></rect><rect x="9.5" y="1.5" width="5" height="5" rx="1"></rect>
+        <rect x="1.5" y="9.5" width="5" height="5" rx="1"></rect><rect x="9.5" y="9.5" width="5" height="5" rx="1"></rect>
+      </svg>
+    </button>
+  </div>
+
+  <div class="tweaks-panel" id="tweaks-panel">
+    <h4>Tweaks</h4>
+    <div class="tweaks-row">
+      <span>Theme</span>
+      <div class="seg" id="tw-theme">
+        <button data-theme-set="light" class="active">Light</button>
+        <button data-theme-set="dark">Dark</button>
+      </div>
+    </div>
+    <div class="tweaks-row">
+      <span>Accent</span>
+      <div class="swatches" id="tw-accent">
+        <div class="sw active" data-accent="#5AA8E0" style="background:#5AA8E0" title="Sky (default)"></div>
+        <div class="sw" data-accent="#3a6cb8" style="background:#3a6cb8" title="Blue"></div>
+        <div class="sw" data-accent="#5fa68b" style="background:#5fa68b" title="Sage"></div>
+        <div class="sw" data-accent="#9b7fd4" style="background:#9b7fd4" title="Purple"></div>
+        <div class="sw" data-accent="#e86a5c" style="background:#e86a5c" title="Coral"></div>
+      </div>
+    </div>
+    <div class="tweaks-row">
+      <span>Density</span>
+      <div class="seg" id="tw-density">
+        <button data-density="tight">Tight</button>
+        <button data-density="default" class="active">Default</button>
+      </div>
+    </div>
+  </div>
+
+  <deck-stage width="1920" height="1080" id="deck">
+    <section id="s01"></section>
+    <section id="s02"></section>
+    <section id="s03"></section>
+    <section id="s04"></section>
+    <section id="s05"></section>
+    <section id="s06"></section>
+    <section id="s07"></section>
+    <section id="s08"></section>
+  </deck-stage>
+
+  <!-- [1] deck-stage web component -->
+  <script>
+    (() => {
+      const DESIGN_W_DEFAULT = 1920;
+      const DESIGN_H_DEFAULT = 1080;
+      const STORAGE_PREFIX = 'deck-stage:slide:';
+      const OVERLAY_HIDE_MS = 1800;
+      const VALIDATE_ATTR = 'no_overflowing_text,no_overlapping_text,slide_sized_text';
+      const pad2 = (n) => String(n).padStart(2, '0');
+
+      const stylesheet = `
+        :host { position:fixed;inset:0;display:block;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;overflow:hidden; }
+        .stage { position:absolute;inset:0;display:flex;align-items:center;justify-content:center; }
+        .canvas { position:relative;transform-origin:center center;flex-shrink:0;background:#fff;will-change:transform; }
+        ::slotted(*) { position:absolute!important;inset:0!important;width:100%!important;height:100%!important;box-sizing:border-box!important;overflow:hidden;opacity:0;pointer-events:none;visibility:hidden; }
+        ::slotted([data-deck-active]) { opacity:1;pointer-events:auto;visibility:visible; }
+        .tapzones { position:fixed;inset:0;display:flex;z-index:2147482000;pointer-events:none; }
+        .tapzone { flex:1;pointer-events:auto;-webkit-tap-highlight-color:transparent; }
+        @media (hover:hover) and (pointer:fine) { .tapzones { display:none; } }
+        .overlay { position:fixed;left:50%;bottom:22px;transform:translate(-50%,6px) scale(0.92);filter:blur(6px);display:flex;align-items:center;gap:4px;padding:4px;background:#000;color:#fff;border-radius:999px;font-size:12px;font-feature-settings:"tnum" 1;letter-spacing:.01em;opacity:0;pointer-events:none;transition:opacity 260ms ease,transform 260ms cubic-bezier(.2,.8,.2,1),filter 260ms ease;transform-origin:center bottom;z-index:2147483000;user-select:none; }
+        .overlay[data-visible] { opacity:1;pointer-events:auto;transform:translate(-50%,0) scale(1);filter:blur(0); }
+        .btn { appearance:none;-webkit-appearance:none;background:transparent;border:0;margin:0;padding:0;color:inherit;font:inherit;cursor:default;display:inline-flex;align-items:center;justify-content:center;height:28px;min-width:28px;border-radius:999px;color:rgba(255,255,255,.72);transition:background 140ms ease,color 140ms ease;-webkit-tap-highlight-color:transparent; }
+        .btn:hover { background:rgba(255,255,255,.12);color:#fff; }
+        .btn:active { background:rgba(255,255,255,.18); }
+        .btn svg { width:14px;height:14px;display:block; }
+        .btn.reset { font-size:11px;font-weight:500;letter-spacing:.02em;padding:0 10px 0 12px;gap:6px; }
+        .btn.reset .kbd { display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:10px;line-height:1;color:rgba(255,255,255,.88);background:rgba(255,255,255,.12);border-radius:4px; }
+        .count { font-variant-numeric:tabular-nums;color:#fff;font-weight:500;padding:0 8px;min-width:42px;text-align:center;font-size:12px; }
+        .count .sep { color:rgba(255,255,255,.45);margin:0 3px;font-weight:400; }
+        .count .total { color:rgba(255,255,255,.55); }
+        .divider { width:1px;height:14px;background:rgba(255,255,255,.18);margin:0 2px; }
+        @media print { :host { position:static;inset:auto;background:none;overflow:visible;color:inherit; } .stage { position:static;display:block; } .canvas { transform:none!important;width:auto!important;height:auto!important;background:none;will-change:auto; } ::slotted(*) { position:relative!important;inset:auto!important;width:var(--deck-design-w)!important;height:var(--deck-design-h)!important;box-sizing:border-box!important;opacity:1!important;visibility:visible!important;pointer-events:auto;break-after:page;page-break-after:always;break-inside:avoid;overflow:hidden; } ::slotted(*:last-child) { break-after:auto;page-break-after:auto; } .overlay,.tapzones { display:none!important; } }
+      `;
+
+      class DeckStage extends HTMLElement {
+        static get observedAttributes() { return ['width','height','noscale']; }
+        constructor() {
+          super();
+          this._root=this.attachShadow({mode:'open'});
+          this._index=0;this._slides=[];this._notes=[];
+          this._hideTimer=null;this._mouseIdleTimer=null;
+          this._storageKey=STORAGE_PREFIX+(location.pathname||'/');
+          this._onKey=this._onKey.bind(this);
+          this._onResize=this._onResize.bind(this);
+          this._onSlotChange=this._onSlotChange.bind(this);
+          this._onMouseMove=this._onMouseMove.bind(this);
+          this._onTapBack=this._onTapBack.bind(this);
+          this._onTapForward=this._onTapForward.bind(this);
+        }
+        get designWidth()  { return parseInt(this.getAttribute('width'),10)||DESIGN_W_DEFAULT; }
+        get designHeight() { return parseInt(this.getAttribute('height'),10)||DESIGN_H_DEFAULT; }
+        connectedCallback() {
+          this._render();this._loadNotes();this._syncPrintPageRule();
+          window.addEventListener('keydown',this._onKey);
+          window.addEventListener('resize',this._onResize);
+          window.addEventListener('mousemove',this._onMouseMove,{passive:true});
+        }
+        disconnectedCallback() {
+          window.removeEventListener('keydown',this._onKey);
+          window.removeEventListener('resize',this._onResize);
+          window.removeEventListener('mousemove',this._onMouseMove);
+          if(this._hideTimer) clearTimeout(this._hideTimer);
+          if(this._mouseIdleTimer) clearTimeout(this._mouseIdleTimer);
+        }
+        attributeChangedCallback() {
+          if(this._canvas){
+            this._canvas.style.width=this.designWidth+'px';
+            this._canvas.style.height=this.designHeight+'px';
+            this._canvas.style.setProperty('--deck-design-w',this.designWidth+'px');
+            this._canvas.style.setProperty('--deck-design-h',this.designHeight+'px');
+            this._fit();this._syncPrintPageRule();
+          }
+        }
+        _render() {
+          const style=document.createElement('style');style.textContent=stylesheet;
+          const stage=document.createElement('div');stage.className='stage';
+          const canvas=document.createElement('div');canvas.className='canvas';
+          canvas.style.width=this.designWidth+'px';canvas.style.height=this.designHeight+'px';
+          canvas.style.setProperty('--deck-design-w',this.designWidth+'px');
+          canvas.style.setProperty('--deck-design-h',this.designHeight+'px');
+          const slot=document.createElement('slot');
+          slot.addEventListener('slotchange',this._onSlotChange);
+          canvas.appendChild(slot);stage.appendChild(canvas);
+          const tapzones=document.createElement('div');tapzones.className='tapzones';tapzones.setAttribute('aria-hidden','true');
+          const tzBack=document.createElement('div');tzBack.className='tapzone tapzone--back';
+          const tzMid=document.createElement('div');tzMid.className='tapzone tapzone--mid';tzMid.style.pointerEvents='none';
+          const tzFwd=document.createElement('div');tzFwd.className='tapzone tapzone--fwd';
+          tzBack.addEventListener('click',this._onTapBack);tzFwd.addEventListener('click',this._onTapForward);
+          tapzones.append(tzBack,tzMid,tzFwd);
+          const overlay=document.createElement('div');
+          overlay.className='overlay';overlay.setAttribute('role','toolbar');overlay.setAttribute('aria-label','Deck controls');
+          overlay.innerHTML=`<button class="btn prev" type="button" aria-label="Previous slide" title="Previous (←)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg></button><span class="count" aria-live="polite"><span class="current">1</span><span class="sep">/</span><span class="total">1</span></span><button class="btn next" type="button" aria-label="Next slide" title="Next (→)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg></button><span class="divider"></span><button class="btn reset" type="button" aria-label="Reset to first slide" title="Reset (R)">Reset<span class="kbd">R</span></button><span class="divider"></span><button class="btn grid-toggle" type="button" aria-label="All slides" title="All slides (G)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="5" height="5" rx="1"/><rect x="9.5" y="1.5" width="5" height="5" rx="1"/><rect x="1.5" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/></svg></button>`;
+          overlay.querySelector('.prev').addEventListener('click',()=>this._go(this._index-1,'click'));
+          overlay.querySelector('.next').addEventListener('click',()=>this._go(this._index+1,'click'));
+          overlay.querySelector('.reset').addEventListener('click',()=>this._go(0,'click'));
+          overlay.querySelector('.grid-toggle').addEventListener('click',()=>this.toggleFilmstrip());
+          this._root.append(style,stage,tapzones,overlay);
+          this._canvas=canvas;this._slot=slot;this._overlay=overlay;
+          this._countEl=overlay.querySelector('.current');this._totalEl=overlay.querySelector('.total');
+        }
+        _syncPrintPageRule() {
+          const id='deck-stage-print-page';let tag=document.getElementById(id);
+          if(!tag){tag=document.createElement('style');tag.id=id;document.head.appendChild(tag);}
+          tag.textContent='@page{size:'+this.designWidth+'px '+this.designHeight+'px;margin:0}@media print{html,body{margin:0!important;padding:0!important;background:none!important;overflow:visible!important;height:auto!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}';
+        }
+        _onSlotChange(){this._collectSlides();this._restoreIndex();this._applyIndex({showOverlay:false,broadcast:true,reason:'init'});this._fit();}
+        _collectSlides(){
+          const assigned=this._slot.assignedElements({flatten:true});
+          this._slides=assigned.filter(el=>{const t=el.tagName;return t!=='TEMPLATE'&&t!=='SCRIPT'&&t!=='STYLE';});
+          this._slides.forEach((slide,i)=>{
+            const n=i+1;let label=slide.getAttribute('data-label');
+            if(!label){const h=slide.querySelector('h1,h2,h3,[data-title]');if(h)label=(h.textContent||'').trim().slice(0,40);}
+            if(!label)label='Slide';
+            slide.setAttribute('data-screen-label',`${pad2(n)} ${label}`);
+            if(!slide.hasAttribute('data-om-validate'))slide.setAttribute('data-om-validate',VALIDATE_ATTR);
+            slide.setAttribute('data-deck-slide',String(i));
+          });
+          if(this._totalEl)this._totalEl.textContent=String(this._slides.length||1);
+          if(this._index>=this._slides.length)this._index=Math.max(0,this._slides.length-1);
+        }
+        _loadNotes(){const tag=document.getElementById('speaker-notes');if(!tag){this._notes=[];return;}try{const p=JSON.parse(tag.textContent||'[]');if(Array.isArray(p))this._notes=p;}catch(e){this._notes=[];}}
+        _restoreIndex(){try{const raw=localStorage.getItem(this._storageKey);if(raw!=null){const n=parseInt(raw,10);if(Number.isFinite(n)&&n>=0&&n<this._slides.length)this._index=n;}}catch(e){}}
+        _persistIndex(){try{localStorage.setItem(this._storageKey,String(this._index));}catch(e){}}
+        _applyIndex({showOverlay=true,broadcast=true,reason='init'}={}){
+          if(!this._slides.length)return;
+          const curr=this._index;
+          this._slides.forEach((s,i)=>{if(i===curr)s.setAttribute('data-deck-active','');else s.removeAttribute('data-deck-active');});
+          if(this._countEl)this._countEl.textContent=String(curr+1);
+          this._persistIndex();
+          if(broadcast){try{window.postMessage({slideIndexChanged:curr},'*');}catch(e){}
+            this.dispatchEvent(new CustomEvent('slidechange',{detail:{index:curr,total:this._slides.length},bubbles:true,composed:true}));}
+          if(showOverlay)this._flashOverlay();
+          this._syncFilmstripActive();
+        }
+        _flashOverlay(){if(!this._overlay)return;this._overlay.setAttribute('data-visible','');if(this._hideTimer)clearTimeout(this._hideTimer);this._hideTimer=setTimeout(()=>this._overlay.removeAttribute('data-visible'),OVERLAY_HIDE_MS);}
+        _fit(){if(!this._canvas)return;if(this.hasAttribute('noscale')){this._canvas.style.transform='none';return;}const s=Math.min(window.innerWidth/this.designWidth,window.innerHeight/this.designHeight);this._canvas.style.transform=`scale(${s})`;}
+        _onResize(){this._fit();}
+        _onMouseMove(){this._flashOverlay();}
+        _onTapBack(e){e.preventDefault();this._go(this._index-1,'tap');}
+        _onTapForward(e){e.preventDefault();this._go(this._index+1,'tap');}
+        _onKey(e){
+          const t=e.target;if(t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))return;
+          if(e.metaKey||e.ctrlKey||e.altKey)return;
+          const key=e.key;let handled=true;
+          if(key==='ArrowRight'||key==='PageDown'||key===' '||key==='Spacebar')this._go(this._index+1,'keyboard');
+          else if(key==='ArrowLeft'||key==='PageUp')this._go(this._index-1,'keyboard');
+          else if(key==='Home')this._go(0,'keyboard');
+          else if(key==='End')this._go(this._slides.length-1,'keyboard');
+          else if(key==='r'||key==='R')this._go(0,'keyboard');
+          else if(key==='g'||key==='G')this.toggleFilmstrip();
+          else if(/^[0-9]$/.test(key)){const n=key==='0'?9:parseInt(key,10)-1;if(n<this._slides.length)this._go(n,'keyboard');}
+          else handled=false;
+          if(handled){e.preventDefault();this._flashOverlay();}
+        }
+        _go(i,reason='api'){
+          if(!this._slides.length)return;
+          const clamped=Math.max(0,Math.min(this._slides.length-1,i));
+          if(clamped===this._index){this._flashOverlay();return;}
+          this._index=clamped;this._applyIndex({showOverlay:true,broadcast:true,reason});
+        }
+        _buildFilmstrip(){
+          if(this._filmstripOverlay)return;
+          if(!document.getElementById('deck-stage-filmstrip-style')){
+            const s=document.createElement('style');s.id='deck-stage-filmstrip-style';
+            s.textContent=`.ds-filmstrip-overlay{position:fixed;inset:0;z-index:2147483500;pointer-events:none;opacity:0;transition:opacity 280ms ease}.ds-filmstrip-overlay.open{pointer-events:auto;opacity:1}.ds-filmstrip-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px)}.ds-filmstrip-drawer{position:absolute;right:0;top:0;bottom:0;width:400px;background:#111;overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform 300ms cubic-bezier(.22,.9,.3,1);padding:24px 16px 40px;box-sizing:border-box}.ds-filmstrip-overlay.open .ds-filmstrip-drawer{transform:translateX(0)}.ds-filmstrip-header{display:flex;align-items:center;justify-content:space-between;margin:0 4px 18px}.ds-filmstrip-title{color:rgba(255,255,255,.45);font-size:11px;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0}.ds-filmstrip-close{appearance:none;background:rgba(255,255,255,.08);border:0;margin:0;padding:0;color:rgba(255,255,255,.5);width:24px;height:24px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}.ds-filmstrip-close:hover{background:rgba(255,255,255,.15);color:#fff}.ds-filmstrip-close svg{width:12px;height:12px;display:block}.ds-filmstrip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ds-filmstrip-thumb{cursor:pointer;border-radius:5px;overflow:hidden;position:relative;border:2px solid transparent;transition:border-color 160ms ease,transform 120ms ease}.ds-filmstrip-thumb:hover{transform:scale(1.03);border-color:rgba(255,255,255,.35)}.ds-filmstrip-thumb.ds-active{border-color:var(--accent,#5AA8E0)}.ds-filmstrip-inner{width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;background:#222}.ds-filmstrip-inner>.ds-clone{position:absolute!important;top:0!important;left:0!important;transform-origin:top left!important;pointer-events:none!important;visibility:visible!important;opacity:1!important}.ds-filmstrip-num{position:absolute;top:5px;left:7px;color:rgba(255,255,255,.55);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:9px;font-weight:600;line-height:1;z-index:2}.ds-filmstrip-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));color:rgba(255,255,255,.85);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;font-size:9px;font-weight:500;padding:14px 7px 5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}`;
+            document.head.appendChild(s);
+          }
+          const overlay=document.createElement('div');overlay.className='ds-filmstrip-overlay';
+          const backdrop=document.createElement('div');backdrop.className='ds-filmstrip-backdrop';
+          backdrop.addEventListener('click',()=>this._closeFilmstrip());
+          const drawer=document.createElement('div');drawer.className='ds-filmstrip-drawer';
+          const header=document.createElement('div');header.className='ds-filmstrip-header';
+          const titleEl=document.createElement('p');titleEl.className='ds-filmstrip-title';titleEl.textContent=`All Slides · ${this._slides.length}`;
+          const closeBtn=document.createElement('button');closeBtn.className='ds-filmstrip-close';closeBtn.type='button';closeBtn.setAttribute('aria-label','Close');
+          closeBtn.innerHTML=`<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 1l10 10M11 1L1 11"/></svg>`;
+          closeBtn.addEventListener('click',()=>this._closeFilmstrip());
+          header.append(titleEl,closeBtn);
+          const grid=document.createElement('div');grid.className='ds-filmstrip-grid';
+          this._filmstripThumbs=[];
+          this._slides.forEach((slide,i)=>{
+            const thumb=document.createElement('div');thumb.className='ds-filmstrip-thumb'+(i===this._index?' ds-active':'');thumb.dataset.dsSlide=i;
+            const inner=document.createElement('div');inner.className='ds-filmstrip-inner';
+            const clone=slide.cloneNode(true);clone.className='ds-clone';
+            clone.removeAttribute('data-deck-active');clone.style.cssText='';clone.style.pointerEvents='none';clone.style.visibility='visible';clone.style.opacity='1';
+            clone.querySelectorAll('video').forEach(v=>{v.muted=true;v.autoplay=false;v.removeAttribute('autoplay');v.pause();});
+            inner.appendChild(clone);
+            const num=document.createElement('span');num.className='ds-filmstrip-num';num.textContent=String(i+1).padStart(2,'0');
+            const rawLabel=slide.getAttribute('data-screen-label')||'';const labelText=rawLabel.replace(/^\d+\s*/,'').trim();
+            if(labelText){const labelEl=document.createElement('div');labelEl.className='ds-filmstrip-label';labelEl.textContent=labelText;}
+            inner.appendChild(num);thumb.appendChild(inner);
+            thumb.addEventListener('click',()=>{this._go(i,'click');this._closeFilmstrip();});
+            grid.appendChild(thumb);this._filmstripThumbs.push({thumb,clone,inner});
+          });
+          drawer.append(header,grid);overlay.append(backdrop,drawer);document.body.appendChild(overlay);
+          this._filmstripOverlay=overlay;
+          requestAnimationFrame(()=>{
+            this._filmstripThumbs.forEach(({clone,inner})=>{
+              const w=inner.offsetWidth;if(!w)return;
+              const scale=w/this.designWidth;
+              clone.style.width=this.designWidth+'px';clone.style.height=this.designHeight+'px';clone.style.transform=`scale(${scale})`;
+            });
+          });
+          this._onFilmstripKey=(e)=>{if(e.key==='Escape')this._closeFilmstrip();};
+          window.addEventListener('keydown',this._onFilmstripKey);
+        }
+        _openFilmstrip(){this._buildFilmstrip();this._filmstripThumbs?.forEach(({thumb},i)=>thumb.classList.toggle('ds-active',i===this._index));requestAnimationFrame(()=>this._filmstripOverlay.classList.add('open'));}
+        _closeFilmstrip(){this._filmstripOverlay?.classList.remove('open');}
+        _syncFilmstripActive(){this._filmstripThumbs?.forEach(({thumb},i)=>thumb.classList.toggle('ds-active',i===this._index));}
+        get index(){return this._index;}
+        get length(){return this._slides.length;}
+        goTo(i){this._go(i,'api');}next(){this._go(this._index+1,'api');}prev(){this._go(this._index-1,'api');}reset(){this._go(0,'api');}
+        toggleFilmstrip(){if(this._filmstripOverlay?.classList.contains('open'))this._closeFilmstrip();else this._openFilmstrip();}
+      }
+
+      if(!customElements.get('deck-stage'))customElements.define('deck-stage',DeckStage);
+    })();
+  </script>
+
+  <!-- [2] React + Babel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+  <!-- [3] Config -->
+  <script>
+    const PRESENTER_NAME = 'Rod Martin';
+    const BRAND_NAME     = 'Rod Martin';
+    const BRAND_URL      = 'https://drupalhelps.com';
+    const ACCENT_COLOR   = '#5AA8E0';
+    const TALK_TITLE     = 'Genesis';
+    const EVENT_NAME     = 'An Overview';
+    const TOTAL          = 8;
+
+    window.__resources = { brandLogo: '', presenterPhoto: '' };
+    document.documentElement.style.setProperty('--accent', ACCENT_COLOR);
+    document.documentElement.style.setProperty('--brand-blue-bright', ACCENT_COLOR);
+    document.documentElement.style.setProperty('--brand-blue', ACCENT_COLOR);
+  </script>
+
+  <!-- [4] Shared primitives -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    const openLink = (e, url) => {
+      e.preventDefault();
+      e.stopPropagation();
+      window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
+    /* PhotoPlaceholder — uses dark, high-contrast tones */
+    const PhotoPlaceholder = ({ label = '', tone = 'blue', style: extraStyle = {} }) => {
+      const tones = {
+        blue:   ['#1a4a7a', '#0a1a30'],
+        amber:  ['#7a4a10', '#3a1a04'],
+        coral:  ['#7a2a20', '#30100a'],
+        sage:   ['#1a5a40', '#082518'],
+        purple: ['#3a2070', '#160830'],
+      };
+      const [c1, c2] = tones[tone] || tones.blue;
+      return (
+        <div style={{ position:'absolute', inset:0, background:`linear-gradient(135deg, ${c1}, ${c2})`, overflow:'hidden', ...extraStyle }}>
+          <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px)', backgroundSize:'72px 72px' }} />
+        </div>
+      );
+    };
+
+    Object.assign(window, { PhotoPlaceholder, openLink });
+  </script>
+
+  <!-- [5a] Slides 1–4 -->
+  <script type="text/babel">
+
+    /* ─── SLIDE 01: Cover ─────────────────────────────────────────── */
+    const Slide01 = () => (
+      <div className="slide" style={{ background:'#0a1628', color:'#fff' }}>
+        <PhotoPlaceholder tone="blue" />
+        {/* Grid overlay */}
+        <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(90,168,224,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(90,168,224,0.08) 1px,transparent 1px)', backgroundSize:'160px 160px', zIndex:1 }} />
+        {/* Dark vignette */}
+        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at center, rgba(10,22,40,0.3) 0%, rgba(10,22,40,0.75) 100%)', zIndex:2 }} />
+
+        {/* Top eyebrow */}
+        <div style={{ position:'absolute', top:64, left:88, fontFamily:'var(--font-mono)', fontSize:22, letterSpacing:'0.28em', textTransform:'uppercase', color:'rgba(255,255,255,0.55)', zIndex:4 }}>
+          Book Overview
+        </div>
+
+        {/* GENESIS — single unbroken line */}
+        <div style={{ position:'absolute', top:'50%', left:0, right:0, transform:'translateY(-60%)', fontFamily:'var(--font-display)', fontSize:280, fontWeight:900, lineHeight:0.88, letterSpacing:'-0.01em', textTransform:'uppercase', color:'#ffffff', whiteSpace:'nowrap', textAlign:'center', zIndex:4 }}>
+          GENESIS
+        </div>
+
+        {/* Script subtitle */}
+        <div style={{ position:'absolute', top:'56%', left:'50%', transform:'translateX(-50%)', marginTop:40, fontFamily:'var(--font-script)', fontSize:76, color:'var(--accent)', zIndex:5, whiteSpace:'nowrap' }}>
+          The Book of Beginnings
+        </div>
+
+        {/* Accent line */}
+        <div style={{ position:'absolute', bottom:116, left:88, right:88, height:1, background:'rgba(90,168,224,0.3)', zIndex:4 }} />
+
+        {/* Bottom meta */}
+        <div style={{ position:'absolute', bottom:64, left:88, right:88, display:'flex', justifyContent:'space-between', alignItems:'center', zIndex:5 }}>
+          <span style={{ fontFamily:'var(--font-body)', fontSize:22, color:'rgba(255,255,255,0.6)', letterSpacing:'0.05em' }}>{PRESENTER_NAME}</span>
+          <span style={{ fontFamily:'var(--font-mono)', fontSize:20, color:'rgba(255,255,255,0.4)', letterSpacing:'0.12em', textTransform:'uppercase' }}>{EVENT_NAME}</span>
+        </div>
+      </div>
+    );
+
+    /* ─── SLIDE 02: Structure of Genesis ─────────────────────────── */
+    const Slide02 = () => {
+      const bands = [
+        {
+          bg: '#0a1628',
+          headColor: '#ffffff',
+          bodyColor: 'rgba(255,255,255,0.82)',
+          refColor: 'var(--accent)',
+          wordColor: 'rgba(255,255,255,0.04)',
+          word: 'PRIM',
+          ref: 'Genesis 1–11',
+          heading: 'Primeval History',
+          body: 'Origins of the cosmos, humanity, sin, and civilization. Universal in scope — the story of all mankind from creation to the Tower of Babel.',
+        },
+        {
+          bg: '#ffffff',
+          headColor: '#1A1A1A',
+          bodyColor: '#444444',
+          refColor: '#555555',
+          wordColor: 'rgba(0,0,0,0.04)',
+          word: 'PIVOT',
+          ref: 'Genesis 12:1–3',
+          heading: 'The Pivot: God Calls Abraham',
+          body: 'God narrows his redemptive focus to one man, one family — through whom all nations of the earth will be blessed. The rest of the Bible flows from this moment.',
+        },
+        {
+          bg: 'var(--accent)',
+          headColor: '#0a1628',
+          bodyColor: '#1a1a1a',
+          refColor: '#333333',
+          wordColor: 'rgba(0,0,0,0.10)',
+          word: 'ARCH',
+          ref: 'Genesis 12–50',
+          heading: 'Patriarchal History',
+          body: 'The stories of Abraham, Isaac, Jacob, and Joseph. The covenant takes shape. The chosen family grows, suffers, and is preserved by God\'s sovereign hand.',
+        },
+      ];
+      return (
+        <div className="slide" style={{ display:'flex', flexDirection:'column' }}>
+          {/* Slide label — top right corner */}
+          <div style={{ position:'absolute', top:24, right:80, fontFamily:'var(--font-mono)', fontSize:16, letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(255,255,255,0.5)', zIndex:10 }}>
+            Structure
+          </div>
+          {bands.map((band, i) => (
+            <div key={i} style={{ flex:1, background:band.bg, display:'flex', position:'relative', overflow:'hidden' }}>
+              {/* Decorative word — clipped left */}
+              <div style={{ position:'absolute', left:-20, top:'50%', transform:'translateY(-50%)', fontFamily:'var(--font-display)', fontSize:240, fontWeight:900, lineHeight:1, textTransform:'uppercase', color:band.wordColor, userSelect:'none', pointerEvents:'none', whiteSpace:'nowrap' }}>
+                {band.word}
+              </div>
+              {/* Content */}
+              <div style={{ marginLeft:'22%', padding:'22px 80px 22px 48px', display:'flex', flexDirection:'column', justifyContent:'center', gap:10, zIndex:2 }}>
+                <div style={{ fontFamily:'var(--font-mono)', fontSize:18, fontWeight:600, letterSpacing:'0.18em', textTransform:'uppercase', color:band.refColor }}>{band.ref}</div>
+                <div style={{ fontFamily:'var(--font-display)', fontSize:56, fontWeight:900, color:band.headColor, letterSpacing:'-0.01em', textTransform:'uppercase', lineHeight:1 }}>{band.heading}</div>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:22, lineHeight:1.55, color:band.bodyColor, margin:0, maxWidth:1100 }}>{band.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    /* ─── SLIDE 03: Creation (Gen 1–2) ───────────────────────────── */
+    const Slide03 = () => (
+      <div className="slide" style={{ display:'flex' }}>
+        {/* Left — dark block */}
+        <div style={{ width:'46%', background:'#0a1628', padding:'80px 72px', display:'flex', flexDirection:'column', justifyContent:'center', position:'relative', overflow:'hidden' }}>
+          <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(90,168,224,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(90,168,224,0.06) 1px,transparent 1px)', backgroundSize:'80px 80px' }} />
+          <div style={{ fontFamily:'var(--font-mono)', fontSize:20, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--accent)', marginBottom:24, position:'relative', zIndex:2 }}>
+            Genesis 1–2
+          </div>
+          <div style={{ fontFamily:'var(--font-display)', fontSize:128, fontWeight:900, lineHeight:0.88, textTransform:'uppercase', color:'#ffffff', letterSpacing:'-0.02em', position:'relative', zIndex:2 }}>
+            CREATION
+          </div>
+          <div style={{ fontFamily:'var(--font-script)', fontSize:62, color:'var(--accent)', marginTop:16, position:'relative', zIndex:3, transform:'rotate(-2deg)' }}>
+            In the beginning...
+          </div>
+        </div>
+        {/* Right — light content */}
+        <div style={{ width:'54%', background:'var(--light)', padding:'72px 72px 72px 64px', display:'flex', flexDirection:'column', justifyContent:'center', gap:32 }}>
+          <div style={{ fontFamily:'var(--font-display)', fontSize:48, textTransform:'uppercase', color:'var(--navy)', letterSpacing:'-0.01em', lineHeight:1 }}>
+            Key Themes
+          </div>
+          {[
+            { num:'01', head:'Creator & Creation', body:'God speaks the cosmos into existence ex nihilo — out of nothing. Creation is intentional, ordered, and declared "very good" (1:31).' },
+            { num:'02', head:'The Imago Dei', body:'Humanity alone bears the image of God (1:26–27), conferring unique dignity, moral responsibility, and capacity for relationship with God.' },
+            { num:'03', head:'Sabbath & Vocation', body:'The seventh-day rest establishes a divine pattern for human life. Mankind is given the mandate to steward and cultivate creation (2:15).' },
+          ].map((item) => (
+            <div key={item.num} style={{ display:'flex', gap:24, alignItems:'flex-start' }}>
+              <div style={{ fontFamily:'var(--font-mono)', fontSize:18, fontWeight:700, color:'#ffffff', background:'var(--navy)', borderRadius:8, padding:'6px 12px', flexShrink:0, marginTop:2, letterSpacing:'0.05em' }}>{item.num}</div>
+              <div>
+                <div style={{ fontFamily:'var(--font-body)', fontSize:26, fontWeight:700, color:'var(--dark)', marginBottom:6 }}>{item.head}</div>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:21, lineHeight:1.55, color:'#444444', margin:0 }}>{item.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+
+    /* ─── SLIDE 04: The Fall & Primeval History ───────────────────── */
+    const Slide04 = () => (
+      <div className="slide" style={{ background:'#180e0a' }}>
+        {/* Texture */}
+        <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(200,70,30,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(200,70,30,0.05) 1px,transparent 1px)', backgroundSize:'96px 96px' }} />
+
+        {/* Upper-left: intro text */}
+        <div style={{ position:'absolute', top:88, left:80, width:800, zIndex:2 }}>
+          <div style={{ fontFamily:'var(--font-mono)', fontSize:20, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--accent)', marginBottom:20 }}>Genesis 3</div>
+          <p style={{ fontFamily:'var(--font-body)', fontSize:26, lineHeight:1.65, color:'rgba(255,255,255,0.85)', margin:0 }}>
+            The serpent deceives Eve; Adam disobeys. Sin enters the world — and with it, shame, exile, and death. Yet in judgment, God speaks the first promise of redemption.
+          </p>
+        </div>
+
+        {/* Giant heading — lower left */}
+        <div style={{ position:'absolute', bottom:52, left:60, zIndex:3 }}>
+          <div style={{ fontFamily:'var(--font-display)', fontSize:210, fontWeight:900, lineHeight:0.88, textTransform:'uppercase', color:'#cc4420', letterSpacing:'-0.02em' }}>
+            THE<br />FALL
+          </div>
+          <div style={{ position:'absolute', bottom:148, left:12, fontFamily:'var(--font-script)', fontSize:68, color:'rgba(255,255,255,0.65)', transform:'rotate(-2deg)', zIndex:4, whiteSpace:'nowrap' }}>
+            but not forsaken
+          </div>
+        </div>
+
+        {/* Right side */}
+        <div style={{ position:'absolute', top:72, right:72, width:860, zIndex:3 }}>
+          {/* Protoevangelium box */}
+          <div style={{ background:'rgba(204,68,32,0.12)', border:'1px solid rgba(204,68,32,0.35)', borderRadius:20, padding:'40px 48px', marginBottom:28 }}>
+            <div style={{ fontFamily:'var(--font-mono)', fontSize:17, letterSpacing:'0.15em', textTransform:'uppercase', color:'var(--accent)', marginBottom:16 }}>Genesis 3:15 — The Protoevangelium</div>
+            <div style={{ fontFamily:'var(--font-body)', fontSize:25, lineHeight:1.7, color:'rgba(255,255,255,0.92)', fontStyle:'italic', marginBottom:16 }}>
+              "I will put enmity between you and the woman, and between your offspring and her offspring; he shall bruise your head, and you shall bruise his heel."
+            </div>
+            <div style={{ fontFamily:'var(--font-body)', fontSize:19, color:'rgba(255,255,255,0.65)', lineHeight:1.45 }}>
+              The first promise of a Redeemer — the seed of the woman who will crush the serpent.
+            </div>
+          </div>
+          {/* Gen 4–11 mini cards */}
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:16 }}>
+            {[
+              { ref:'Gen 4', title:'Cain & Abel', desc:'Sin spreads to fratricide. Mankind deteriorates rapidly.' },
+              { ref:'Gen 6–9', title:'The Flood', desc:'Global judgment. God preserves Noah and his family by grace.' },
+              { ref:'Gen 11', title:'Babel', desc:'Human pride and rebellion. Dispersion of the nations.' },
+            ].map(({ ref, title, desc }) => (
+              <div key={ref} style={{ background:'rgba(255,255,255,0.06)', borderRadius:14, padding:'22px 20px' }}>
+                <div style={{ fontFamily:'var(--font-mono)', fontSize:15, color:'var(--accent)', marginBottom:8, letterSpacing:'0.12em' }}>{ref}</div>
+                <div style={{ fontFamily:'var(--font-body)', fontSize:21, fontWeight:700, color:'#ffffff', marginBottom:8 }}>{title}</div>
+                <div style={{ fontFamily:'var(--font-body)', fontSize:17, color:'rgba(255,255,255,0.72)', lineHeight:1.45 }}>{desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
+  </script>
+
+  <!-- [5b] Slides 5–8 -->
+  <script type="text/babel">
+
+    /* ─── SLIDE 05: The Patriarchs ────────────────────────────────── */
+    const Slide05 = () => {
+      const patriarchs = [
+        { name:'ABRAHAM', ref:'Gen 12–25', tone:'blue',
+          desc:'Called out of Ur. Receives the covenant of promise — land, seed, blessing for all nations. His faith is counted as righteousness (15:6).' },
+        { name:'ISAAC',   ref:'Gen 21–27', tone:'amber',
+          desc:'The child of promise. The binding of Isaac (Gen 22) foreshadows substitutionary sacrifice — "on the mount of the LORD it will be provided."' },
+        { name:'JACOB',   ref:'Gen 25–36', tone:'coral',
+          desc:'The supplanter becomes Israel. Wrestling with God at Peniel transforms him. His twelve sons become the twelve tribes of the nation.' },
+        { name:'JOSEPH',  ref:'Gen 37–50', tone:'purple',
+          desc:'Sold into slavery, falsely accused, exalted to Pharaoh\'s right hand. A type of Christ — rejected by his brothers, yet the means of their salvation.' },
+      ];
+      return (
+        <div className="slide" style={{ background:'#1A1A1A', display:'flex', flexDirection:'column' }}>
+          {/* Banner */}
+          <div style={{ padding:'36px 72px 16px', fontFamily:'var(--font-display)', fontSize:128, fontWeight:900, lineHeight:0.88, letterSpacing:'-0.02em', textTransform:'uppercase', color:'#ffffff', whiteSpace:'nowrap', overflow:'hidden', flexShrink:0 }}>
+            THE PATRIARCHS
+          </div>
+          {/* 4-column grid */}
+          <div style={{ flex:1, display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:0 }}>
+            {patriarchs.map((p) => (
+              <div key={p.name} style={{ position:'relative', overflow:'hidden' }}>
+                <PhotoPlaceholder tone={p.tone} />
+                {/* Gradient overlay */}
+                <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.35) 50%, transparent 100%)', zIndex:2 }} />
+                {/* Text */}
+                <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'28px 28px 32px', zIndex:3 }}>
+                  <div style={{ fontFamily:'var(--font-mono)', fontSize:15, letterSpacing:'0.15em', color:'rgba(255,255,255,0.55)', marginBottom:6 }}>{p.ref}</div>
+                  <div style={{ fontFamily:'var(--font-display)', fontSize:56, fontWeight:900, textTransform:'uppercase', color:'#ffffff', letterSpacing:'-0.01em', lineHeight:1, marginBottom:12 }}>{p.name}</div>
+                  <p style={{ fontFamily:'var(--font-body)', fontSize:18, lineHeight:1.5, color:'rgba(255,255,255,0.82)', margin:0 }}>{p.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    /* ─── SLIDE 06: The Abrahamic Covenant ────────────────────────── */
+    const Slide06 = () => (
+      <div className="slide" style={{ background:'var(--light)', display:'flex', flexDirection:'column' }}>
+        {/* Upper area */}
+        <div style={{ flex:1, display:'flex', padding:'60px 80px 20px' }}>
+          {/* Left: heading */}
+          <div style={{ width:'48%', position:'relative', flexShrink:0 }}>
+            <div style={{ fontFamily:'var(--font-display)', fontSize:140, fontWeight:900, lineHeight:0.88, textTransform:'uppercase', color:'var(--navy)', letterSpacing:'-0.02em' }}>
+              THE<br />COVENANT
+            </div>
+            <div style={{ position:'absolute', top:148, left:10, fontFamily:'var(--font-script)', fontSize:60, color:'var(--dark)', transform:'rotate(-2deg)', zIndex:3, whiteSpace:'nowrap' }}>
+              promise upon promise
+            </div>
+          </div>
+          {/* Right: body */}
+          <div style={{ width:'52%', display:'flex', flexDirection:'column', justifyContent:'flex-end', paddingBottom:20 }}>
+            <div style={{ fontFamily:'var(--font-mono)', fontSize:17, letterSpacing:'0.15em', textTransform:'uppercase', color:'#555555', marginBottom:20 }}>
+              Genesis 12:1–3 · 15 · 17 · 22
+            </div>
+            <p style={{ fontFamily:'var(--font-body)', fontSize:24, lineHeight:1.65, color:'#333333', margin:'0 0 28px' }}>
+              The Abrahamic Covenant is the backbone of Genesis — and of the entire Bible. God initiates, promises, and binds himself with an oath. It is unconditional, unilateral, and eternal.
+            </p>
+            <div style={{ display:'flex', gap:16 }}>
+              {['Land', 'Seed', 'Blessing'].map((item) => (
+                <span key={item} className="pill" style={{ fontSize:24 }}>{item}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+        {/* Bottom dark strip */}
+        <div style={{ height:'32%', background:'linear-gradient(135deg, #0a1628 0%, #162450 100%)', display:'flex', alignItems:'center', padding:'0 80px', gap:0, flexShrink:0 }}>
+          {[
+            { ref:'Gen 12', event:'The Call',         note:'Leave your country — I will make of you a great nation and bless all families of the earth.' },
+            { ref:'Gen 15', event:'The Ratification', note:'God alone passes between the pieces — a unilateral, self-binding oath.' },
+            { ref:'Gen 17', event:'The Sign',         note:'Circumcision marks the covenant community as belonging to God.' },
+            { ref:'Gen 22', event:'The Confirmation', note:'After Abraham\'s obedience, the oath is sworn with absolute finality.' },
+          ].map((c, i) => (
+            <div key={c.ref} style={{ flex:1, borderLeft: i > 0 ? '1px solid rgba(90,168,224,0.25)' : 'none', paddingLeft: i > 0 ? 36 : 0, paddingRight:24 }}>
+              <div style={{ fontFamily:'var(--font-mono)', fontSize:15, color:'var(--accent)', letterSpacing:'0.14em', marginBottom:6 }}>{c.ref}</div>
+              <div style={{ fontFamily:'var(--font-body)', fontSize:20, fontWeight:700, color:'#ffffff', marginBottom:6 }}>{c.event}</div>
+              <div style={{ fontFamily:'var(--font-body)', fontSize:16, color:'rgba(255,255,255,0.72)', lineHeight:1.5 }}>{c.note}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+
+    /* ─── SLIDE 07: Christ in Genesis ─────────────────────────────── */
+    const Slide07 = () => (
+      <div className="slide" style={{ background:'#0a1628' }}>
+        <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(90,168,224,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(90,168,224,0.05) 1px,transparent 1px)', backgroundSize:'80px 80px' }} />
+
+        {/* Heading — left */}
+        <div style={{ position:'absolute', top:64, left:80, zIndex:3 }}>
+          <div style={{ fontFamily:'var(--font-mono)', fontSize:20, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--accent)', marginBottom:16 }}>Christology in Genesis</div>
+          <div style={{ fontFamily:'var(--font-display)', fontSize:132, fontWeight:900, lineHeight:0.88, textTransform:'uppercase', color:'#ffffff', letterSpacing:'-0.02em' }}>
+            CHRIST<br />IN VIEW
+          </div>
+          <div style={{ fontFamily:'var(--font-script)', fontSize:58, color:'var(--accent)', marginTop:8, transform:'rotate(-1.5deg)', whiteSpace:'nowrap' }}>
+            from the very beginning
+          </div>
+        </div>
+
+        {/* 6-card grid — right */}
+        <div style={{ position:'absolute', right:72, top:72, bottom:72, width:980, display:'grid', gridTemplateColumns:'1fr 1fr', gridTemplateRows:'repeat(3,1fr)', gap:18, zIndex:3 }}>
+          {[
+            { passage:'Gen 3:15',  label:'Protoevangelium',  note:'The seed of the woman will crush the serpent — the first prophecy of a coming Redeemer.' },
+            { passage:'Gen 3',     label:'The Coverings',    note:'God clothes Adam and Eve — sin requires the death of another as a substitute.' },
+            { passage:'Gen 14',    label:'Melchizedek',      note:'Priest-king of Salem who blesses Abraham — a type of Christ\'s eternal priesthood (Ps. 110; Heb. 7).' },
+            { passage:'Gen 22',    label:'The Ram',          note:'"God will provide for himself the lamb" (22:8). Isaac spared; a substitute provided.' },
+            { passage:'Gen 37–50', label:'Joseph',           note:'Rejected, sold, falsely accused, exalted to save the very brothers who rejected him.' },
+            { passage:'Gen 49:10', label:'The Scepter',      note:'"The scepter shall not depart from Judah… until tribute comes to him" — the Messianic king.' },
+          ].map((item) => (
+            <div key={item.passage} style={{ background:'rgba(255,255,255,0.06)', border:'1px solid rgba(90,168,224,0.18)', borderRadius:14, padding:'20px 24px', display:'flex', flexDirection:'column', gap:8 }}>
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline' }}>
+                <div style={{ fontFamily:'var(--font-body)', fontSize:20, fontWeight:700, color:'#ffffff' }}>{item.label}</div>
+                <div style={{ fontFamily:'var(--font-mono)', fontSize:14, color:'var(--accent)', letterSpacing:'0.1em' }}>{item.passage}</div>
+              </div>
+              <p style={{ fontFamily:'var(--font-body)', fontSize:17, lineHeight:1.5, color:'rgba(255,255,255,0.75)', margin:0 }}>{item.note}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+
+    /* ─── SLIDE 08: Closing ────────────────────────────────────────── */
+    const Slide08 = () => (
+      <div className="slide" style={{ background:'var(--light)' }}>
+        {/* Massive heading — left, bleeding down */}
+        <div style={{ position:'absolute', top:52, left:60, zIndex:2 }}>
+          <div style={{ fontFamily:'var(--font-display)', fontSize:172, fontWeight:900, lineHeight:0.88, textTransform:'uppercase', color:'var(--navy)', letterSpacing:'-0.02em' }}>
+            THE<br />FOUNDATION
+          </div>
+        </div>
+        {/* Script overlay */}
+        <div style={{ position:'absolute', top:268, left:80, fontFamily:'var(--font-script)', fontSize:70, color:'var(--dark)', transform:'rotate(-2deg)', zIndex:4, whiteSpace:'nowrap' }}>
+          where the story begins
+        </div>
+
+        {/* Right content */}
+        <div style={{ position:'absolute', right:80, top:80, width:700, zIndex:3 }}>
+          <p style={{ fontFamily:'var(--font-body)', fontSize:25, lineHeight:1.65, color:'#333333', marginBottom:40 }}>
+            Genesis is not merely a book of ancient origins — it is the indispensable foundation of the entire biblical narrative. Every major theme of Scripture has its root here.
+          </p>
+          <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+            {[
+              'Creation & the Image of God',
+              'The Reality and Reach of Sin',
+              'The Promise of a Redeemer',
+              'The Covenant of Grace',
+              'God\'s Sovereignty Over All History',
+            ].map((theme) => (
+              <div key={theme} style={{ display:'flex', alignItems:'center', gap:18 }}>
+                <div style={{ width:10, height:10, borderRadius:'50%', background:'var(--navy)', flexShrink:0 }} />
+                <div style={{ fontFamily:'var(--font-body)', fontSize:24, fontWeight:500, color:'var(--dark)' }}>{theme}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div style={{ position:'absolute', bottom:108, left:80, right:80, height:1, background:'rgba(0,0,0,0.15)', zIndex:4 }} />
+        <div style={{ position:'absolute', bottom:60, left:80, right:80, display:'flex', justifyContent:'space-between', alignItems:'center', zIndex:5 }}>
+          <span style={{ fontFamily:'var(--font-body)', fontSize:22, color:'#555555' }}>{PRESENTER_NAME}</span>
+          <span style={{ fontFamily:'var(--font-mono)', fontSize:20, color:'#555555', letterSpacing:'0.1em', textTransform:'uppercase' }}>{TALK_TITLE} · {EVENT_NAME}</span>
+        </div>
+      </div>
+    );
+
+  </script>
+
+  <!-- [6] Mount -->
+  <script type="text/babel">
+    const mounts = [Slide01, Slide02, Slide03, Slide04, Slide05, Slide06, Slide07, Slide08];
+    mounts.forEach((C, i) => {
+      const el = document.getElementById(`s${String(i + 1).padStart(2, '0')}`);
+      if (el) ReactDOM.createRoot(el).render(<C />);
+    });
+  </script>
+
+  <!-- [7] Theme + tweaks controller -->
+  <script>
+    // Disable tapzones so mouse clicks reach links in slides
+    (function disableTapzones() {
+      function inject() {
+        const deck = document.getElementById('deck');
+        if (deck && deck.shadowRoot) {
+          const s = document.createElement('style');
+          s.textContent = '.tapzones { display: none !important; }';
+          deck.shadowRoot.appendChild(s);
+        }
+      }
+      if (document.readyState === 'complete') { inject(); }
+      else { window.addEventListener('load', inject); }
+      setTimeout(inject, 500);
+    })();
+
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('deck:theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+
+    function syncThemeButtons(theme) {
+      document.querySelectorAll('[data-theme-set]').forEach(b => b.classList.toggle('active', b.dataset.themeSet === theme));
+    }
+    syncThemeButtons(savedTheme);
+    document.querySelectorAll('[data-theme-set]').forEach(b => {
+      b.addEventListener('click', () => {
+        const t = b.dataset.themeSet;
+        html.setAttribute('data-theme', t);
+        localStorage.setItem('deck:theme', t);
+        syncThemeButtons(t);
+      });
+    });
+
+    function applyAccent(color) {
+      html.style.setProperty('--accent', color);
+      html.style.setProperty('--brand-blue-bright', color);
+      html.style.setProperty('--brand-blue', color);
+      document.querySelectorAll('#tw-accent .sw').forEach(el => el.classList.toggle('active', el.dataset.accent === color));
+    }
+    const savedAccent = localStorage.getItem('deck:accent') || ACCENT_COLOR;
+    applyAccent(savedAccent);
+    document.querySelectorAll('#tw-accent .sw').forEach(el => {
+      el.addEventListener('click', () => {
+        const c = el.dataset.accent;
+        localStorage.setItem('deck:accent', c);
+        applyAccent(c);
+      });
+    });
+
+    function applyDensity(state) {
+      if (state === 'tight') document.querySelectorAll('.pad').forEach(el => el.style.padding = '64px 96px');
+      else document.querySelectorAll('.pad').forEach(el => el.style.padding = '');
+      document.querySelectorAll('#tw-density button').forEach(b => b.classList.toggle('active', b.dataset.density === state));
+    }
+    const savedDensity = localStorage.getItem('deck:density') || 'default';
+    setTimeout(() => applyDensity(savedDensity), 400);
+    document.querySelectorAll('#tw-density button').forEach(b => {
+      b.addEventListener('click', () => {
+        const s = b.dataset.density;
+        localStorage.setItem('deck:density', s);
+        applyDensity(s);
+      });
+    });
+
+    document.getElementById('btn-filmstrip').addEventListener('click', () => document.getElementById('deck').toggleFilmstrip());
+
+    const panel = document.getElementById('tweaks-panel');
+    window.addEventListener('message', (e) => {
+      if (!e.data || typeof e.data !== 'object') return;
+      if (e.data.type === '__activate_edit_mode')   panel.setAttribute('data-visible', '');
+      if (e.data.type === '__deactivate_edit_mode') panel.removeAttribute('data-visible');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 't' || e.key === 'T') {
+        if (panel.hasAttribute('data-visible')) panel.removeAttribute('data-visible');
+        else panel.setAttribute('data-visible', '');
+      }
+    });
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+  </script>
+
+</body>
+</html>

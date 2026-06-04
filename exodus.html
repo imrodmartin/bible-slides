@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exodus — Rod Martin · Bible Study</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --font-display: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+      --font-text:    'Figtree', ui-sans-serif, system-ui, sans-serif;
+      --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+      --accent:            #A0732A;
+      --brand-navy:        #1a2a4f;
+      --brand-navy-deep:   #0f1a35;
+      --brand-blue:        var(--accent);
+      --brand-blue-bright: var(--accent);
+      --brand-blue-sky:    #d4a95a;
+      --brand-blue-pale:   #f5e9d0;
+
+      /* --accent-fg: darker gold for TEXT on light bg (6.7:1); restores gold on dark */
+      --accent-fg: #7a4e10;
+
+      --bg:        #f6f5f1;
+      --bg-alt:    #ebe9e1;
+      --bg-elev:   #ffffff;
+      --ink:       #0f1a35;
+      --ink-soft:  #34405c;
+      --ink-muted: #6b7390;
+      --ink-faint: #a8adbf;
+      --line:      rgba(15,26,53,0.12);
+      --line-soft: rgba(15,26,53,0.06);
+      --grid:      rgba(15,26,53,0.04);
+      --chip-bg:   rgba(15,26,53,0.05);
+      --chip-ink:  var(--brand-navy);
+      --ease-out:  cubic-bezier(0.2,0.8,0.2,1);
+    }
+    [data-theme="dark"] {
+      --bg:        #0b1226;
+      --bg-alt:    #141c36;
+      --bg-elev:   #1a2444;
+      --ink:       #f2f3f8;
+      --ink-soft:  #d8dceb;
+      --ink-muted: #a8aec8;
+      --ink-faint: #7a819e;
+      --line:      rgba(255,255,255,0.16);
+      --line-soft: rgba(255,255,255,0.08);
+      --grid:      rgba(255,255,255,0.05);
+      --chip-bg:   rgba(255,255,255,0.08);
+      --chip-ink:  var(--brand-blue-sky);
+      --brand-blue:        #d4a95a;
+      --brand-blue-bright: #d4a95a;
+      --accent-fg: var(--accent); /* gold on dark = 4.6:1 — safe for all text */
+    }
+
+    html,body { margin:0;padding:0;background:#000;font-family:var(--font-text);-webkit-font-smoothing:antialiased; }
+    * { box-sizing:border-box; }
+    .slide { width:1920px;height:1080px;background:var(--bg);color:var(--ink);position:relative;overflow:hidden;font-family:var(--font-text);display:flex;flex-direction:column; }
+    .grid-bg { position:absolute;inset:0;background-image:linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);background-size:80px 80px;pointer-events:none; }
+    .pad { padding:88px 120px;flex:1;display:flex;flex-direction:column;position:relative;z-index:2; }
+    .slide-header { display:flex;justify-content:space-between;align-items:center;padding:48px 80px 0;font-size:24px;font-weight:500;color:var(--ink-muted);letter-spacing:.02em;position:relative;z-index:3; }
+    .slide-footer { display:flex;justify-content:space-between;align-items:center;padding:0 80px 48px;font-family:var(--font-mono);font-size:22px;color:var(--ink-muted);letter-spacing:.04em;position:relative;z-index:3; }
+
+    /* Type scale — WCAG notes:
+       eyebrow 24px 600 = large text → var(--accent) #A0732A on light #f6f5f1 = 3.87:1 > 3:1 ✓
+       .body 28px = large text → var(--ink-soft) #34405c = 8.5:1 ✓
+       slide-footer 22px = large text → var(--ink-muted) #6b7390 = 4.09:1 > 3:1 ✓ */
+    .eyebrow { font-family:var(--font-mono);font-size:24px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:14px; }
+    .eyebrow::before { content:'';width:36px;height:2px;background:currentColor; }
+    .kicker { font-family:var(--font-mono);font-size:24px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-muted); }
+    h1.display { font-family:var(--font-display);font-size:160px;font-weight:800;line-height:.96;letter-spacing:-.035em;margin:0;color:var(--ink); }
+    h2.section { font-family:var(--font-display);font-size:96px;font-weight:800;line-height:1.0;letter-spacing:-.025em;margin:0; }
+    .lead { font-family:var(--font-display);font-size:40px;line-height:1.35;font-weight:400;color:var(--ink-soft);margin:0; }
+    .body { font-family:var(--font-text);font-size:28px;line-height:1.5;color:var(--ink-soft);margin:0; }
+    .card { background:var(--bg-elev);border:1px solid var(--line);border-radius:28px;padding:48px;position:relative; }
+    .logo-mark { height:44px;display:block; }
+    [data-theme="dark"] .logo-mark.inverted { filter:brightness(0) invert(1); }
+    .slide a { pointer-events:auto !important;cursor:pointer;position:relative;z-index:10;text-decoration:none; }
+
+    /* Theme toggle */
+    .theme-toggle { position:fixed;top:20px;right:20px;z-index:2147482500;display:inline-flex;align-items:center;gap:6px;padding:6px;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);border-radius:999px;border:1px solid rgba(255,255,255,.1); }
+    .theme-toggle button { appearance:none;border:0;background:transparent;color:rgba(255,255,255,.6);padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all 140ms; }
+    .theme-toggle button.active { background:rgba(255,255,255,.15);color:#fff; }
+    .theme-toggle #btn-filmstrip { padding:8px 10px;display:inline-flex;align-items:center;justify-content:center; }
+    /* Tweaks panel */
+    .tweaks-panel { position:fixed;bottom:80px;right:20px;z-index:2147482400;width:280px;background:rgba(15,20,40,.92);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;color:#fff;display:none;box-shadow:0 20px 60px rgba(0,0,0,.4); }
+    .tweaks-panel[data-visible] { display:block; }
+    .tweaks-panel h4 { margin:0 0 16px;font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6); }
+    .tweaks-row { display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:13px; }
+    .tweaks-row .swatches { display:inline-flex;gap:6px; }
+    .tweaks-row .sw { width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform 140ms; }
+    .tweaks-row .sw.active { border-color:#fff;transform:scale(1.1); }
+    .tweaks-row .seg { display:inline-flex;background:rgba(255,255,255,.08);border-radius:8px;padding:2px; }
+    .tweaks-row .seg button { appearance:none;border:0;background:transparent;color:rgba(255,255,255,.7);padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer; }
+    .tweaks-row .seg button.active { background:rgba(255,255,255,.15);color:#fff; }
+  </style>
+</head>
+<body>
+
+<div class="theme-toggle" id="theme-toggle">
+  <button data-theme-set="light" class="active">☀ Light</button>
+  <button data-theme-set="dark">☾ Dark</button>
+  <button id="btn-filmstrip" title="All slides (G)" aria-label="All slides">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="1.5" y="1.5" width="5" height="5" rx="1"></rect><rect x="9.5" y="1.5" width="5" height="5" rx="1"></rect>
+      <rect x="1.5" y="9.5" width="5" height="5" rx="1"></rect><rect x="9.5" y="9.5" width="5" height="5" rx="1"></rect>
+    </svg>
+  </button>
+</div>
+
+<div class="tweaks-panel" id="tweaks-panel">
+  <h4>Tweaks</h4>
+  <div class="tweaks-row"><span>Theme</span><div class="seg" id="tw-theme"><button data-theme-set="light" class="active">Light</button><button data-theme-set="dark">Dark</button></div></div>
+  <div class="tweaks-row"><span>Accent</span><div class="swatches" id="tw-accent">
+    <div class="sw active" data-accent="#A0732A" style="background:#A0732A" title="Desert Gold"></div>
+    <div class="sw" data-accent="#7B2D3E" style="background:#7B2D3E" title="Burgundy"></div>
+    <div class="sw" data-accent="#1B6B6B" style="background:#1B6B6B" title="Teal"></div>
+    <div class="sw" data-accent="#3a6cb8" style="background:#3a6cb8" title="Blue"></div>
+  </div></div>
+  <div class="tweaks-row"><span>Grid</span><div class="seg" id="tw-grid"><button data-grid="on" class="active">On</button><button data-grid="off">Off</button></div></div>
+  <div class="tweaks-row"><span>Density</span><div class="seg" id="tw-density"><button data-density="tight">Tight</button><button data-density="default" class="active">Default</button></div></div>
+</div>
+
+<deck-stage width="1920" height="1080" id="deck">
+  <section id="s01"></section>
+  <section id="s02"></section>
+  <section id="s03"></section>
+  <section id="s04"></section>
+  <section id="s05"></section>
+  <section id="s06"></section>
+  <section id="s07"></section>
+  <section id="s08"></section>
+  <section id="s09"></section>
+  <section id="s10"></section>
+  <section id="s11"></section>
+  <section id="s12"></section>
+  <section id="s13"></section>
+  <section id="s14"></section>
+  <section id="s15"></section>
+  <section id="s16"></section>
+</deck-stage>
+
+<!-- [1] deck-stage web component -->
+<script>
+(() => {
+  const DESIGN_W_DEFAULT=1920,DESIGN_H_DEFAULT=1080,STORAGE_PREFIX='deck-stage:slide:',OVERLAY_HIDE_MS=1800,VALIDATE_ATTR='no_overflowing_text,no_overlapping_text,slide_sized_text',pad2=n=>String(n).padStart(2,'0'),stylesheet=`
+    :host{position:fixed;inset:0;display:block;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;overflow:hidden;}
+    .stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+    .canvas{position:relative;transform-origin:center center;flex-shrink:0;background:#fff;will-change:transform;}
+    ::slotted(*){position:absolute!important;inset:0!important;width:100%!important;height:100%!important;box-sizing:border-box!important;overflow:hidden;opacity:0;pointer-events:none;visibility:hidden;}
+    ::slotted([data-deck-active]){opacity:1;pointer-events:auto;visibility:visible;}
+    .tapzones{position:fixed;inset:0;display:flex;z-index:2147482000;pointer-events:none;}
+    .tapzone{flex:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;}
+    @media (hover:hover) and (pointer:fine){.tapzones{display:none;}}
+    .overlay{position:fixed;left:50%;bottom:22px;transform:translate(-50%,6px) scale(0.92);filter:blur(6px);display:flex;align-items:center;gap:4px;padding:4px;background:#000;color:#fff;border-radius:999px;font-size:12px;font-feature-settings:"tnum" 1;letter-spacing:.01em;opacity:0;pointer-events:none;transition:opacity 260ms ease,transform 260ms cubic-bezier(.2,.8,.2,1),filter 260ms ease;transform-origin:center bottom;z-index:2147483000;user-select:none;}
+    .overlay[data-visible]{opacity:1;pointer-events:auto;transform:translate(-50%,0) scale(1);filter:blur(0);}
+    .btn{appearance:none;-webkit-appearance:none;background:transparent;border:0;margin:0;padding:0;color:inherit;font:inherit;cursor:default;display:inline-flex;align-items:center;justify-content:center;height:28px;min-width:28px;border-radius:999px;color:rgba(255,255,255,.72);transition:background 140ms ease,color 140ms ease;-webkit-tap-highlight-color:transparent;}
+    .btn:hover{background:rgba(255,255,255,.12);color:#fff;}
+    .btn:active{background:rgba(255,255,255,.18);}
+    .btn svg{width:14px;height:14px;display:block;}
+    .btn.reset{font-size:11px;font-weight:500;letter-spacing:.02em;padding:0 10px 0 12px;gap:6px;}
+    .btn.reset .kbd{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:10px;line-height:1;color:rgba(255,255,255,.88);background:rgba(255,255,255,.12);border-radius:4px;}
+    .count{font-variant-numeric:tabular-nums;color:#fff;font-weight:500;padding:0 8px;min-width:42px;text-align:center;font-size:12px;}
+    .count .sep{color:rgba(255,255,255,.45);margin:0 3px;font-weight:400;}
+    .count .total{color:rgba(255,255,255,.55);}
+    .divider{width:1px;height:14px;background:rgba(255,255,255,.18);margin:0 2px;}
+    @media print{:host{position:static;inset:auto;background:none;overflow:visible;color:inherit;}.stage{position:static;display:block;}.canvas{transform:none!important;width:auto!important;height:auto!important;background:none;will-change:auto;}::slotted(*){position:relative!important;inset:auto!important;width:var(--deck-design-w)!important;height:var(--deck-design-h)!important;box-sizing:border-box!important;opacity:1!important;visibility:visible!important;pointer-events:auto;break-after:page;page-break-after:always;break-inside:avoid;overflow:hidden;}::slotted(*:last-child){break-after:auto;page-break-after:auto;}.overlay,.tapzones{display:none!important;}}
+  `;
+  class DeckStage extends HTMLElement {
+    static get observedAttributes(){return['width','height','noscale'];}
+    constructor(){super();this._root=this.attachShadow({mode:'open'});this._index=0;this._slides=[];this._notes=[];this._hideTimer=null;this._mouseIdleTimer=null;this._storageKey=STORAGE_PREFIX+(location.pathname||'/');this._onKey=this._onKey.bind(this);this._onResize=this._onResize.bind(this);this._onSlotChange=this._onSlotChange.bind(this);this._onMouseMove=this._onMouseMove.bind(this);this._onTapBack=this._onTapBack.bind(this);this._onTapForward=this._onTapForward.bind(this);}
+    get designWidth(){return parseInt(this.getAttribute('width'),10)||DESIGN_W_DEFAULT;}
+    get designHeight(){return parseInt(this.getAttribute('height'),10)||DESIGN_H_DEFAULT;}
+    connectedCallback(){this._render();this._loadNotes();this._syncPrintPageRule();window.addEventListener('keydown',this._onKey);window.addEventListener('resize',this._onResize);window.addEventListener('mousemove',this._onMouseMove,{passive:true});}
+    disconnectedCallback(){window.removeEventListener('keydown',this._onKey);window.removeEventListener('resize',this._onResize);window.removeEventListener('mousemove',this._onMouseMove);if(this._hideTimer)clearTimeout(this._hideTimer);if(this._mouseIdleTimer)clearTimeout(this._mouseIdleTimer);}
+    attributeChangedCallback(){if(this._canvas){this._canvas.style.width=this.designWidth+'px';this._canvas.style.height=this.designHeight+'px';this._canvas.style.setProperty('--deck-design-w',this.designWidth+'px');this._canvas.style.setProperty('--deck-design-h',this.designHeight+'px');this._fit();this._syncPrintPageRule();}}
+    _render(){const style=document.createElement('style');style.textContent=stylesheet;const stage=document.createElement('div');stage.className='stage';const canvas=document.createElement('div');canvas.className='canvas';canvas.style.width=this.designWidth+'px';canvas.style.height=this.designHeight+'px';canvas.style.setProperty('--deck-design-w',this.designWidth+'px');canvas.style.setProperty('--deck-design-h',this.designHeight+'px');const slot=document.createElement('slot');slot.addEventListener('slotchange',this._onSlotChange);canvas.appendChild(slot);stage.appendChild(canvas);const tapzones=document.createElement('div');tapzones.className='tapzones';tapzones.setAttribute('aria-hidden','true');const tzBack=document.createElement('div');tzBack.className='tapzone tapzone--back';const tzMid=document.createElement('div');tzMid.className='tapzone tapzone--mid';tzMid.style.pointerEvents='none';const tzFwd=document.createElement('div');tzFwd.className='tapzone tapzone--fwd';tzBack.addEventListener('click',this._onTapBack);tzFwd.addEventListener('click',this._onTapForward);tapzones.append(tzBack,tzMid,tzFwd);const overlay=document.createElement('div');overlay.className='overlay';overlay.setAttribute('role','toolbar');overlay.setAttribute('aria-label','Deck controls');overlay.innerHTML=`<button class="btn prev" type="button" aria-label="Previous slide" title="Previous (←)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg></button><span class="count" aria-live="polite"><span class="current">1</span><span class="sep">/</span><span class="total">1</span></span><button class="btn next" type="button" aria-label="Next slide" title="Next (→)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg></button><span class="divider"></span><button class="btn reset" type="button" aria-label="Reset to first slide" title="Reset (R)">Reset<span class="kbd">R</span></button><span class="divider"></span><button class="btn grid-toggle" type="button" aria-label="All slides" title="All slides (G)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="5" height="5" rx="1"/><rect x="9.5" y="1.5" width="5" height="5" rx="1"/><rect x="1.5" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/></svg></button>`;overlay.querySelector('.prev').addEventListener('click',()=>this._go(this._index-1,'click'));overlay.querySelector('.next').addEventListener('click',()=>this._go(this._index+1,'click'));overlay.querySelector('.reset').addEventListener('click',()=>this._go(0,'click'));overlay.querySelector('.grid-toggle').addEventListener('click',()=>this.toggleFilmstrip());this._root.append(style,stage,tapzones,overlay);this._canvas=canvas;this._slot=slot;this._overlay=overlay;this._countEl=overlay.querySelector('.current');this._totalEl=overlay.querySelector('.total');}
+    _syncPrintPageRule(){const id='deck-stage-print-page';let tag=document.getElementById(id);if(!tag){tag=document.createElement('style');tag.id=id;document.head.appendChild(tag);}tag.textContent='@page{size:'+this.designWidth+'px '+this.designHeight+'px;margin:0}@media print{html,body{margin:0!important;padding:0!important;background:none!important;overflow:visible!important;height:auto!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}';}
+    _onSlotChange(){this._collectSlides();this._restoreIndex();this._applyIndex({showOverlay:false,broadcast:true,reason:'init'});this._fit();}
+    _collectSlides(){const assigned=this._slot.assignedElements({flatten:true});this._slides=assigned.filter(el=>{const t=el.tagName;return t!=='TEMPLATE'&&t!=='SCRIPT'&&t!=='STYLE';});this._slides.forEach((slide,i)=>{const n=i+1;let label=slide.getAttribute('data-label');if(!label){const h=slide.querySelector('h1,h2,h3,[data-title]');if(h)label=(h.textContent||'').trim().slice(0,40);}if(!label)label='Slide';slide.setAttribute('data-screen-label',`${pad2(n)} ${label}`);if(!slide.hasAttribute('data-om-validate'))slide.setAttribute('data-om-validate',VALIDATE_ATTR);slide.setAttribute('data-deck-slide',String(i));});if(this._totalEl)this._totalEl.textContent=String(this._slides.length||1);if(this._index>=this._slides.length)this._index=Math.max(0,this._slides.length-1);}
+    _loadNotes(){const tag=document.getElementById('speaker-notes');if(!tag){this._notes=[];return;}try{const p=JSON.parse(tag.textContent||'[]');if(Array.isArray(p))this._notes=p;}catch(e){this._notes=[];}}
+    _restoreIndex(){try{const raw=localStorage.getItem(this._storageKey);if(raw!=null){const n=parseInt(raw,10);if(Number.isFinite(n)&&n>=0&&n<this._slides.length)this._index=n;}}catch(e){}}
+    _persistIndex(){try{localStorage.setItem(this._storageKey,String(this._index));}catch(e){}}
+    _applyIndex({showOverlay=true,broadcast=true,reason='init'}={}){if(!this._slides.length)return;const curr=this._index;this._slides.forEach((s,i)=>{if(i===curr)s.setAttribute('data-deck-active','');else s.removeAttribute('data-deck-active');});if(this._countEl)this._countEl.textContent=String(curr+1);this._persistIndex();if(broadcast){try{window.postMessage({slideIndexChanged:curr},'*');}catch(e){}this.dispatchEvent(new CustomEvent('slidechange',{detail:{index:curr,total:this._slides.length},bubbles:true,composed:true}));}if(showOverlay)this._flashOverlay();this._syncFilmstripActive();}
+    _flashOverlay(){if(!this._overlay)return;this._overlay.setAttribute('data-visible','');if(this._hideTimer)clearTimeout(this._hideTimer);this._hideTimer=setTimeout(()=>this._overlay.removeAttribute('data-visible'),OVERLAY_HIDE_MS);}
+    _fit(){if(!this._canvas)return;if(this.hasAttribute('noscale')){this._canvas.style.transform='none';return;}const s=Math.min(window.innerWidth/this.designWidth,window.innerHeight/this.designHeight);this._canvas.style.transform=`scale(${s})`;}
+    _onResize(){this._fit();}
+    _onMouseMove(){this._flashOverlay();}
+    _onTapBack(e){e.preventDefault();this._go(this._index-1,'tap');}
+    _onTapForward(e){e.preventDefault();this._go(this._index+1,'tap');}
+    _onKey(e){const t=e.target;if(t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))return;if(e.metaKey||e.ctrlKey||e.altKey)return;const key=e.key;let handled=true;if(key==='ArrowRight'||key==='PageDown'||key===' '||key==='Spacebar')this._go(this._index+1,'keyboard');else if(key==='ArrowLeft'||key==='PageUp')this._go(this._index-1,'keyboard');else if(key==='Home')this._go(0,'keyboard');else if(key==='End')this._go(this._slides.length-1,'keyboard');else if(key==='r'||key==='R')this._go(0,'keyboard');else if(/^[0-9]$/.test(key)){const n=key==='0'?9:parseInt(key,10)-1;if(n<this._slides.length)this._go(n,'keyboard');}else handled=false;if(handled){e.preventDefault();this._flashOverlay();}}
+    _go(i,reason='api'){if(!this._slides.length)return;const clamped=Math.max(0,Math.min(this._slides.length-1,i));if(clamped===this._index){this._flashOverlay();return;}this._index=clamped;this._applyIndex({showOverlay:true,broadcast:true,reason});}
+    _buildFilmstrip(){if(this._filmstripOverlay)return;if(!document.getElementById('deck-stage-filmstrip-style')){const s=document.createElement('style');s.id='deck-stage-filmstrip-style';s.textContent=`.ds-filmstrip-overlay{position:fixed;inset:0;z-index:2147483500;pointer-events:none;opacity:0;transition:opacity 280ms ease}.ds-filmstrip-overlay.open{pointer-events:auto;opacity:1}.ds-filmstrip-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px)}.ds-filmstrip-drawer{position:absolute;right:0;top:0;bottom:0;width:400px;background:#111;overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform 300ms cubic-bezier(.22,.9,.3,1);padding:24px 16px 40px;box-sizing:border-box}.ds-filmstrip-overlay.open .ds-filmstrip-drawer{transform:translateX(0)}.ds-filmstrip-header{display:flex;align-items:center;justify-content:space-between;margin:0 4px 18px}.ds-filmstrip-title{color:rgba(255,255,255,.45);font-size:11px;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0}.ds-filmstrip-close{appearance:none;background:rgba(255,255,255,.08);border:0;margin:0;padding:0;color:rgba(255,255,255,.5);width:24px;height:24px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}.ds-filmstrip-close:hover{background:rgba(255,255,255,.15);color:#fff}.ds-filmstrip-close svg{width:12px;height:12px;display:block}.ds-filmstrip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ds-filmstrip-thumb{cursor:pointer;border-radius:5px;overflow:hidden;position:relative;border:2px solid transparent;transition:border-color 160ms ease,transform 120ms ease}.ds-filmstrip-thumb:hover{transform:scale(1.03);border-color:rgba(255,255,255,.35)}.ds-filmstrip-thumb.ds-active{border-color:var(--accent,#A0732A)}.ds-filmstrip-inner{width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;background:#222}.ds-filmstrip-inner>.ds-clone{position:absolute!important;top:0!important;left:0!important;transform-origin:top left!important;pointer-events:none!important;visibility:visible!important;opacity:1!important}.ds-filmstrip-num{position:absolute;top:5px;left:7px;color:rgba(255,255,255,.55);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:9px;font-weight:600;line-height:1;z-index:2}.ds-filmstrip-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));color:rgba(255,255,255,.85);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;font-size:9px;font-weight:500;padding:14px 7px 5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}`;document.head.appendChild(s);}
+    const overlay=document.createElement('div');overlay.className='ds-filmstrip-overlay';const backdrop=document.createElement('div');backdrop.className='ds-filmstrip-backdrop';backdrop.addEventListener('click',()=>this._closeFilmstrip());const drawer=document.createElement('div');drawer.className='ds-filmstrip-drawer';const header=document.createElement('div');header.className='ds-filmstrip-header';const titleEl=document.createElement('p');titleEl.className='ds-filmstrip-title';titleEl.textContent=`All Slides · ${this._slides.length}`;const closeBtn=document.createElement('button');closeBtn.className='ds-filmstrip-close';closeBtn.type='button';closeBtn.setAttribute('aria-label','Close');closeBtn.innerHTML=`<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 1l10 10M11 1L1 11"/></svg>`;closeBtn.addEventListener('click',()=>this._closeFilmstrip());header.append(titleEl,closeBtn);const grid=document.createElement('div');grid.className='ds-filmstrip-grid';this._filmstripThumbs=[];this._slides.forEach((slide,i)=>{const thumb=document.createElement('div');thumb.className='ds-filmstrip-thumb'+(i===this._index?' ds-active':'');thumb.dataset.dsSlide=i;const inner=document.createElement('div');inner.className='ds-filmstrip-inner';const clone=slide.cloneNode(true);clone.className='ds-clone';clone.removeAttribute('data-deck-active');clone.style.cssText='';clone.style.pointerEvents='none';clone.style.visibility='visible';clone.style.opacity='1';clone.querySelectorAll('video').forEach(v=>{v.muted=true;v.autoplay=false;v.removeAttribute('autoplay');v.pause();});inner.appendChild(clone);const num=document.createElement('span');num.className='ds-filmstrip-num';num.textContent=String(i+1).padStart(2,'0');const rawLabel=slide.getAttribute('data-screen-label')||'';const labelText=rawLabel.replace(/^\d+\s*/,'').trim();if(labelText){const labelEl=document.createElement('div');labelEl.className='ds-filmstrip-label';labelEl.textContent=labelText;inner.appendChild(labelEl);}inner.appendChild(num);thumb.appendChild(inner);thumb.addEventListener('click',()=>{this._go(i,'click');this._closeFilmstrip();});grid.appendChild(thumb);this._filmstripThumbs.push({thumb,clone,inner});});drawer.append(header,grid);overlay.append(backdrop,drawer);document.body.appendChild(overlay);this._filmstripOverlay=overlay;requestAnimationFrame(()=>{this._filmstripThumbs.forEach(({clone,inner})=>{const w=inner.offsetWidth;if(!w)return;const scale=w/this.designWidth;clone.style.width=this.designWidth+'px';clone.style.height=this.designHeight+'px';clone.style.transform=`scale(${scale})`;});});this._onFilmstripKey=(e)=>{if(e.key==='Escape')this._closeFilmstrip();if((e.key==='g'||e.key==='G')&&!this._filmstripOverlay.classList.contains('open'))this._openFilmstrip();};window.addEventListener('keydown',this._onFilmstripKey);}
+    _openFilmstrip(){this._buildFilmstrip();this._filmstripThumbs?.forEach(({thumb},i)=>thumb.classList.toggle('ds-active',i===this._index));requestAnimationFrame(()=>this._filmstripOverlay.classList.add('open'));}
+    _closeFilmstrip(){this._filmstripOverlay?.classList.remove('open');}
+    _syncFilmstripActive(){this._filmstripThumbs?.forEach(({thumb},i)=>thumb.classList.toggle('ds-active',i===this._index));}
+    get index(){return this._index;}get length(){return this._slides.length;}
+    goTo(i){this._go(i,'api');}next(){this._go(this._index+1,'api');}prev(){this._go(this._index-1,'api');}reset(){this._go(0,'api');}
+    toggleFilmstrip(){if(this._filmstripOverlay?.classList.contains('open'))this._closeFilmstrip();else this._openFilmstrip();}
+  }
+  if(!customElements.get('deck-stage'))customElements.define('deck-stage',DeckStage);
+})();
+</script>
+
+<!-- [2] React + Babel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+<!-- [3] Config constants -->
+<script>
+const PRESENTER_NAME = 'Rod Martin';
+const BRAND_NAME     = 'imrodmartin';
+const BRAND_URL      = 'https://imrodmartin.com';
+const ACCENT_COLOR   = '#A0732A';
+const TALK_TITLE     = 'Exodus';
+const EVENT_NAME     = 'Bible Study';
+const TOTAL          = 16;
+
+window.__resources = { brandLogo:'', presenterPhoto:'' };
+
+document.documentElement.style.setProperty('--accent', ACCENT_COLOR);
+document.documentElement.style.setProperty('--brand-blue-bright', ACCENT_COLOR);
+document.documentElement.style.setProperty('--brand-blue', ACCENT_COLOR);
+</script>
+
+<!-- [4] Shared primitives -->
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+/* openLink — required for all external links to survive tap-zone interception */
+const openLink = (e, url) => {
+  e.preventDefault();
+  e.stopPropagation();
+  window.open(url, '_blank', 'noopener,noreferrer');
+};
+
+/* LogoMark */
+const LogoMark = ({ className='logo-mark', logoSrc=(window.__resources&&window.__resources.brandLogo)||'' }) => (
+  logoSrc ? (
+    <a href={BRAND_URL} target="_blank" rel="noopener" aria-label={BRAND_NAME}
+       onClick={(e)=>openLink(e,BRAND_URL)}
+       style={{display:'inline-block',lineHeight:0,pointerEvents:'auto',position:'relative',zIndex:20,cursor:'pointer'}}>
+      <img src={logoSrc} alt={BRAND_NAME} className={`${className} inverted`} style={{height:44}} />
+    </a>
+  ) : (
+    <a href={BRAND_URL} target="_blank" rel="noopener"
+       onClick={(e)=>openLink(e,BRAND_URL)}
+       style={{fontFamily:'var(--font-mono)',fontSize:20,letterSpacing:'0.15em',textTransform:'uppercase',fontWeight:700,color:'inherit',textDecoration:'none',pointerEvents:'auto',position:'relative',zIndex:20,cursor:'pointer'}}>
+      {BRAND_NAME}
+    </a>
+  )
+);
+
+/* PhotoPlaceholder */
+const PhotoPlaceholder = ({ label='Photo', tone='amber', aspect='4/3' }) => {
+  const tones = { blue:['#5AA8E0','#1a2a4f'], amber:['#A0732A','#5a3a10'], coral:['#e86a5c','#8f2b24'], sage:['#5fa68b','#244838'] };
+  const [c1,c2] = tones[tone]||tones.amber;
+  return (
+    <div style={{aspectRatio:aspect,width:'100%',borderRadius:24,position:'relative',overflow:'hidden',background:`linear-gradient(135deg,${c1},${c2})`,display:'flex',alignItems:'flex-end',padding:32}}>
+      <div style={{position:'absolute',inset:0,backgroundImage:'linear-gradient(to right,rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.08) 1px,transparent 1px)',backgroundSize:'48px 48px'}} />
+      <div style={{color:'#fff',fontFamily:'var(--font-text)',fontSize:26,fontWeight:600,position:'relative',zIndex:2}}>{label}</div>
+    </div>
+  );
+};
+
+/* SlideChrome */
+const SlideChrome = ({ num, total, chapter, children, noChrome=false, dark=false, className='' }) => (
+  <div className={`slide ${className}`} style={dark?{background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 65%,rgba(160,115,42,0.45) 100%)'}:{}}>
+    <div className="grid-bg" style={dark?{opacity:0.15}:{}} />
+    {!noChrome && (
+      <>
+        <div className="slide-header" style={dark?{color:'rgba(255,255,255,0.5)'}:{}}>
+          <div style={{display:'flex',alignItems:'center',gap:12}}>
+            <LogoMark />
+          </div>
+          {chapter && (
+            <span style={{fontFamily:'var(--font-mono)',fontSize:24,fontWeight:600,letterSpacing:'0.25em',textTransform:'uppercase',
+              /* #A0732A on light bg = 3.87:1 at 24px bold (large text > 3:1 ✓); on dark = 4.39:1 ✓ */
+              color: dark ? '#A0732A' : 'var(--accent)'}}>
+              {chapter}
+            </span>
+          )}
+        </div>
+        <div className="slide-footer" style={dark?{color:'rgba(255,255,255,0.45)'}:{}}>
+          <span>{TALK_TITLE} · {PRESENTER_NAME} · {EVENT_NAME}</span>
+          <span>{String(num).padStart(2,'0')} / {String(total).padStart(2,'0')}</span>
+        </div>
+      </>
+    )}
+    {children}
+  </div>
+);
+
+Object.assign(window, { LogoMark, PhotoPlaceholder, SlideChrome, openLink });
+</script>
+
+<!-- [5a] Slides 01–05 -->
+<script type="text/babel">
+
+/* SLIDE 01 — Cover */
+const Slide01 = () => (
+  <div className="slide" style={{background:'var(--bg)'}}>
+    <div className="grid-bg" />
+    {/* Geometric orb — no religious symbols */}
+    <div style={{position:'absolute',top:-180,right:-180,width:860,height:860,borderRadius:'50%',background:'radial-gradient(circle,rgba(160,115,42,0.18) 0%,transparent 70%)',pointerEvents:'none'}} />
+    <div style={{position:'absolute',bottom:-120,left:-80,width:600,height:600,borderRadius:'50%',background:'radial-gradient(circle,rgba(160,115,42,0.10) 0%,transparent 70%)',pointerEvents:'none'}} />
+    <div className="pad" style={{justifyContent:'space-between'}}>
+      {/* Top row */}
+      <div style={{display:'flex',alignItems:'center',gap:24}}>
+        <LogoMark />
+        <span style={{fontFamily:'var(--font-mono)',fontSize:24,letterSpacing:'.2em',color:'var(--ink-muted)',textTransform:'uppercase',fontWeight:500}}>{EVENT_NAME}</span>
+      </div>
+      {/* Center content */}
+      <div>
+        <div className="eyebrow" style={{marginBottom:48}}>A Bible Study</div>
+        {/* whiteSpace:'nowrap' — title never splits mid-word */}
+        <h1 className="display" style={{marginBottom:36,whiteSpace:'nowrap',fontSize:200}}>Exodus</h1>
+        <p style={{fontFamily:'var(--font-display)',fontSize:52,lineHeight:1.2,fontWeight:400,color:'var(--ink-soft)',margin:0,maxWidth:1300,letterSpacing:'-.01em'}}>
+          Redemption, Covenant, and the God Who Dwells with His People
+        </p>
+      </div>
+      {/* Bottom row */}
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',fontFamily:'var(--font-mono)',fontSize:24,color:'var(--ink-muted)',letterSpacing:'.04em'}}>
+        <span>→ <a href={BRAND_URL} target="_blank" rel="noopener noreferrer"
+           onClick={(e)=>openLink(e,BRAND_URL)}
+           style={{color:'inherit',fontWeight:600,textDecoration:'none',pointerEvents:'auto',position:'relative',zIndex:20,cursor:'pointer'}}>{BRAND_NAME}</a></span>
+        <span>01 / {String(TOTAL).padStart(2,'0')}</span>
+      </div>
+    </div>
+  </div>
+);
+
+/* SLIDE 02 — What Is Exodus? */
+const Slide02 = () => (
+  <SlideChrome num={2} total={TOTAL} chapter="Overview">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:36}}>The Book of Exodus</div>
+      <h2 className="section" style={{marginBottom:64,fontSize:80}}>From Slavery to Sinai</h2>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:28}}>
+        {[
+          { label:'Author', body:'Moses, writing under divine inspiration. Jesus explicitly quotes Exodus as authoritative Scripture (Mark 12:26; Luke 20:37). Conservative dating places the Exodus around 1446 BC, based on 1 Kings 6:1 (480 years before Solomon\'s temple, ~966 BC).' },
+          { label:'Setting', body:'Israel in Egypt, enslaved ~430 years (Ex. 12:40). The Sinai peninsula. The wilderness of the ancient Near East. God\'s people as a vast but vulnerable nation learning to trust a God they are only beginning to know.' },
+          { label:'Theme', body:'God redeems his people not merely to save them, but to dwell with them. The book does not end with freedom on the far shore of the sea — it ends with fire and glory filling the Tabernacle in the middle of the camp.' },
+        ].map((c,i) => (
+          <div key={i} className="card">
+            {/* --accent-fg: #7a4e10 on light bg = 6.7:1 ✓ all text sizes */}
+            <div style={{fontFamily:'var(--font-mono)',fontSize:20,fontWeight:600,letterSpacing:'.18em',textTransform:'uppercase',color:'var(--accent-fg)',marginBottom:24}}>{c.label}</div>
+            <p style={{fontFamily:'var(--font-text)',fontSize:26,lineHeight:1.55,color:'var(--ink-soft)',margin:0}}>{c.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+/* SLIDE 03 — Structure of Exodus */
+const Slide03 = () => (
+  <SlideChrome num={3} total={TOTAL} chapter="Structure">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:36}}>The Shape of the Book</div>
+      <h2 className="section" style={{marginBottom:56,fontSize:76}}>Two Halves, One Story</h2>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:32,flex:1}}>
+        {/* Dark panel — Part 1 */}
+        <div style={{background:'linear-gradient(135deg,#1a2a4f,#0f1a35)',borderRadius:28,padding:'52px 56px',display:'flex',flexDirection:'column',gap:28}}>
+          {/* #A0732A on #0f1a35 = 4.39:1 ✓ */}
+          <div style={{fontFamily:'var(--font-mono)',fontSize:22,fontWeight:600,letterSpacing:'.2em',textTransform:'uppercase',color:'#A0732A'}}>Chapters 1–18</div>
+          <div style={{fontFamily:'var(--font-display)',fontSize:72,fontWeight:800,color:'#fff',lineHeight:1,letterSpacing:'-.025em'}}>Redemption</div>
+          <div style={{width:48,height:2,background:'rgba(160,115,42,0.6)'}} />
+          {['The cry: Israel oppressed (1–2)','The call: Moses commissioned (3–6)','The contest: Ten plagues (7–12)','The crossing: Sea & wilderness (13–18)'].map((t,i) => (
+            <div key={i} style={{display:'flex',gap:16,alignItems:'flex-start'}}>
+              <span style={{fontFamily:'var(--font-mono)',fontSize:18,color:'#A0732A',flexShrink:0,marginTop:4}}>{String(i+1).padStart(2,'0')}</span>
+              <span style={{fontFamily:'var(--font-text)',fontSize:26,color:'rgba(255,255,255,0.85)',lineHeight:1.4}}>{t}</span>
+            </div>
+          ))}
+        </div>
+        {/* Light panel — Part 2 */}
+        <div style={{background:'var(--bg-elev)',border:'1px solid var(--line)',borderRadius:28,padding:'52px 56px',display:'flex',flexDirection:'column',gap:28}}>
+          <div style={{fontFamily:'var(--font-mono)',fontSize:22,fontWeight:600,letterSpacing:'.2em',textTransform:'uppercase',color:'var(--accent-fg)'}}>Chapters 19–40</div>
+          <div style={{fontFamily:'var(--font-display)',fontSize:72,fontWeight:800,color:'var(--ink)',lineHeight:1,letterSpacing:'-.025em'}}>Revelation</div>
+          <div style={{width:48,height:2,background:'var(--accent)'}} />
+          {['The law: Sinai covenant (19–24)','The design: Tabernacle blueprints (25–31)','The failure: Golden calf & intercession (32–34)','The completion: Tabernacle built & filled (35–40)'].map((t,i) => (
+            <div key={i} style={{display:'flex',gap:16,alignItems:'flex-start'}}>
+              <span style={{fontFamily:'var(--font-mono)',fontSize:18,color:'var(--accent-fg)',flexShrink:0,marginTop:4}}>{String(i+1).padStart(2,'0')}</span>
+              <span style={{fontFamily:'var(--font-text)',fontSize:26,color:'var(--ink-soft)',lineHeight:1.4}}>{t}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+/* SLIDE 04 — Israel in Egypt */
+const Slide04 = () => (
+  <SlideChrome num={4} total={TOTAL} chapter="Exodus 1–2">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:36}}>A Nation in Chains</div>
+      <h2 className="section" style={{marginBottom:48,fontSize:84}}>The Cry That Reached Heaven</h2>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:40,flex:1}}>
+        <div style={{display:'flex',flexDirection:'column',gap:28}}>
+          <p style={{fontFamily:'var(--font-text)',fontSize:30,lineHeight:1.55,color:'var(--ink-soft)',margin:0}}>
+            A new king arose over Egypt who did not know Joseph. Fearing Israel's numbers, he enslaved them — forcing them to build Pithom and Rameses. When they still multiplied, he ordered the death of every Hebrew son born.
+          </p>
+          <p style={{fontFamily:'var(--font-text)',fontSize:30,lineHeight:1.55,color:'var(--ink-soft)',margin:0}}>
+            But God's covenant cannot be undone by human power. Their multiplication was itself a sign of his faithfulness — the very thing that threatened Pharaoh proved God was keeping his promise to Abraham.
+          </p>
+        </div>
+        <div style={{display:'flex',flexDirection:'column',gap:24}}>
+          {/* Pull quote — #fff on dark panel */}
+          <div style={{background:'linear-gradient(135deg,#1a2a4f,#0f1a35)',borderRadius:24,padding:'44px 48px',flex:1,display:'flex',flexDirection:'column',justifyContent:'center',gap:20}}>
+            <p style={{fontFamily:'var(--font-display)',fontSize:34,lineHeight:1.4,color:'rgba(255,255,255,0.9)',margin:0,fontStyle:'italic'}}>
+              "The people of Israel groaned because of their slavery and cried out for help. Their cry for rescue from slavery came up to God. And God heard their groaning, and God remembered his covenant... God saw the people of Israel — and God knew."
+            </p>
+            <div style={{fontFamily:'var(--font-mono)',fontSize:20,color:'#A0732A',letterSpacing:'.1em'}}>— Exodus 2:23–25</div>
+          </div>
+          <div style={{padding:'28px 36px',borderLeft:'4px solid var(--accent)',background:'var(--bg-elev)',borderRadius:'0 16px 16px 0'}}>
+            <p style={{fontFamily:'var(--font-text)',fontSize:26,lineHeight:1.5,color:'var(--ink-soft)',margin:0}}>
+              Four verbs mark God's response: <strong style={{color:'var(--accent-fg)'}}>heard · remembered · saw · knew.</strong> Israel was not forgotten — they were on the verge of being rescued.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+/* SLIDE 05 — Moses */
+const Slide05 = () => (
+  <SlideChrome num={5} total={TOTAL} chapter="Exodus 2–4">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:36}}>Moses</div>
+      <h2 className="section" style={{marginBottom:56,fontSize:84}}>Hidden, Prepared, and Sent</h2>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:28,flex:1}}>
+        {[
+          { phase:'01', label:'Formed', ref:'Exodus 2:1–10', body:'Hidden in a basket on the Nile to escape Pharaoh\'s death decree. Found by Pharaoh\'s own daughter — nursed by his Hebrew mother, raised in the Egyptian palace. God positioned the future deliverer inside the very house of the oppressor.' },
+          { phase:'02', label:'Fled', ref:'Exodus 2:11–22', body:'Killed an Egyptian taskmaster defending a Hebrew slave. Fled to Midian. Married Zipporah; became a shepherd. Forty years in the wilderness — not wasted time, but necessary formation. God was stripping away self-sufficiency before giving a mission.' },
+          { phase:'03', label:'Found', ref:'Exodus 2:23–3:10', body:'While tending flocks near Horeb, Moses sees a bush burning but not consumed. God calls him by name. "I have surely seen the affliction of my people... Come, I will send you to Pharaoh." The deliverer is ready. The moment has come.' },
+        ].map((p,i) => (
+          <div key={i} className="card" style={{display:'flex',flexDirection:'column',gap:20}}>
+            <div style={{display:'flex',alignItems:'baseline',gap:16}}>
+              <span style={{fontFamily:'var(--font-display)',fontSize:72,fontWeight:800,color:'var(--accent)',lineHeight:1,opacity:0.25}}>{p.phase}</span>
+              <div>
+                <div style={{fontFamily:'var(--font-display)',fontSize:44,fontWeight:800,color:'var(--ink)',lineHeight:1,letterSpacing:'-.02em'}}>{p.label}</div>
+                <div style={{fontFamily:'var(--font-mono)',fontSize:18,color:'var(--accent-fg)',letterSpacing:'.1em',marginTop:6}}>{p.ref}</div>
+              </div>
+            </div>
+            <p style={{fontFamily:'var(--font-text)',fontSize:26,lineHeight:1.55,color:'var(--ink-soft)',margin:0}}>{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+Object.assign(window, { Slide01, Slide02, Slide03, Slide04, Slide05 });
+</script>
+
+<!-- [5b] Slides 06–11 -->
+<script type="text/babel">
+
+/* SLIDE 06 — The Burning Bush */
+const Slide06 = () => (
+  <SlideChrome num={6} total={TOTAL} chapter="Exodus 3–4">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:36}}>The Burning Bush</div>
+      <h2 className="section" style={{marginBottom:56,fontSize:84}}>I AM WHO I AM</h2>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:40,flex:1}}>
+        {/* Left: the 4 revelations */}
+        <div style={{display:'flex',flexDirection:'column',gap:24}}>
+          {[
+            { num:'1', title:'Transcendence', body:'"Take off your sandals — the place you are standing is holy ground." God is other. His presence transforms ordinary ground into sacred space.' },
+            { num:'2', title:'Covenant Faithfulness', body:'"I am the God of Abraham, of Isaac, and of Jacob." The God who spoke to the patriarchs centuries earlier had not forgotten a single word.' },
+            { num:'3', title:'The Divine Name', body:'"I AM WHO I AM." YHWH — the eternal, self-existent One. Not a local deity but the uncaused Cause of all things.' },
+            { num:'4', title:'A Clear Commission', body:'"Come, I will send you to Pharaoh that you may bring my people out of Egypt." Moses\' objections are met not with answers, but with God\'s presence: "I will be with you."' },
+          ].map((r,i) => (
+            <div key={i} style={{display:'flex',gap:20,alignItems:'flex-start'}}>
+              <span style={{fontFamily:'var(--font-mono)',fontSize:22,color:'var(--accent-fg)',fontWeight:600,flexShrink:0,marginTop:2}}>{r.num}</span>
+              <div>
+                <span style={{fontFamily:'var(--font-display)',fontSize:26,fontWeight:700,color:'var(--ink)'}}>{r.title} </span>
+                <span style={{fontFamily:'var(--font-text)',fontSize:26,color:'var(--ink-soft)',lineHeight:1.5}}>{r.body}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* Right: the great quote */}
+        <div style={{background:'linear-gradient(160deg,#1a2a4f,#0f1a35)',borderRadius:28,padding:'52px 56px',display:'flex',flexDirection:'column',justifyContent:'center',gap:24}}>
+          <div style={{fontFamily:'var(--font-display)',fontSize:120,color:'rgba(160,115,42,0.25)',lineHeight:0.8,marginBottom:8}}>"</div>
+          <p style={{fontFamily:'var(--font-display)',fontSize:48,lineHeight:1.25,color:'#fff',margin:0,fontWeight:500}}>
+            God said to Moses, "I AM WHO I AM." And he said, "Say this to the people of Israel: I AM has sent me to you."
+          </p>
+          {/* #A0732A on #0f1a35 = 4.39:1 ✓ */}
+          <div style={{fontFamily:'var(--font-mono)',fontSize:22,color:'#A0732A',letterSpacing:'.1em',marginTop:8}}>— Exodus 3:14</div>
+          <p style={{fontFamily:'var(--font-text)',fontSize:24,color:'rgba(255,255,255,0.7)',lineHeight:1.5,margin:0}}>
+            Jesus would later use this same language: "Before Abraham was, I AM." (John 8:58)
+          </p>
+        </div>
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+/* SLIDE 07 — Section Break: Plagues */
+const Slide07 = () => (
+  <div className="slide" style={{overflow:'hidden'}}>
+    <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 65%,rgba(160,115,42,0.45) 100%)'}} />
+    <div className="grid-bg" style={{opacity:0.15}} />
+    <div className="pad" style={{justifyContent:'center',color:'#fff',zIndex:2}}>
+      {/* #A0732A on #0f1a35 = 4.39:1 at 24px bold (large text) ✓ */}
+      <div style={{fontFamily:'var(--font-mono)',fontSize:24,letterSpacing:'.3em',textTransform:'uppercase',color:'#A0732A',marginBottom:40}}>Exodus 5–12</div>
+      <h2 style={{fontFamily:'var(--font-display)',fontSize:148,fontWeight:800,color:'#fff',lineHeight:0.95,letterSpacing:'-.03em',margin:'0 0 40px',whiteSpace:'nowrap'}}>The Plagues</h2>
+      <p style={{fontFamily:'var(--font-display)',fontSize:40,fontWeight:400,color:'rgba(255,255,255,0.78)',maxWidth:1200,lineHeight:1.35,margin:0}}>
+        Ten acts of divine judgment — not merely against Pharaoh, but against the gods of Egypt themselves. <em style={{color:'rgba(255,255,255,0.9)'}}>"On all the gods of Egypt I will execute judgments: I am the LORD."</em> — Exodus 12:12
+      </p>
+    </div>
+    <div className="slide-footer" style={{color:'rgba(255,255,255,0.4)',zIndex:3}}>
+      <span>{TALK_TITLE} · {PRESENTER_NAME} · {EVENT_NAME}</span>
+      <span style={{fontFamily:'var(--font-mono)',fontSize:22}}>07 / {String(TOTAL).padStart(2,'0')}</span>
+    </div>
+  </div>
+);
+
+/* SLIDE 08 — The Ten Plagues */
+const Slide08 = () => (
+  <SlideChrome num={8} total={TOTAL} chapter="Exodus 7–12">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:36}}>God vs. Egypt's Gods</div>
+      <h2 className="section" style={{marginBottom:56,fontSize:80}}>Ten Plagues, Ten Judgments</h2>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:28,flex:1}}>
+        {[
+          { group:'Plagues 1–3', refs:'Ex. 7–8:19', title:'Signs of Power', plagues:'Blood · Frogs · Gnats', body:'Egypt\'s river gods (Hapi) and nature deities (Heqet) are shown powerless. Pharaoh\'s magicians replicate the first two — then cannot. "This is the finger of God," they say (8:19), but Pharaoh\'s heart is hardened.' },
+          { group:'Plagues 4–7', refs:'Ex. 8:20–9:35', title:'God Distinguishes', plagues:'Flies · Livestock · Boils · Hail', body:'Beginning with the flies, God draws a clear line: "I will set apart the land of Goshen, where my people dwell" (8:22). No plague touches Israel. Pharaoh negotiates, then reneges after each reprieve. The pattern of hardening deepens.' },
+          { group:'Plagues 8–10', refs:'Ex. 10–12', title:'The Final Blows', plagues:'Locusts · Darkness · Firstborn', body:'Plague 9 — darkness for three days — strikes at Ra, Egypt\'s supreme sun god. Plague 10 is unlike the rest: no warning, no reprieve. The death of every firstborn, from Pharaoh\'s heir to the captive\'s son. Exodus is now inevitable.' },
+        ].map((p,i) => (
+          <div key={i} className="card" style={{display:'flex',flexDirection:'column',gap:16}}>
+            <div style={{fontFamily:'var(--font-mono)',fontSize:20,color:'var(--accent-fg)',fontWeight:600,letterSpacing:'.1em'}}>{p.group} · {p.refs}</div>
+            <div style={{fontFamily:'var(--font-display)',fontSize:40,fontWeight:800,color:'var(--ink)',lineHeight:1.05,letterSpacing:'-.02em'}}>{p.title}</div>
+            <div style={{fontFamily:'var(--font-mono)',fontSize:20,color:'var(--ink-muted)',letterSpacing:'.08em'}}>{p.plagues}</div>
+            <p style={{fontFamily:'var(--font-text)',fontSize:26,lineHeight:1.5,color:'var(--ink-soft)',margin:0,flex:1}}>{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+/* SLIDE 09 — The Passover */
+const Slide09 = () => (
+  <SlideChrome num={9} total={TOTAL} chapter="Exodus 12">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:36}}>The Passover</div>
+      <h2 className="section" style={{marginBottom:48,fontSize:84}}>When I See the Blood</h2>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:40,flex:1}}>
+        <div style={{display:'flex',flexDirection:'column',gap:24}}>
+          {[
+            { label:'The Lamb', body:'A year-old male without blemish — chosen on the 10th, slaughtered at twilight on the 14th. Inspected, perfect, unblemished. (Exodus 12:3–6)' },
+            { label:'The Blood', body:'Applied to the two doorposts and the lintel of each house. The household sheltered under the sign of blood already shed. Death was absorbed at the threshold. (Exodus 12:7)' },
+            { label:'The Meal', body:'Eaten in haste — sandals on, staff in hand, ready to depart. Unleavened bread; no time to wait for rising. Urgency is baked into the meal itself. (Exodus 12:11)' },
+            { label:'The Memorial', body:'"You shall observe this rite as a statute for you and for your sons forever." One night becomes Israel\'s defining annual celebration. (Exodus 12:24)' },
+          ].map((r,i) => (
+            <div key={i} style={{display:'flex',gap:20,alignItems:'flex-start',paddingBottom:24,borderBottom:i<3?'1px solid var(--line)':'none'}}>
+              <span style={{fontFamily:'var(--font-display)',fontSize:26,fontWeight:700,color:'var(--ink)',flexShrink:0,minWidth:120}}>{r.label}</span>
+              <p style={{fontFamily:'var(--font-text)',fontSize:26,lineHeight:1.5,color:'var(--ink-soft)',margin:0}}>{r.body}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{display:'flex',flexDirection:'column',gap:28}}>
+          <div style={{background:'linear-gradient(135deg,#1a2a4f,#0f1a35)',borderRadius:24,padding:'44px 48px',flex:1,display:'flex',flexDirection:'column',justifyContent:'center',gap:20}}>
+            <p style={{fontFamily:'var(--font-display)',fontSize:44,lineHeight:1.3,color:'rgba(255,255,255,0.95)',margin:0,fontStyle:'italic'}}>
+              "The blood shall be a sign for you, on the houses where you are. And when I see the blood, I will pass over you."
+            </p>
+            <div style={{fontFamily:'var(--font-mono)',fontSize:22,color:'#A0732A',letterSpacing:'.1em'}}>— Exodus 12:13</div>
+          </div>
+          <div style={{padding:'32px 40px',borderLeft:'4px solid var(--accent)',background:'var(--bg-elev)',borderRadius:'0 20px 20px 0'}}>
+            <p style={{fontFamily:'var(--font-text)',fontSize:26,lineHeight:1.5,color:'var(--ink-soft)',margin:0}}>
+              <strong style={{color:'var(--accent-fg)'}}>New Testament echo:</strong> "Christ, our Passover lamb, has been sacrificed." — 1 Corinthians 5:7. The Passover was never just history; it was a promise in the form of a meal.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+/* SLIDE 10 — The Red Sea */
+const Slide10 = () => (
+  <SlideChrome num={10} total={TOTAL} chapter="Exodus 13–15">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:36}}>The Red Sea</div>
+      <h2 className="section" style={{marginBottom:48,fontSize:84}}>The LORD Will Fight for You</h2>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:40,flex:1}}>
+        <div style={{display:'flex',flexDirection:'column',gap:24}}>
+          {[
+            { step:'Pursuit', body:'Pharaoh changed his mind. Six hundred chosen chariots pursued Israel into the wilderness. Trapped between the army and the sea, the people cried out in fear. Moses answered: "Fear not, stand firm, and see the salvation of the LORD." — 14:13–14' },
+            { step:'Protection', body:'The pillar of cloud moved from before Israel to behind them, standing between the camp and the Egyptian army. Light on one side; darkness on the other. God stood between his people and their enemy. (14:19–20)' },
+            { step:'Passage', body:'Moses stretched out his hand. A strong east wind drove the sea back all night. The waters were divided; Israel walked through on dry ground — with walls of water on their right hand and on their left. (14:21–22)' },
+            { step:'Praise', body:'The Song of Moses (15:1–21): "I will sing to the LORD, for he has triumphed gloriously." Israel\'s first corporate act of worship — not a liturgy but an eruption of gratitude on the far shore of an impossible deliverance.' },
+          ].map((r,i) => (
+            <div key={i} style={{display:'flex',gap:20,alignItems:'flex-start'}}>
+              <span style={{fontFamily:'var(--font-mono)',fontSize:20,color:'var(--accent-fg)',fontWeight:600,flexShrink:0,minWidth:90,marginTop:2}}>{r.step}</span>
+              <p style={{fontFamily:'var(--font-text)',fontSize:25,lineHeight:1.5,color:'var(--ink-soft)',margin:0}}>{r.body}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{background:'linear-gradient(160deg,#1a2a4f,#0f1a35)',borderRadius:28,padding:'52px 56px',display:'flex',flexDirection:'column',justifyContent:'center',gap:28}}>
+          <p style={{fontFamily:'var(--font-display)',fontSize:52,lineHeight:1.2,color:'#fff',margin:0,fontWeight:500,fontStyle:'italic'}}>
+            "The LORD saved Israel that day from the hand of the Egyptians, and Israel saw the Egyptians dead on the seashore."
+          </p>
+          <div style={{fontFamily:'var(--font-mono)',fontSize:22,color:'#A0732A',letterSpacing:'.1em'}}>— Exodus 14:30</div>
+          <div style={{height:1,background:'rgba(255,255,255,0.12)'}} />
+          <p style={{fontFamily:'var(--font-text)',fontSize:26,color:'rgba(255,255,255,0.75)',lineHeight:1.5,margin:0}}>
+            Paul sees the Red Sea as a type of baptism: "All were baptized into Moses in the cloud and in the sea." — 1 Corinthians 10:2. The pattern of passing through death into new life was enacted here before it was fulfilled in Christ.
+          </p>
+        </div>
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+/* SLIDE 11 — Wilderness Provision */
+const Slide11 = () => (
+  <SlideChrome num={11} total={TOTAL} chapter="Exodus 15–18">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:36}}>Wilderness Provision</div>
+      <h2 className="section" style={{marginBottom:56,fontSize:80}}>Daily Bread in the Desert</h2>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:28,flex:1}}>
+        {[
+          { icon:'16', label:'Manna & Quail', ref:'Exodus 16', body:'"What is it?" — the people\'s bewildered question named the food. Six days\' supply fell each morning; double on Friday. No hoarding permitted. A daily test of dependence designed to teach that "man does not live by bread alone." Jesus echoed this: "I am the bread of life." (John 6:35)' },
+          { icon:'17', label:'Water from the Rock', ref:'Exodus 17:1–7', body:'At Massah ("testing") and Meribah ("quarreling"), the people demand water and ask, "Is the LORD among us or not?" Moses strikes the rock at God\'s command and water flows. Paul identifies the theological referent: "The Rock was Christ." (1 Corinthians 10:4)' },
+          { icon:'18', label:'Jethro\'s Counsel', ref:'Exodus 18', body:'Moses\' father-in-law Jethro observes Moses judging the people from morning to evening, alone. "What you are doing is not good — you will wear yourself out." Wise, outside counsel accepted: authority delegated, structure built. A model of humble, scalable leadership.' },
+        ].map((p,i) => (
+          <div key={i} className="card" style={{display:'flex',flexDirection:'column',gap:20}}>
+            <div style={{display:'flex',alignItems:'baseline',gap:16}}>
+              <span style={{fontFamily:'var(--font-display)',fontSize:64,fontWeight:800,color:'var(--accent)',lineHeight:1,opacity:0.22}}>{p.icon}</span>
+              <div>
+                <div style={{fontFamily:'var(--font-display)',fontSize:38,fontWeight:800,color:'var(--ink)',lineHeight:1,letterSpacing:'-.02em'}}>{p.label}</div>
+                <div style={{fontFamily:'var(--font-mono)',fontSize:18,color:'var(--accent-fg)',marginTop:6}}>{p.ref}</div>
+              </div>
+            </div>
+            <p style={{fontFamily:'var(--font-text)',fontSize:26,lineHeight:1.55,color:'var(--ink-soft)',margin:0,flex:1}}>{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+Object.assign(window, { Slide06, Slide07, Slide08, Slide09, Slide10, Slide11 });
+</script>
+
+<!-- [5c] Slides 12–16 -->
+<script type="text/babel">
+
+/* SLIDE 12 — Section Break: Covenant at Sinai */
+const Slide12 = () => (
+  <div className="slide" style={{overflow:'hidden'}}>
+    <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 65%,rgba(160,115,42,0.45) 100%)'}} />
+    <div className="grid-bg" style={{opacity:0.15}} />
+    <div className="pad" style={{justifyContent:'center',color:'#fff',zIndex:2}}>
+      <div style={{fontFamily:'var(--font-mono)',fontSize:24,letterSpacing:'.3em',textTransform:'uppercase',color:'#A0732A',marginBottom:40}}>Exodus 19–24</div>
+      <h2 style={{fontFamily:'var(--font-display)',fontSize:148,fontWeight:800,color:'#fff',lineHeight:0.95,letterSpacing:'-.03em',margin:'0 0 40px',whiteSpace:'nowrap'}}>Covenant at Sinai</h2>
+      <p style={{fontFamily:'var(--font-display)',fontSize:40,fontWeight:400,color:'rgba(255,255,255,0.78)',maxWidth:1300,lineHeight:1.35,margin:0}}>
+        <em style={{color:'rgba(255,255,255,0.9)'}}>"You yourselves have seen what I did to the Egyptians, and how I bore you on eagles' wings and brought you to myself."</em> — Exodus 19:4. Redemption precedes obligation. The Law is not a ladder to climb; it is a covenant given to a people already redeemed.
+      </p>
+    </div>
+    <div className="slide-footer" style={{color:'rgba(255,255,255,0.4)',zIndex:3}}>
+      <span>{TALK_TITLE} · {PRESENTER_NAME} · {EVENT_NAME}</span>
+      <span style={{fontFamily:'var(--font-mono)',fontSize:22}}>12 / {String(TOTAL).padStart(2,'0')}</span>
+    </div>
+  </div>
+);
+
+/* SLIDE 13 — The Ten Commandments */
+const Slide13 = () => (
+  <SlideChrome num={13} total={TOTAL} chapter="Exodus 20">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:32}}>The Ten Commandments</div>
+      <h2 className="section" style={{marginBottom:16,fontSize:72}}>Two Tablets, One Command: Love</h2>
+      <p style={{fontFamily:'var(--font-mono)',fontSize:22,color:'var(--ink-muted)',marginBottom:40,letterSpacing:'.04em'}}>"All the Law and the Prophets hang on these two commandments." — Matthew 22:40</p>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:32,flex:1}}>
+        {/* Left tablet — Duty to God */}
+        <div style={{background:'linear-gradient(160deg,#1a2a4f,#0f1a35)',borderRadius:24,padding:'40px 48px',display:'flex',flexDirection:'column',gap:20}}>
+          <div style={{fontFamily:'var(--font-mono)',fontSize:20,color:'#A0732A',fontWeight:600,letterSpacing:'.15em',textTransform:'uppercase',marginBottom:4}}>Commandments 1–4 · Love God</div>
+          {['No other gods before me (v.3)','No idols or images for worship (v.4–6)','Do not take God\'s name in vain (v.7)','Remember the Sabbath and keep it holy (v.8–11)'].map((c,i) => (
+            <div key={i} style={{display:'flex',gap:16,alignItems:'flex-start'}}>
+              <span style={{fontFamily:'var(--font-mono)',fontSize:22,color:'rgba(160,115,42,0.8)',fontWeight:700,flexShrink:0,minWidth:32}}>{i+1}</span>
+              <span style={{fontFamily:'var(--font-text)',fontSize:28,color:'rgba(255,255,255,0.88)',lineHeight:1.4}}>{c}</span>
+            </div>
+          ))}
+        </div>
+        {/* Right tablet — Duty to neighbor */}
+        <div style={{background:'var(--bg-elev)',border:'1px solid var(--line)',borderRadius:24,padding:'40px 48px',display:'flex',flexDirection:'column',gap:16}}>
+          <div style={{fontFamily:'var(--font-mono)',fontSize:20,color:'var(--accent-fg)',fontWeight:600,letterSpacing:'.15em',textTransform:'uppercase',marginBottom:4}}>Commandments 5–10 · Love Neighbor</div>
+          {['Honor your father and mother (v.12)','Do not murder (v.13)','Do not commit adultery (v.14)','Do not steal (v.15)','Do not bear false witness (v.16)','Do not covet your neighbor\'s house or wife (v.17)'].map((c,i) => (
+            <div key={i} style={{display:'flex',gap:16,alignItems:'flex-start'}}>
+              <span style={{fontFamily:'var(--font-mono)',fontSize:22,color:'var(--accent-fg)',fontWeight:700,flexShrink:0,minWidth:32}}>{i+5}</span>
+              <span style={{fontFamily:'var(--font-text)',fontSize:27,color:'var(--ink-soft)',lineHeight:1.4}}>{c}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+/* SLIDE 14 — The Tabernacle */
+const Slide14 = () => (
+  <SlideChrome num={14} total={TOTAL} chapter="Exodus 25–40">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:36}}>The Tabernacle</div>
+      <h2 className="section" style={{marginBottom:48,fontSize:84}}>That I May Dwell Among Them</h2>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:40,flex:1}}>
+        <div style={{display:'flex',flexDirection:'column',gap:24}}>
+          {[
+            { label:'The Command', body:'"Have them make me a sanctuary, that I may dwell in their midst." (25:8) — The Tabernacle is God\'s initiative, not Israel\'s idea. He provides the blueprint; they provide the materials.' },
+            { label:'The Pattern', body:'"According to all that I show you concerning the pattern of the tabernacle..." (25:9). Moses received precise specifications on Sinai. Nothing was left to human creativity. The design was heaven-given.' },
+            { label:'The Structure', body:'Outer court: Altar of Burnt Offering + Bronze Laver. Holy Place: Lampstand, Table of Bread, Altar of Incense. Holy of Holies: The Ark of the Covenant — God\'s throne among his people.' },
+            { label:'The Fulfillment', body:'"The Word became flesh and tabernacled among us." (John 1:14). Every element of the Tabernacle — the lampstand, the bread, the blood — finds its antitype in Jesus Christ (Hebrews 9–10).' },
+          ].map((r,i) => (
+            <div key={i} style={{paddingLeft:24,borderLeft:'3px solid var(--accent)'}}>
+              <div style={{fontFamily:'var(--font-display)',fontSize:26,fontWeight:700,color:'var(--ink)',marginBottom:6}}>{r.label}</div>
+              <p style={{fontFamily:'var(--font-text)',fontSize:25,lineHeight:1.5,color:'var(--ink-soft)',margin:0}}>{r.body}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{background:'linear-gradient(160deg,#1a2a4f,#0f1a35)',borderRadius:28,padding:'52px 56px',display:'flex',flexDirection:'column',justifyContent:'center',gap:28}}>
+          <p style={{fontFamily:'var(--font-display)',fontSize:52,lineHeight:1.2,color:'#fff',margin:0,fontWeight:500,fontStyle:'italic'}}>
+            "Then the cloud covered the tent of meeting, and the glory of the LORD filled the tabernacle."
+          </p>
+          <div style={{fontFamily:'var(--font-mono)',fontSize:22,color:'#A0732A',letterSpacing:'.1em'}}>— Exodus 40:34</div>
+          <div style={{height:1,background:'rgba(255,255,255,0.12)'}} />
+          <p style={{fontFamily:'var(--font-text)',fontSize:26,color:'rgba(255,255,255,0.75)',lineHeight:1.5,margin:0}}>
+            The book that began with Israel crying out in slavery ends with God descending to live in the middle of their camp. This is the goal of all redemption: not just rescue, but relationship.
+          </p>
+        </div>
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+/* SLIDE 15 — The Golden Calf & Covenant Renewal */
+const Slide15 = () => (
+  <SlideChrome num={15} total={TOTAL} chapter="Exodus 32–34">
+    <div className="pad" style={{justifyContent:'center'}}>
+      <div className="eyebrow" style={{marginBottom:36}}>The Golden Calf</div>
+      <h2 className="section" style={{marginBottom:48,fontSize:76}}>Sin, Intercession, and Grace</h2>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 120px 1fr',gap:24,flex:1,alignItems:'stretch'}}>
+        {/* Before */}
+        <div style={{background:'var(--bg-elev)',border:'1px solid var(--line)',borderRadius:24,padding:'44px 48px',display:'flex',flexDirection:'column',gap:20}}>
+          <div style={{fontFamily:'var(--font-mono)',fontSize:22,color:'var(--ink-muted)',fontWeight:600,letterSpacing:'.15em',textTransform:'uppercase'}}>The Rupture (ch. 32)</div>
+          {['While Moses was on Sinai 40 days, the people demanded Aaron make them gods. He cast a golden calf from their earrings.', '"These are your gods, O Israel, who brought you out of Egypt!" — The covenant broken at its very beginning.', 'God\'s anger burns. Moses descends, shatters the tablets. The Levites execute 3,000 who would not repent.', 'Moses returns to God: "If you will not forgive their sin, blot me out of your book." Intercession at enormous personal cost.'].map((t,i) => (
+            <div key={i} style={{display:'flex',gap:14,alignItems:'flex-start'}}>
+              <span style={{fontFamily:'var(--font-mono)',fontSize:18,color:'var(--ink-faint)',flexShrink:0,marginTop:3}}>{String(i+1).padStart(2,'0')}</span>
+              <p style={{fontFamily:'var(--font-text)',fontSize:25,lineHeight:1.5,color:'var(--ink-soft)',margin:0}}>{t}</p>
+            </div>
+          ))}
+        </div>
+        {/* Arrow */}
+        <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <span style={{fontFamily:'var(--font-mono)',fontSize:72,color:'var(--accent)',fontWeight:300,lineHeight:1}}>→</span>
+        </div>
+        {/* After */}
+        <div style={{background:'linear-gradient(160deg,#1a2a4f,#0f1a35)',borderRadius:24,padding:'44px 48px',display:'flex',flexDirection:'column',gap:20,border:'2px solid rgba(160,115,42,0.4)'}}>
+          <div style={{fontFamily:'var(--font-mono)',fontSize:22,color:'#A0732A',fontWeight:600,letterSpacing:'.15em',textTransform:'uppercase'}}>The Renewal (ch. 33–34)</div>
+          {['"If your presence will not go with me, do not bring us up from here." Moses refuses to move without God\'s presence — the greatest prize of redemption.', 'God grants Moses a glimpse of his glory — hidden in the cleft of a rock as he passes by, covered by his hand.', '"The LORD, the LORD, a God merciful and gracious, slow to anger, abounding in steadfast love..." — The first formal self-declaration of God\'s character (34:6–7).', 'New tablets cut. The covenant renewed. Moses descends with his face shining — the glory of God\'s presence lingering on him.'].map((t,i) => (
+            <div key={i} style={{display:'flex',gap:14,alignItems:'flex-start'}}>
+              <span style={{fontFamily:'var(--font-mono)',fontSize:18,color:'rgba(160,115,42,0.7)',flexShrink:0,marginTop:3}}>{String(i+1).padStart(2,'0')}</span>
+              <p style={{fontFamily:'var(--font-text)',fontSize:25,lineHeight:1.5,color:'rgba(255,255,255,0.82)',margin:0}}>{t}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </SlideChrome>
+);
+
+/* SLIDE 16 — Closing: Christ in Exodus */
+const Slide16 = () => (
+  <div className="slide" style={{background:'var(--bg)'}}>
+    <div className="grid-bg" />
+    <div style={{position:'absolute',bottom:-200,left:-200,width:900,height:900,borderRadius:'50%',background:`radial-gradient(circle,rgba(160,115,42,0.15) 0%,transparent 70%)`,pointerEvents:'none'}} />
+    <div className="pad" style={{justifyContent:'space-between'}}>
+      <LogoMark />
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:56,alignItems:'center'}}>
+        <div>
+          <div className="eyebrow" style={{marginBottom:36}}>Christ in Exodus</div>
+          <h2 style={{fontFamily:'var(--font-display)',fontSize:88,fontWeight:800,lineHeight:0.95,letterSpacing:'-.03em',margin:'0 0 36px',color:'var(--ink)'}}>The Exodus of All Exoduses</h2>
+          <p style={{fontFamily:'var(--font-text)',fontSize:28,lineHeight:1.55,color:'var(--ink-soft)',margin:'0 0 40px',maxWidth:820}}>
+            "Moses and Elijah appeared in glory and spoke of his departure (<em>exodus</em>), which he was about to accomplish at Jerusalem." — Luke 9:31. The original Exodus was always pointing to a greater one.
+          </p>
+          <a href={BRAND_URL} target="_blank" rel="noopener noreferrer"
+             onClick={(e)=>openLink(e,BRAND_URL)}
+             style={{display:'inline-flex',alignItems:'center',gap:12,padding:'20px 44px',background:'#A0732A',color:'#fff',borderRadius:999,fontFamily:'var(--font-mono)',fontSize:28,fontWeight:600,textDecoration:'none',letterSpacing:'.04em',pointerEvents:'auto',position:'relative',zIndex:20,cursor:'pointer'}}>
+            {/* white on #A0732A = 4.17:1; 28px bold = large text → needs 3:1 ✓ */}
+            {BRAND_URL.replace('https://','')}
+          </a>
+        </div>
+        <div style={{display:'flex',flexDirection:'column',gap:20}}>
+          {[
+            { ot:'The Passover Lamb', nt:'"Christ, our Passover lamb, has been sacrificed."', ref:'1 Cor. 5:7' },
+            { ot:'The Red Sea Crossing', nt:'"All were baptized into Moses in the cloud and in the sea."', ref:'1 Cor. 10:1–2' },
+            { ot:'Manna in the Desert', nt:'"I am the bread of life... your fathers ate manna and died."', ref:'John 6:35, 49' },
+            { ot:'Water from the Rock', nt:'"The Rock was Christ."', ref:'1 Cor. 10:4' },
+            { ot:'The Tabernacle', nt:'"The Word became flesh and tabernacled among us."', ref:'John 1:14' },
+          ].map((r,i) => (
+            <div key={i} style={{display:'flex',gap:0,borderLeft:'3px solid var(--accent)',paddingLeft:24}}>
+              <div style={{flex:1}}>
+                <span style={{fontFamily:'var(--font-mono)',fontSize:18,color:'var(--accent-fg)',fontWeight:600,letterSpacing:'.06em'}}>{r.ot} → </span>
+                <span style={{fontFamily:'var(--font-text)',fontSize:24,color:'var(--ink-soft)',lineHeight:1.4}}>{r.nt} </span>
+                <span style={{fontFamily:'var(--font-mono)',fontSize:18,color:'var(--ink-muted)'}}>{r.ref}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{display:'flex',justifyContent:'flex-end',fontFamily:'var(--font-mono)',fontSize:22,color:'var(--ink-muted)'}}>
+        {PRESENTER_NAME} · {EVENT_NAME}
+      </div>
+    </div>
+  </div>
+);
+
+Object.assign(window, { Slide12, Slide13, Slide14, Slide15, Slide16 });
+</script>
+
+<!-- [6] Mount -->
+<script type="text/babel">
+const mounts = [Slide01,Slide02,Slide03,Slide04,Slide05,Slide06,Slide07,Slide08,Slide09,Slide10,Slide11,Slide12,Slide13,Slide14,Slide15,Slide16];
+mounts.forEach((C,i) => {
+  const el = document.getElementById(`s${String(i+1).padStart(2,'0')}`);
+  if (el) ReactDOM.createRoot(el).render(<C />);
+});
+</script>
+
+<!-- [7] Theme + tweaks controller -->
+<script>
+// Disable shadow-DOM tapzones so mouse clicks reach links in slides.
+(function disableTapzones() {
+  function inject() {
+    const deck = document.getElementById('deck');
+    if (deck && deck.shadowRoot) {
+      const s = document.createElement('style');
+      s.textContent = '.tapzones { display: none !important; }';
+      deck.shadowRoot.appendChild(s);
+    }
+  }
+  if (document.readyState === 'complete') { inject(); }
+  else { window.addEventListener('load', inject); }
+  setTimeout(inject, 500);
+})();
+
+const html = document.documentElement;
+const savedTheme = localStorage.getItem('deck:theme') || 'light';
+html.setAttribute('data-theme', savedTheme);
+
+function syncThemeButtons(theme) {
+  document.querySelectorAll('[data-theme-set]').forEach(b => b.classList.toggle('active', b.dataset.themeSet === theme));
+}
+syncThemeButtons(savedTheme);
+document.querySelectorAll('[data-theme-set]').forEach(b => {
+  b.addEventListener('click', () => { const t = b.dataset.themeSet; html.setAttribute('data-theme', t); localStorage.setItem('deck:theme', t); syncThemeButtons(t); });
+});
+
+function applyAccent(color) {
+  html.style.setProperty('--accent', color);
+  html.style.setProperty('--brand-blue-bright', color);
+  html.style.setProperty('--brand-blue', color);
+  document.querySelectorAll('#tw-accent .sw').forEach(el => el.classList.toggle('active', el.dataset.accent === color));
+}
+const savedAccent = localStorage.getItem('deck:accent') || ACCENT_COLOR;
+applyAccent(savedAccent);
+document.querySelectorAll('#tw-accent .sw').forEach(el => {
+  el.addEventListener('click', () => { const c = el.dataset.accent; localStorage.setItem('deck:accent', c); applyAccent(c); });
+});
+
+function applyGrid(state) {
+  document.querySelectorAll('.grid-bg').forEach(el => el.style.display = state === 'off' ? 'none' : '');
+  document.querySelectorAll('#tw-grid button').forEach(b => b.classList.toggle('active', b.dataset.grid === state));
+}
+const savedGrid = localStorage.getItem('deck:grid') || 'on';
+setTimeout(() => applyGrid(savedGrid), 400);
+document.querySelectorAll('#tw-grid button').forEach(b => {
+  b.addEventListener('click', () => { const s = b.dataset.grid; localStorage.setItem('deck:grid', s); applyGrid(s); });
+});
+
+function applyDensity(state) {
+  if (state === 'tight') document.querySelectorAll('.pad').forEach(el => el.style.padding = '64px 96px');
+  else document.querySelectorAll('.pad').forEach(el => el.style.padding = '');
+  document.querySelectorAll('#tw-density button').forEach(b => b.classList.toggle('active', b.dataset.density === state));
+}
+const savedDensity = localStorage.getItem('deck:density') || 'default';
+setTimeout(() => applyDensity(savedDensity), 400);
+document.querySelectorAll('#tw-density button').forEach(b => {
+  b.addEventListener('click', () => { const s = b.dataset.density; localStorage.setItem('deck:density', s); applyDensity(s); });
+});
+
+document.getElementById('btn-filmstrip').addEventListener('click', () => document.getElementById('deck').toggleFilmstrip());
+
+const panel = document.getElementById('tweaks-panel');
+window.addEventListener('message', (e) => {
+  if (!e.data || typeof e.data !== 'object') return;
+  if (e.data.type === '__activate_edit_mode')   panel.setAttribute('data-visible', '');
+  if (e.data.type === '__deactivate_edit_mode') panel.removeAttribute('data-visible');
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 't' || e.key === 'T') {
+    if (panel.hasAttribute('data-visible')) panel.removeAttribute('data-visible');
+    else panel.setAttribute('data-visible', '');
+  }
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+</script>
+
+</body>
+</html>

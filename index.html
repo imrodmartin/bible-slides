@@ -1,14 +1,200 @@
-<html><head><title>Bible Slides by Rod Martin</title></head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bible Slides — By Rod Martin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1628; --navy-mid:#0D1F38; --teal:#4DA8E0; --teal-glow:rgba(77,168,224,0.12);
+  --amber:#F5A623; --off-white:#F7F7F2; --text-muted:rgba(247,247,242,0.68);
+  --card-bg:rgba(77,168,224,0.06); --card-border:rgba(77,168,224,0.15);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--off-white);overflow-x:hidden;}
+
+/* HERO */
+.hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;background:var(--navy);overflow:hidden;}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:820px;padding:0 24px;}
+.hero-eyebrow{color:var(--teal);font-weight:600;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px;}
+.hero-title{font-weight:800;font-size:78px;line-height:1.02;letter-spacing:-0.02em;}
+.hero-subtitle{font-size:20px;color:var(--text-muted);margin:22px 0 36px;}
+.hero-subtitle span{color:var(--off-white);font-weight:600;}
+.hero-meta{font-size:28px;color:var(--text-muted);margin-bottom:34px;}
+.hero-meta a{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(77,168,224,0.3);transition:border-color .2s;}
+.hero-meta a:hover{border-color:var(--teal);}
+.btn-primary{display:inline-block;background:var(--teal);color:var(--navy);padding:16px 42px;border-radius:6px;font-family:'Inter',sans-serif;font-weight:700;font-size:17px;border:none;cursor:pointer;text-decoration:none;transition:background .2s ease,transform .15s ease;}
+.btn-primary:hover{background:#3d97cf;transform:translateY(-2px);}
+
+.hero-shapes-back,.hero-shapes-mid{position:absolute;inset:0;pointer-events:none;}
+.shape{position:absolute;}
+.rect-big{width:340px;height:200px;border:2px solid rgba(77,168,224,0.12);border-radius:12px;top:12%;right:7%;}
+.circle-sm{width:70px;height:70px;border-radius:50%;background:rgba(77,168,224,0.07);bottom:22%;left:8%;}
+.diamond{width:55px;height:55px;background:rgba(245,166,35,0.18);transform:rotate(45deg);top:58%;right:16%;}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--teal);top:28%;left:7%;}
+
+@keyframes floatA{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-16px) rotate(4deg);}}
+@keyframes floatB{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-11px) rotate(-3deg);}}
+@keyframes floatC{0%,100%{transform:translateY(0) rotate(45deg);}50%{transform:translateY(-9px) rotate(50deg);}}
+.float-a{animation:floatA 7s ease-in-out infinite;}
+.float-b{animation:floatB 9s ease-in-out infinite 1.5s;}
+.float-c{animation:floatC 6s ease-in-out infinite .5s;}
+
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:.5;}50%{transform:translateY(7px);opacity:1;}}
+.scroll-indicator{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);animation:bounce 2s ease-in-out infinite;cursor:pointer;z-index:3;}
+
+/* TESTAMENT SECTIONS */
+.books-section{padding:96px 24px;}
+.books-section.alt{background:var(--navy-mid);}
+.section-head{max-width:1100px;margin:0 auto 14px;text-align:center;}
+.section-eyebrow{color:var(--teal);font-weight:600;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;}
+.section-head h2{font-weight:700;font-size:48px;letter-spacing:-0.02em;margin-top:8px;}
+.section-sub{color:var(--text-muted);font-size:16px;margin-top:10px;}
+.books-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1100px;margin:42px auto 0;}
+@media(max-width:900px){.books-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:640px){.books-grid{grid-template-columns:repeat(2,1fr);}}
+
+.book{position:relative;display:flex;align-items:center;gap:12px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;padding:16px 18px;color:var(--off-white);text-decoration:none;transition:background .22s,border-color .22s,transform .22s;}
+.book:hover{background:rgba(77,168,224,0.1);border-color:rgba(77,168,224,0.32);transform:translateY(-4px);}
+.book-num{flex:0 0 30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:rgba(77,168,224,0.14);color:var(--teal);}
+.book.amber .book-num{background:rgba(245,166,35,0.16);color:var(--amber);}
+.book-name{font-weight:600;font-size:15px;line-height:1.2;}
+
+/* CLOSING */
+.closing-section{padding:120px 24px;text-align:center;background:var(--navy);position:relative;overflow:hidden;}
+.closing-section::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse 400px 200px at 50% 50%,rgba(77,168,224,0.12),transparent);pointer-events:none;}
+.closing-content{position:relative;z-index:2;max-width:720px;margin:0 auto;}
+.closing-content h2{font-weight:800;font-size:56px;letter-spacing:-0.02em;}
+.closing-content p{color:var(--text-muted);font-size:18px;margin:18px 0 34px;}
+
+footer{padding:38px 24px;text-align:center;color:var(--text-muted);font-size:14px;border-top:1px solid rgba(247,247,242,0.07);}
+footer a{color:var(--teal);text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+
+@media(max-width:640px){.hero-title{font-size:48px;}.section-head h2{font-size:36px;}.closing-content h2{font-size:38px;}}
+</style>
+</head>
 <body>
-  <h1>Bible Slides by Rod Martin</h1>
-  <h2>Feel free to use these.</h2>
-  <h3>Old Testament</h3>
-  <p><a href="genesis.html">Genesis</a></p>
-  <p><a href="exodus.html">Exodus</a></p>
-  <p><a href="leviticus-slides.html"></a></p>
-  <h3>New Testament</h3>
-  <p><a href="book-of-romans-slides.html"></a></p>
-<p>  <a href="ephesians.html">Ephesians</a></p>
-  <p><a href="philippians.html">Philippians</a></p>
-  
-</body></html>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-shapes-back">
+    <div class="shape rect-big float-a"></div>
+    <div class="shape circle-sm float-b"></div>
+  </div>
+  <div class="hero-shapes-mid">
+    <div class="shape diamond float-c"></div>
+    <div class="shape dot float-b"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Learn the Scripture, Slide by Slide</div>
+    <h1 class="hero-title">Bible Slides</h1>
+    <p class="hero-subtitle">By <span>Rod Martin</span></p>
+    <p class="hero-meta">A growing library of teaching slides for every book of the Bible &middot; <a href="https://imrodmartin.com" target="_blank" rel="noopener">imrodmartin.com</a></p>
+    <a href="#old-testament" class="btn-primary">Browse the Books</a>
+  </div>
+  <a href="#old-testament" class="scroll-indicator" aria-label="Scroll down">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#4DA8E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</section>
+
+<!-- OLD TESTAMENT -->
+<section class="books-section" id="old-testament">
+  <div class="section-head">
+    <div class="section-eyebrow">39 Books</div>
+    <h2>Old Testament</h2>
+    <p class="section-sub">Genesis through Malachi</p>
+  </div>
+  <div class="books-grid" id="ot-grid"></div>
+</section>
+
+<!-- NEW TESTAMENT -->
+<section class="books-section alt" id="new-testament">
+  <div class="section-head">
+    <div class="section-eyebrow">27 Books</div>
+    <h2>New Testament</h2>
+    <p class="section-sub">Matthew through Revelation</p>
+  </div>
+  <div class="books-grid" id="nt-grid"></div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing-section">
+  <div class="closing-content">
+    <h2>From Genesis to Revelation</h2>
+    <p>Pick a book and start teaching. New slide sets are added regularly.</p>
+    <a href="#old-testament" class="btn-primary">Back to the Books</a>
+  </div>
+</section>
+
+<footer>
+  &copy; <span id="year"></span> Rod Martin &middot; <a href="https://imrodmartin.com" target="_blank" rel="noopener">imrodmartin.com</a>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+const oldTestament=["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi"];
+const newTestament=["Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"];
+
+const SLIDES_BASE="https://imrodmartin.github.io/bible-slides/";
+function slugify(name){return name.toLowerCase().replace(/\s+/g,"");}
+
+function renderBooks(list,containerId,amber){
+  const grid=document.getElementById(containerId);
+  list.forEach((item,i)=>{
+    const name=typeof item==='string'?item:item.name;
+    const url=typeof item==='object'&&item.url?item.url:SLIDES_BASE+slugify(name)+".html";
+    const a=document.createElement('a');
+    a.className='book'+(amber?' amber':'');
+    a.href=url;
+    a.target='_blank';
+    a.rel='noopener';
+    a.innerHTML='<span class="book-num">'+(i+1)+'</span><span class="book-name">'+name+'</span>';
+    grid.appendChild(a);
+  });
+}
+renderBooks(oldTestament,'ot-grid',false);
+renderBooks(newTestament,'nt-grid',true);
+document.getElementById('year').textContent=new Date().getFullYear();
+
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.set([".hero-eyebrow",".hero-title",".hero-subtitle",".hero-meta",".hero-cta,.hero .btn-primary",".scroll-indicator"],{opacity:0,y:30});
+const heroTl=gsap.timeline({delay:0.2});
+heroTl
+  .to(".hero-eyebrow",{opacity:1,y:0,duration:0.6,ease:"power3.out"})
+  .to(".hero-title",{opacity:1,y:0,duration:1.0,ease:"power3.out"},"-=0.3")
+  .to(".hero-subtitle",{opacity:1,y:0,duration:0.8,ease:"power2.out"},"-=0.5")
+  .to(".hero-meta",{opacity:1,y:0,duration:0.7,ease:"power2.out"},"-=0.5")
+  .to(".hero .btn-primary",{opacity:1,y:0,duration:0.7,ease:"power2.out"},"-=0.4")
+  .to(".scroll-indicator",{opacity:1,y:0,duration:0.5,ease:"power2.out"},"-=0.2");
+
+const hero=document.querySelector('.hero');
+hero.addEventListener('mousemove',(e)=>{
+  const r=hero.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-0.5;
+  const y=(e.clientY-r.top)/r.height-0.5;
+  gsap.to(".hero-shapes-back",{duration:2.0,x:x*-45,y:y*-22,ease:"power1.out"});
+  gsap.to(".hero-shapes-mid",{duration:1.5,x:x*-22,y:y*-11,ease:"power1.out"});
+  gsap.to(".hero-content",{duration:1.2,x:x*8,y:y*5,ease:"power1.out"});
+});
+
+["#ot-grid","#nt-grid"].forEach(sel=>{
+  gsap.set(sel+" .book",{opacity:0,y:40,rotateX:14,transformPerspective:900,transformOrigin:"top center"});
+  gsap.to(sel+" .book",{
+    scrollTrigger:{trigger:sel,start:"top 80%",toggleActions:"play none none reverse"},
+    opacity:1,y:0,rotateX:0,duration:0.6,stagger:0.02,ease:"power2.out"
+  });
+});
+
+gsap.utils.toArray(".section-head").forEach(h=>{
+  gsap.from(h,{scrollTrigger:{trigger:h,start:"top 82%"},opacity:0,y:35,duration:0.8,ease:"power3.out"});
+});
+
+gsap.from(".closing-content",{scrollTrigger:{trigger:".closing-section",start:"top 75%"},opacity:0,y:45,duration:1.0,ease:"power3.out"});
+</script>
+</body>
+</html>

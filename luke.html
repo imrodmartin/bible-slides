@@ -186,6 +186,8 @@
     <section id="s17"></section>
     <section id="s18"></section>
     <section id="s19"></section>
+    <section id="s20"></section>
+    <section id="s21"></section>
   </deck-stage>
 
   <!-- [1] deck-stage web component -->
@@ -418,7 +420,7 @@
     const ACCENT_COLOR   = '#5AA8E0';
     const TALK_TITLE     = 'The Gospel of Luke';
     const EVENT_NAME     = 'Bible Overview';
-    const TOTAL          = 19;
+    const TOTAL          = 21;
 
     window.__resources = {
       brandLogo:      '',
@@ -499,7 +501,7 @@
           </div>
           <div style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-end',fontFamily:'var(--font-mono)',fontSize:24,color:'var(--ink-muted)',letterSpacing:'.04em' }}>
             <span>→ <a href={BRAND_URL} target="_blank" rel="noopener noreferrer" onClick={(e)=>openLink(e,BRAND_URL)} style={{ color:'var(--accent-strong)',fontWeight:600,textDecoration:'none',cursor:'pointer',pointerEvents:'auto',position:'relative',zIndex:20 }}>imrodmartin.com</a></span>
-            <span>01 / 19</span>
+            <span>01 / 21</span>
           </div>
         </div>
       </SlideChrome>
@@ -766,7 +768,7 @@
     const SlideSongs = () => {
       const songs = [
         { latin:'Magnificat', who:'Mary', ref:'1:46–55', d:'"My soul magnifies the Lord" — God lifts the lowly and fills the hungry.' },
-        { latin:'Benedictus', who:'Zechariah', ref:'1:68–79', d:'God has visited and redeemed his people; the dawn breaks from on high.' },
+        { latin:'Benedictus', who:'Zechariah', ref:'1:68–79', d:'God has visited and redeemed his people — keeping his oath to Abraham and raising up salvation in the house of David.' },
         { latin:'Gloria in Excelsis', who:'The Angels', ref:'2:14', d:'"Glory to God in the highest, and on earth peace" to the shepherds.' },
         { latin:'Nunc Dimittis', who:'Simeon', ref:'2:29–32', d:'"Now you let your servant depart in peace" — salvation seen, a light for all.' },
       ];
@@ -794,9 +796,46 @@
   <!-- [5c] Slide components — part 3 -->
   <script type="text/babel">
 
-    /* S15 — DIVIDER: cross & tomb */
-    const SlideDivCross = () => (
+    /* S15 — DIVIDER: the promised kingdom */
+    const SlideDivKingdom = () => (
       <SlideChrome num={15} total={TOTAL} noChrome>
+        <div style={{ position:'absolute',inset:0,background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 60%,#2f6fb0 100%)' }} />
+        <div className="grid-bg" style={{ opacity:0.15 }} />
+        <div className="pad" style={{ justifyContent:'center',color:'#fff' }}>
+          <div style={{ fontFamily:'var(--font-mono)',fontSize:24,letterSpacing:'.3em',textTransform:'uppercase',color:'#8ec3e8',marginBottom:40 }}>
+            Theme · The Promised Kingdom
+          </div>
+          <h2 className="section" style={{ color:'#fff',fontSize:130,marginBottom:40 }}>Heir to David’s Throne</h2>
+          <p style={{ fontFamily:'var(--font-display)',fontSize:36,fontWeight:400,color:'rgba(255,255,255,0.82)',maxWidth:1200,lineHeight:1.35,margin:0 }}>
+            "The Lord God will give him the throne of his father David, and he will reign over the house of Jacob forever." — Gabriel, Luke 1:32–33
+          </p>
+        </div>
+      </SlideChrome>
+    );
+
+    /* S16 — KINGDOM content: throne, delay, return */
+    const SlideKingdom = () => (
+      <SlideChrome num={16} total={TOTAL} chapter="The Promised Kingdom">
+        <div className="pad" style={{ justifyContent:'center' }}>
+          <div className="eyebrow" style={{ marginBottom:36 }}>The King and His Kingdom</div>
+          <h2 className="section" style={{ marginBottom:44,maxWidth:1600 }}>A throne, a delay, and a return.</h2>
+          <p className="body" style={{ fontSize:32,maxWidth:1520,marginBottom:28 }}>
+            Gabriel promises Mary a literal throne: her son will reign over the house of Jacob forever (1:32–33).
+            This is the Davidic kingdom Israel had long awaited — and as Jesus nears Jerusalem the crowds expect it
+            to "appear immediately" (19:11).
+          </p>
+          <p className="body" style={{ fontSize:32,maxWidth:1520 }}>
+            So he tells of a nobleman who goes to a far country to receive a kingdom and then return (19:12–27).
+            The reign is not cancelled but deferred: the King departs, his servants work and wait, and the kingdom
+            is established when he comes back. Israel’s hope still stands — "Lord, will you now restore the kingdom?" (Acts 1:6).
+          </p>
+        </div>
+      </SlideChrome>
+    );
+
+    /* S17 — DIVIDER: cross & tomb */
+    const SlideDivCross = () => (
+      <SlideChrome num={17} total={TOTAL} noChrome>
         <div style={{ position:'absolute',inset:0,background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 60%,#2f6fb0 100%)' }} />
         <div className="grid-bg" style={{ opacity:0.15 }} />
         <div className="pad" style={{ justifyContent:'center',color:'#fff' }}>
@@ -811,9 +850,9 @@
       </SlideChrome>
     );
 
-    /* S16 — CROSS & RESURRECTION content */
+    /* S18 — CROSS & RESURRECTION content */
     const SlideCross = () => (
-      <SlideChrome num={16} total={TOTAL} chapter="The Climax">
+      <SlideChrome num={18} total={TOTAL} chapter="The Climax">
         <div className="pad" style={{ justifyContent:'center' }}>
           <div className="eyebrow" style={{ marginBottom:36 }}>Passion & Resurrection</div>
           <h2 className="section" style={{ marginBottom:44,maxWidth:1600 }}>Grace, even at the cross.</h2>
@@ -829,9 +868,9 @@
       </SlideChrome>
     );
 
-    /* S17 — QUOTE: 24:5-6 */
+    /* S19 — QUOTE: 24:5-6 */
     const SlideQuoteRisen = () => (
-      <SlideChrome num={17} total={TOTAL}>
+      <SlideChrome num={19} total={TOTAL}>
         <div className="pad" style={{ justifyContent:'center',padding:'0 160px' }}>
           <div style={{ fontFamily:'var(--font-mono)',fontSize:180,color:'var(--accent)',lineHeight:0.5,marginBottom:30,opacity:0.45 }}>"</div>
           <p className="quote-giant" style={{ maxWidth:1640,marginLeft:-6 }}>
@@ -845,7 +884,7 @@
       </SlideChrome>
     );
 
-    /* S18 — TAKEAWAYS (4 cards 2x2) */
+    /* S20 — TAKEAWAYS (4 cards 2x2) */
     const SlideTakeaways = () => {
       const cards = [
         { n:'01', t:'Salvation is for everyone', d:'No one is too far, too low, or too foreign for God’s grace. The good news is for all nations.' },
@@ -854,7 +893,7 @@
         { n:'04', t:'Follow in prayer, Spirit & joy', d:'A disciple’s life is shaped by dependence on God, the Spirit’s power, and worship-filled gladness.' },
       ];
       return (
-        <SlideChrome num={18} total={TOTAL} chapter="Takeaways">
+        <SlideChrome num={20} total={TOTAL} chapter="Takeaways">
           <div className="pad" style={{ justifyContent:'center' }}>
             <div className="eyebrow" style={{ marginBottom:32 }}>Learning Points</div>
             <h2 className="section" style={{ fontSize:72,marginBottom:44 }}>What to Carry From Luke</h2>
@@ -874,9 +913,9 @@
       );
     };
 
-    /* S19 — CONCLUSION (Rod Martin top, link bottom) */
+    /* S21 — CONCLUSION (Rod Martin top, link bottom) */
     const SlideConclusion = () => (
-      <SlideChrome num={19} total={TOTAL} noChrome>
+      <SlideChrome num={21} total={TOTAL} noChrome>
         <div className="grid-bg" />
         <div style={{ position:'absolute',bottom:-220,left:-200,width:900,height:900,borderRadius:'50%',background:'radial-gradient(circle,rgba(90,168,224,0.20) 0%,transparent 70%)' }} />
         <div className="pad" style={{ justifyContent:'space-between' }}>
@@ -894,7 +933,7 @@
           </div>
           <div style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-end',fontFamily:'var(--font-mono)',fontSize:24,color:'var(--ink-muted)',letterSpacing:'.04em' }}>
             <span>→ <a href={BRAND_URL} target="_blank" rel="noopener noreferrer" onClick={(e)=>openLink(e,BRAND_URL)} style={{ color:'var(--accent-strong)',fontWeight:600,textDecoration:'none',cursor:'pointer',pointerEvents:'auto',position:'relative',zIndex:20 }}>imrodmartin.com</a></span>
-            <span>19 / 19</span>
+            <span>21 / 21</span>
           </div>
         </div>
       </SlideChrome>
@@ -907,8 +946,9 @@
     const mounts = [
       SlideTitle, SlideOverview, SlideFacts, SlideDivStructure, SlideStructure,
       SlideDivAll, SlideUniversal, SlideWhoCards, SlideDivParables, SlideParables,
-      SlideQuoteSeek, SlideDivPrayer, SlideThreads, SlideSongs, SlideDivCross,
-      SlideCross, SlideQuoteRisen, SlideTakeaways, SlideConclusion,
+      SlideQuoteSeek, SlideDivPrayer, SlideThreads, SlideSongs, SlideDivKingdom,
+      SlideKingdom, SlideDivCross, SlideCross, SlideQuoteRisen, SlideTakeaways,
+      SlideConclusion,
     ];
     mounts.forEach((C, i) => {
       const el = document.getElementById(`s${String(i + 1).padStart(2, '0')}`);

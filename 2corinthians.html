@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Book of Ephesians — Rod Martin · A Chapter-by-Chapter Study</title>
+  <title>The Book of 2 Corinthians — Rod Martin · A Chapter-by-Chapter Study</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -12,13 +12,13 @@
       --font-text:    'Figtree', ui-sans-serif, system-ui, sans-serif;
       --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
-      --accent:            #3a6cb8;
+      --accent:            #0F766E;
       --brand-navy:        #1a2a4f;
       --brand-navy-deep:   #0f1a35;
       --brand-blue:        var(--accent);
       --brand-blue-bright: var(--accent);
-      --brand-blue-sky:    #b9d0ef;
-      --brand-blue-pale:   #dfeaf8;
+      --brand-blue-sky:    #5fc9bf;
+      --brand-blue-pale:   #cdeae6;
 
       --bg:        #f6f5f1;
       --bg-alt:    #ebe9e1;
@@ -49,9 +49,9 @@
       --grid:      rgba(255,255,255,0.05);
       --chip-bg:   rgba(255,255,255,0.08);
       --chip-ink:  var(--brand-blue-sky);
-      --accent:            #7aa5e0;
-      --brand-blue:        #7aa5e0;
-      --brand-blue-bright: #7aa5e0;
+      --accent:            #2dd4bf;
+      --brand-blue:        #2dd4bf;
+      --brand-blue-bright: #2dd4bf;
     }
 
     html, body { margin:0;padding:0;background:#000;font-family:var(--font-text);-webkit-font-smoothing:antialiased; }
@@ -122,11 +122,11 @@
     <div class="tweaks-row">
       <span>Accent</span>
       <div class="swatches" id="tw-accent">
-        <div class="sw active" data-accent="#3a6cb8" style="background:#3a6cb8" title="Blue (default)"></div>
-        <div class="sw" data-accent="#7c3aed" style="background:#7c3aed" title="Violet"></div>
-        <div class="sw" data-accent="#0F766E" style="background:#0F766E" title="Teal"></div>
+        <div class="sw active" data-accent="#0F766E" style="background:#0F766E" title="Teal (default)"></div>
+        <div class="sw" data-accent="#3a6cb8" style="background:#3a6cb8" title="Blue"></div>
         <div class="sw" data-accent="#8B1A1A" style="background:#8B1A1A" title="Crimson"></div>
         <div class="sw" data-accent="#7a4e10" style="background:#7a4e10" title="Bronze"></div>
+        <div class="sw" data-accent="#5f4b8b" style="background:#5f4b8b" title="Royal"></div>
       </div>
     </div>
     <div class="tweaks-row">
@@ -152,6 +152,7 @@
     <section id="s13"></section><section id="s14"></section><section id="s15"></section><section id="s16"></section>
     <section id="s17"></section><section id="s18"></section><section id="s19"></section><section id="s20"></section>
     <section id="s21"></section><section id="s22"></section><section id="s23"></section><section id="s24"></section>
+    <section id="s25"></section><section id="s26"></section><section id="s27"></section>
   </deck-stage>
 
   <!-- [1] deck-stage web component -->
@@ -317,7 +318,7 @@
         if(this._filmstripOverlay)return;
         if(!document.getElementById('deck-stage-filmstrip-style')){
           const s=document.createElement('style');s.id='deck-stage-filmstrip-style';
-          s.textContent=`.ds-filmstrip-overlay{position:fixed;inset:0;z-index:2147483500;pointer-events:none;opacity:0;transition:opacity 280ms ease}.ds-filmstrip-overlay.open{pointer-events:auto;opacity:1}.ds-filmstrip-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px)}.ds-filmstrip-drawer{position:absolute;right:0;top:0;bottom:0;width:400px;background:#111;overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform 300ms cubic-bezier(.22,.9,.3,1);padding:24px 16px 40px;box-sizing:border-box}.ds-filmstrip-overlay.open .ds-filmstrip-drawer{transform:translateX(0)}.ds-filmstrip-header{display:flex;align-items:center;justify-content:space-between;margin:0 4px 18px}.ds-filmstrip-title{color:rgba(255,255,255,.45);font-size:11px;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0}.ds-filmstrip-close{appearance:none;background:rgba(255,255,255,.08);border:0;margin:0;padding:0;color:rgba(255,255,255,.5);width:24px;height:24px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}.ds-filmstrip-close:hover{background:rgba(255,255,255,.15);color:#fff}.ds-filmstrip-close svg{width:12px;height:12px;display:block}.ds-filmstrip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ds-filmstrip-thumb{cursor:pointer;border-radius:5px;overflow:hidden;position:relative;border:2px solid transparent;transition:border-color 160ms ease,transform 120ms ease}.ds-filmstrip-thumb:hover{transform:scale(1.03);border-color:rgba(255,255,255,.35)}.ds-filmstrip-thumb.ds-active{border-color:var(--accent,#3a6cb8)}.ds-filmstrip-inner{width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;background:#222}.ds-filmstrip-inner>.ds-clone{position:absolute!important;top:0!important;left:0!important;transform-origin:top left!important;pointer-events:none!important;visibility:visible!important;opacity:1!important}.ds-filmstrip-num{position:absolute;top:5px;left:7px;color:rgba(255,255,255,.55);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:9px;font-weight:600;line-height:1;z-index:2}.ds-filmstrip-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));color:rgba(255,255,255,.85);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;font-size:9px;font-weight:500;padding:14px 7px 5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}`;
+          s.textContent=`.ds-filmstrip-overlay{position:fixed;inset:0;z-index:2147483500;pointer-events:none;opacity:0;transition:opacity 280ms ease}.ds-filmstrip-overlay.open{pointer-events:auto;opacity:1}.ds-filmstrip-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px)}.ds-filmstrip-drawer{position:absolute;right:0;top:0;bottom:0;width:400px;background:#111;overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform 300ms cubic-bezier(.22,.9,.3,1);padding:24px 16px 40px;box-sizing:border-box}.ds-filmstrip-overlay.open .ds-filmstrip-drawer{transform:translateX(0)}.ds-filmstrip-header{display:flex;align-items:center;justify-content:space-between;margin:0 4px 18px}.ds-filmstrip-title{color:rgba(255,255,255,.45);font-size:11px;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0}.ds-filmstrip-close{appearance:none;background:rgba(255,255,255,.08);border:0;margin:0;padding:0;color:rgba(255,255,255,.5);width:24px;height:24px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}.ds-filmstrip-close:hover{background:rgba(255,255,255,.15);color:#fff}.ds-filmstrip-close svg{width:12px;height:12px;display:block}.ds-filmstrip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ds-filmstrip-thumb{cursor:pointer;border-radius:5px;overflow:hidden;position:relative;border:2px solid transparent;transition:border-color 160ms ease,transform 120ms ease}.ds-filmstrip-thumb:hover{transform:scale(1.03);border-color:rgba(255,255,255,.35)}.ds-filmstrip-thumb.ds-active{border-color:var(--accent,#0F766E)}.ds-filmstrip-inner{width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;background:#222}.ds-filmstrip-inner>.ds-clone{position:absolute!important;top:0!important;left:0!important;transform-origin:top left!important;pointer-events:none!important;visibility:visible!important;opacity:1!important}.ds-filmstrip-num{position:absolute;top:5px;left:7px;color:rgba(255,255,255,.55);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:9px;font-weight:600;line-height:1;z-index:2}.ds-filmstrip-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));color:rgba(255,255,255,.85);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;font-size:9px;font-weight:500;padding:14px 7px 5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}`;
           document.head.appendChild(s);
         }
         const overlay=document.createElement('div');overlay.className='ds-filmstrip-overlay';
@@ -379,12 +380,12 @@
   <!-- [3] Deck configuration -->
   <script>
     const PRESENTER_NAME = 'Rod Martin';
-    const BRAND_NAME     = 'Ephesians';
+    const BRAND_NAME     = '2 Corinthians';
     const BRAND_URL      = 'https://imrodmartin.com';
-    const ACCENT_COLOR   = '#3a6cb8';
-    const TALK_TITLE     = 'The Book of Ephesians';
+    const ACCENT_COLOR   = '#0F766E';
+    const TALK_TITLE     = 'The Book of 2 Corinthians';
     const EVENT_NAME     = 'A Chapter-by-Chapter Study';
-    const TOTAL          = 24;
+    const TOTAL          = 27;
 
     window.__resources = { brandLogo: '', presenterPhoto: '' };
 
@@ -419,7 +420,7 @@
           <>
             <div className="slide-header">
               <div style={{ display:'flex',alignItems:'center',gap:12 }}>
-                <span style={{ fontFamily:'var(--font-mono)',fontSize:20,letterSpacing:'.18em',textTransform:'uppercase',fontWeight:700,color:'var(--ink)' }}>Ephesians</span>
+                <span style={{ fontFamily:'var(--font-mono)',fontSize:20,letterSpacing:'.18em',textTransform:'uppercase',fontWeight:700,color:'var(--ink)' }}>2 Corinthians</span>
               </div>
               <div style={{ display:'flex',gap:32,alignItems:'center' }}>
                 {chapter && <span style={{ fontFamily:'var(--font-mono)',fontSize:22,fontWeight:600,letterSpacing:'.2em',textTransform:'uppercase',color:'var(--accent)' }}>{chapter}</span>}
@@ -465,7 +466,7 @@
 
     const SectionDivider = ({ num, kicker, title, titleSize = 124, subtitle }) => (
       <SlideChrome num={num} total={TOTAL} noChrome>
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 55%,#3a6cb8 135%)' }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 55%,#0F766E 135%)' }} />
         <div className="grid-bg" style={{ opacity:0.15 }} />
         <div className="pad" style={{ justifyContent:'center', color:'#fff' }}>
           <div style={{ fontFamily:'var(--font-mono)', fontSize:24, letterSpacing:'.3em', textTransform:'uppercase', color:'#fff', opacity:0.85, marginBottom:36 }}>{kicker}</div>
@@ -475,19 +476,7 @@
       </SlideChrome>
     );
 
-    const QuoteBig = ({ num, quote, srcRef }) => (
-      <SlideChrome num={num} total={TOTAL} noChrome>
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 60%,#3a6cb8 135%)' }} />
-        <div className="grid-bg" style={{ opacity:0.15 }} />
-        <div className="pad" style={{ justifyContent:'center', color:'#fff' }}>
-          <div style={{ fontFamily:'var(--font-display)', fontSize:140, lineHeight:1, color:'rgba(255,255,255,0.22)', fontWeight:800, marginBottom:-30 }}>&ldquo;</div>
-          <h2 style={{ fontFamily:'var(--font-display)', fontSize:80, fontWeight:700, lineHeight:1.12, letterSpacing:'-.02em', color:'#fff', margin:0, maxWidth:1560 }}>{quote}</h2>
-          <div style={{ fontFamily:'var(--font-mono)', fontSize:26, fontWeight:600, letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(255,255,255,0.78)', marginTop:44 }}>{srcRef}</div>
-        </div>
-      </SlideChrome>
-    );
-
-    Object.assign(window, { Points, SectionDivider, QuoteBig });
+    Object.assign(window, { Points, SectionDivider });
   </script>
 
   <!-- [5b] Slide components: the deck -->
@@ -502,9 +491,9 @@
           </div>
           <div>
             <div className="eyebrow" style={{ marginBottom:40 }}>The Book of</div>
-            <h1 className="display" style={{ marginBottom:36, whiteSpace:'nowrap' }}>Ephesians</h1>
-            <p style={{ fontFamily:'var(--font-display)', fontSize:48, lineHeight:1.2, fontWeight:400, color:'var(--ink-soft)', margin:0, maxWidth:1420, letterSpacing:'-.01em' }}>
-              The believer’s wealth, walk, and warfare — seated with Christ in the heavenly places.
+            <h1 className="display" style={{ marginBottom:36, whiteSpace:'nowrap' }}>2 Corinthians</h1>
+            <p style={{ fontFamily:'var(--font-display)', fontSize:48, lineHeight:1.2, fontWeight:400, color:'var(--ink-soft)', margin:0, maxWidth:1380, letterSpacing:'-.01em' }}>
+              The glory of new-covenant ministry, carried in jars of clay and made perfect in weakness.
             </p>
           </div>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', fontFamily:'var(--font-mono)', fontSize:26, color:'var(--ink-soft)', letterSpacing:'.04em' }}>
@@ -518,18 +507,18 @@
     // 02 — Overview
     const SlideOverview = () => {
       const cards = [
-        { k:'Author', v:'Paul, an apostle of Christ Jesus by the will of God (1:1)' },
-        { k:'Written', v:'c. A.D. 60–62 — from Roman imprisonment, a “Prison Epistle” (3:1; 4:1; 6:20)' },
-        { k:'Recipients', v:'The saints at Ephesus — likely a circular letter to the churches of Asia' },
-        { k:'Occasion', v:'No crisis; a positive unveiling of the church’s riches and calling in Christ' },
-        { k:'Theme', v:'The mystery of the church — Christ’s body and bride, seated in the heavenlies' },
-        { k:'Key texts', v:'1:3; 1:10; 2:8–9; 3:6; 4:4–6; 5:25–32; 6:11' },
+        { k:'Author', v:'Paul the apostle, with Timothy (1:1)' },
+        { k:'Written', v:'c. A.D. 56, from Macedonia, after Titus’s report' },
+        { k:'Recipients', v:'The church at Corinth, plus the saints of all Achaia' },
+        { k:'Occasion', v:'A reconciliation — and a defense against intruding “super-apostles”' },
+        { k:'Theme', v:'The integrity and glory of new-covenant ministry through suffering' },
+        { k:'Key texts', v:'New covenant (3); reconciliation (5:18–21); strength in weakness (12:9)' },
       ];
       return (
         <SlideChrome num={2} total={TOTAL} chapter="Overview">
           <div className="pad" style={{ justifyContent:'center' }}>
             <div className="eyebrow" style={{ marginBottom:26 }}>The Book at a Glance</div>
-            <h2 className="section" style={{ fontSize:80, marginBottom:48 }}>The Heavenly Calling of the Church</h2>
+            <h2 className="section" style={{ fontSize:80, marginBottom:48 }}>Paul’s Most Personal Letter</h2>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:26 }}>
               {cards.map((c,i) => (
                 <div key={i} className="card" style={{ padding:'34px 36px' }}>
@@ -545,49 +534,47 @@
 
     // 03 — Background
     const SlideBackground = () => (
-      <Points num={3} chapter="Setting" eyebrow="The City & the Letter"
-        heading="From a Roman Prison to Ephesus"
+      <Points num={3} chapter="Setting" eyebrow="A Wounded Relationship"
+        heading="Between Paul and Corinth"
         points={[
-          'Ephesus was a leading city of Asia Minor, home to the temple of Artemis and deep occult practice (Acts 19).',
-          'Paul spent nearly three years there; the gospel so spread that magic books were burned and idol-makers rioted.',
-          'Now a prisoner in Rome, Paul writes not to fight error but to lift the church’s eyes to its wealth in Christ.',
-          'The oldest manuscripts omit “in Ephesus,” suggesting a circular letter carried among the Asian churches.',
-        ]}
-        noteLabel="A Letter of Position, Not Polemic"
-        note="Where Galatians defends the gospel against legalism, Ephesians unfolds its riches. It is the high-water mark of revelation on the church — a body and temple unknown to past ages, now disclosed in this present dispensation of grace." />
+          'After 1 Corinthians, the relationship soured; Paul made a “painful visit” to the church (2:1).',
+          'He then wrote a stern, sorrowful letter “with many tears,” now lost to us (2:4).',
+          'False teachers had invaded, attacking Paul’s character, motives, and apostolic credentials.',
+          'Titus at last met Paul in Macedonia with news that the church had repented (7:5–7).',
+        ]} />
     );
 
     // 04 — Purpose
     const SlidePurpose = () => (
       <Points num={4} chapter="Occasion" eyebrow="Why Paul Wrote"
-        heading="That You May Know Your Riches"
+        heading="Three Burdens in One Letter"
         points={[
-          'To reveal the “mystery” hidden in past ages — Jew and Gentile made one new body in Christ (3:3–6).',
-          'To lift believers to see their heavenly position: chosen, adopted, redeemed, and sealed (1:3–14).',
-          'To call the church to a worthy walk — unity, holiness, love, and Spirit-filled living (4:1).',
-          'To arm the saints for spiritual warfare against the powers of darkness (6:10–18).',
+          'To express relief and joy at Corinth’s repentance, and to confirm his love for them.',
+          'To defend the nature and integrity of his ministry against the intruders.',
+          'To complete the relief collection for the poor saints in Jerusalem (8–9).',
+          'To prepare the church for a third visit — urging full repentance before he comes.',
         ]} />
     );
 
     // 05 — Roadmap
     const SlideRoadmap = () => {
       const rows = [
-        { r:'1–3', t:'Sit', s:'Our position — seated with Christ in the heavenlies' },
-        { r:'1:3', t:'Blessed', s:'Every spiritual blessing in Christ' },
-        { r:'2:8', t:'Saved', s:'By grace through faith, not works' },
-        { r:'4–6:9', t:'Walk', s:'Our practice — a life worthy of the calling' },
-        { r:'4:4', t:'One Body', s:'The unity of the Spirit' },
-        { r:'6:10', t:'Stand', s:'Our conflict — the whole armor of God' },
+        { r:'1–2', t:'Comfort', s:'Affliction, comfort, and a change of plans' },
+        { r:'3–7', t:'New Covenant', s:'The glory and integrity of gospel ministry' },
+        { r:'5', t:'Reconciliation', s:'Ambassadors of a finished work' },
+        { r:'8–9', t:'Giving', s:'The grace of generosity for the saints' },
+        { r:'10–12', t:'Defense', s:'Apostleship, boasting, and the thorn' },
+        { r:'13', t:'Farewell', s:'Self-examination and the benediction' },
       ];
       return (
         <SlideChrome num={5} total={TOTAL} chapter="Structure">
           <div className="pad" style={{ justifyContent:'center' }}>
             <div className="eyebrow" style={{ marginBottom:24 }}>How the Letter Unfolds</div>
-            <h2 className="section" style={{ fontSize:80, marginBottom:44 }}>Sit · Walk · Stand</h2>
+            <h2 className="section" style={{ fontSize:72, marginBottom:44 }}>The Shape of the Letter</h2>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'22px 64px' }}>
               {rows.map((row,i) => (
                 <div key={i} style={{ display:'flex', gap:20, alignItems:'baseline', borderTop:'1px solid var(--line)', paddingTop:16 }}>
-                  <span style={{ fontFamily:'var(--font-mono)', fontSize:21, fontWeight:600, color:'var(--accent)', minWidth:96, flexShrink:0 }}>{row.r}</span>
+                  <span style={{ fontFamily:'var(--font-mono)', fontSize:21, fontWeight:600, color:'var(--accent)', minWidth:84, flexShrink:0 }}>{row.r}</span>
                   <div>
                     <div style={{ fontFamily:'var(--font-display)', fontSize:30, fontWeight:700, color:'var(--ink)' }}>{row.t}</div>
                     <div style={{ fontFamily:'var(--font-text)', fontSize:21, color:'var(--ink-soft)', marginTop:4 }}>{row.s}</div>
@@ -601,201 +588,237 @@
     };
 
     // 06 — Section 1
-    const SecWealth = () => (
-      <SectionDivider num={6} kicker="Part One · Ephesians 1–3"
-        title="Our Wealth in Christ"
-        subtitle="Before a single command, Paul lifts the church to its heavenly position — chosen, redeemed, raised, and seated with Christ far above all rule and authority." />
+    const SecComfort = () => (
+      <SectionDivider num={6} kicker="Part One · 2 Corinthians 1–2"
+        title="Comfort & Confidence"
+        subtitle="Paul opens his heart: the God of all comfort meets His servants in affliction, and a clear conscience answers every charge against his integrity." />
     );
 
-    // 07 — Every spiritual blessing
-    const SlideBlessings = () => (
-      <Points num={7} chapter="Eph 1:1–14" eyebrow="The Father’s Eternal Purpose"
-        heading="Every Spiritual Blessing"
+    // 07 — Comfort in affliction
+    const SlideComfort = () => (
+      <Points num={7} chapter="2 Cor 1:1–11" eyebrow="The God of All Comfort"
+        heading="Comforted to Comfort Others"
         points={[
-          'God has blessed us “with every spiritual blessing in the heavenly places in Christ” (1:3).',
-          'The Father chose us before the foundation of the world and predestined us for adoption as sons.',
-          'In the Son we have redemption through His blood — forgiveness “according to the riches of his grace.”',
-          'Believing, we were sealed with the promised Holy Spirit, “the guarantee of our inheritance” (1:13–14).',
-        ]}
-        noteLabel="Heavenly Position & the Sealing Spirit"
-        note="The church’s blessings are heavenly and positional — distinct from Israel’s earthly, national promises. The sealing of the Spirit (cf. 1 Cor 12:13) marks the believer’s baptism into the one body, a present-age reality that guarantees a future inheritance." />
-    );
-
-    // 08 — Paul's first prayer
-    const SlidePrayer1 = () => (
-      <Points num={8} chapter="Eph 1:15–23" eyebrow="Paul’s First Prayer"
-        heading="Christ, Head Over the Church"
-        points={[
-          'Paul prays for a “spirit of wisdom and revelation” that they might know the hope of their calling.',
-          'He asks that they grasp the immeasurable greatness of God’s power — the same that raised Christ from the dead.',
-          'God seated Christ at His right hand “far above all rule and authority,” in this age and the age to come.',
-          'He gave Christ as head over all things “to the church, which is his body, the fullness of him who fills all in all.”',
+          'Blessed be the Father of mercies, who comforts us in all our affliction.',
+          'The comfort we receive overflows so we can comfort others in their trouble.',
+          'In Asia Paul was burdened beyond strength — that he might rely not on himself but on God who raises the dead.',
+          'Their prayers share in his deliverance, so that many give thanks on his behalf.',
         ]} />
     );
 
-    // 09 — By grace through faith
-    const SlideGrace = () => (
-      <Points num={9} chapter="Eph 2:1–10" eyebrow="From Death to Life"
-        heading="Made Alive Together with Christ"
+    // 08 — Integrity & the offender
+    const SlideIntegrity = () => (
+      <Points num={8} chapter="2 Cor 1:12–2:13" eyebrow="A Clear Conscience"
+        heading="Integrity, Not Fickleness"
         points={[
-          'We were “dead in trespasses and sins,” by nature children of wrath, walking after the world, flesh, and devil.',
-          'But God, “being rich in mercy,” made us alive together with Christ — “by grace you have been saved.”',
-          'He raised us up and seated us with Him in the heavenly places, to display His grace in the ages to come.',
-          'Salvation is by grace through faith, “not a result of works” — yet we are created in Christ for good works (2:10).',
+          'Paul’s boast is a conscience of godly sincerity, not worldly cunning.',
+          'His changed travel plans were to spare them, not a sign of a wavering “yes and no.”',
+          'In Christ, all God’s promises are “Yes” and “Amen” — and the Spirit is the down payment (1:20–22).',
+          'He urges them to forgive and restore the disciplined offender, lest Satan gain an advantage.',
+        ]}
+        noteLabel="The Spirit as Guarantee"
+        note="God “put his seal on us and gave us his Spirit in our hearts as a down payment” (1:22, cf. 5:5) — the arrabōn, a present guarantee of the believer’s full future inheritance in the age to come." />
+    );
+
+    // 09 — Section 2
+    const SecNewCovenant = () => (
+      <SectionDivider num={9} kicker="Part Two · 2 Corinthians 2:14–7:16"
+        title="The New Covenant Ministry"
+        subtitle="The heart of the letter: a sustained vindication of gospel ministry — its surpassing glory, its frailty, its hope, and its message of reconciliation." />
+    );
+
+    // 10 — Triumph & competence
+    const SlideTriumph = () => (
+      <Points num={10} chapter="2 Cor 2:14–3:6" eyebrow="Triumph & Competence"
+        heading="The Aroma of Christ"
+        points={[
+          'God leads His servants in triumphal procession, spreading the fragrance of Christ everywhere.',
+          'To some that aroma is the smell of death, to others the fragrance of life.',
+          'The Corinthians themselves are Paul’s letter of commendation — written by the Spirit on hearts.',
+          'His competence is from God, who made him a minister of a new covenant — of the Spirit, not the letter.',
         ]} />
     );
 
-    // 10 — Quote: by grace
-    const SlideQuoteGrace = () => (
-      <QuoteBig num={10}
-        quote="For by grace you have been saved through faith. And this is not your own doing; it is the gift of God."
-        srcRef="Ephesians 2:8–9" />
-    );
-
-    // 11 — One new man
-    const SlideOneNewMan = () => (
-      <Points num={11} chapter="Eph 2:11–22" eyebrow="Jew & Gentile Reconciled"
-        heading="One New Man, One New Temple"
+    // 11 — Glory of the new covenant
+    const SlideGloryNewCov = () => (
+      <Points num={11} chapter="2 Cor 3:7–18" eyebrow="Two Covenants, Two Glories"
+        heading="A Glory That Surpasses"
         points={[
-          'Gentiles were once “separated from Christ, alienated from the commonwealth of Israel,” strangers to the covenants.',
-          'But in Christ’s blood the “dividing wall of hostility” is broken down, abolishing the law of commandments.',
-          'He creates “one new man in place of the two,” reconciling both to God in one body through the cross.',
-          'Together they are built into “a holy temple in the Lord,” a dwelling place for God by the Spirit.',
+          'The old covenant, “engraved in letters on stone,” came with glory — yet a glory that was fading.',
+          'It was a ministry of death and condemnation; the new is a ministry of the Spirit and righteousness.',
+          'A veil lay over Moses’ face and still lies over Israel’s heart — lifted only when one turns to the Lord.',
+          'Beholding His glory unveiled, we are transformed from one degree of glory to another, by the Spirit.',
         ]}
-        noteLabel="A New Entity, Not Israel Expanded"
-        note="The church is not Gentiles absorbed into Israel, nor Israel redefined — it is “one new man,” a previously unrevealed body in which Jew and Gentile share equally. Israel’s distinct, literal covenant promises remain; the church is a work of grace within God’s larger program." />
+        noteLabel="Law vs. Grace · Israel & the Church"
+        note="The Mosaic covenant is genuinely glorious yet transitory and superseded — the clearest law/grace distinction in Paul. The new covenant, promised to Israel and Judah (Jer 31), is now ministered by the Spirit; the church shares its blessings through Christ’s blood, while a future unveiling awaits national Israel (cf. Rom 11:25–27)." />
     );
 
-    // 12 — The mystery (centerpiece)
-    const SlideMystery = () => (
-      <Points num={12} chapter="Eph 3:1–13" eyebrow="The Dispensational Keystone"
-        heading="The Mystery Now Revealed"
+    // 12 — Treasure in jars of clay
+    const SlideTreasure = () => (
+      <Points num={12} chapter="2 Cor 4" eyebrow="Frailty & Power"
+        heading="Treasure in Jars of Clay"
         points={[
-          'Paul was given “the stewardship (oikonomia) of God’s grace” — the dispensation of grace for the Gentiles (3:2).',
-          'The mystery was “not made known to the sons of men in other generations,” but now revealed to His apostles.',
-          'The mystery: Gentiles are “fellow heirs, members of the same body, and partakers of the promise” in Christ (3:6).',
-          'This eternal purpose, “hidden for ages in God,” now displays His manifold wisdom even to heavenly powers.',
-        ]}
-        noteLabel="The Church: A Mystery Hidden in Past Ages"
-        note="This is the heart of dispensational truth. The church — Jew and Gentile in one body — was unforeseen in the Old Testament, hidden in God until revealed to Paul. The present “dispensation of the grace of God” is a distinct administration in God’s unfolding plan, not a continuation of the Mosaic age nor a replacement of Israel." />
-    );
-
-    // 13 — Paul's second prayer
-    const SlidePrayer2 = () => (
-      <Points num={13} chapter="Eph 3:14–21" eyebrow="Paul’s Second Prayer"
-        heading="Strengthened to Know His Love"
-        points={[
-          'Paul bows to the Father, praying for strength “through his Spirit in your inner being.”',
-          'That Christ may dwell in their hearts through faith — that they be “rooted and grounded in love.”',
-          'That they may grasp the breadth, length, height, and depth of the love of Christ that surpasses knowledge.',
-          'The doxology: “to him be glory in the church and in Christ Jesus throughout all generations” (3:21).',
+          'Paul renounces deceit; the god of this age blinds minds, but God shines the light of Christ’s glory.',
+          'We hold this treasure in clay vessels, so the surpassing power belongs to God and not to us.',
+          'Afflicted but not crushed, struck down but not destroyed — carrying the death of Jesus that His life may show.',
+          'Our light, momentary affliction is preparing an eternal weight of glory beyond all comparison.',
         ]} />
     );
 
-    // 14 — Section 2
-    const SecWalk = () => (
-      <SectionDivider num={14} kicker="Part Two · Ephesians 4–6:9"
-        title="Our Walk in the World"
-        subtitle="Doctrine becomes duty. The “therefore” of chapter 4 turns heavenly position into earthly practice — a life that matches the calling we have received." />
-    );
-
-    // 15 — Unity & gifts
-    const SlideUnity = () => (
-      <Points num={15} chapter="Eph 4:1–16" eyebrow="The Worthy Walk Begins"
-        heading="The Unity of the Body"
+    // 13 — Eternal dwelling & the bēma
+    const SlideEternalHouse = () => (
+      <Points num={13} chapter="2 Cor 5:1–10" eyebrow="Our Eternal Hope"
+        heading="A Building From God"
         points={[
-          '“Walk in a manner worthy of the calling” — with humility, gentleness, patience, bearing with one another in love.',
-          'There is “one body and one Spirit… one Lord, one faith, one baptism, one God and Father of all” (4:4–6).',
-          'The ascended Christ gave apostles, prophets, evangelists, pastors and teachers to equip the saints for ministry.',
-          'The goal is maturity — that we grow up “into him who is the head, into Christ,” the body building itself in love.',
+          'When this earthly tent is destroyed, we have an eternal house, a body not made with hands.',
+          'We long to be clothed with it — that what is mortal may be swallowed up by life.',
+          'We walk by faith, not by sight; to be absent from the body is to be at home with the Lord.',
+          'For we must all appear before the judgment seat of Christ, to receive what is due for what we have done.',
         ]}
-        noteLabel="One Baptism, One Body"
-        note="The “one baptism” of 4:5 is the Spirit’s baptism that forms the one body (1 Cor 12:13) — the defining work of this dispensation. The gifted men are given to bring the body to maturity, a present-age ministry distinct from Israel’s priesthood and prophets." />
+        noteLabel="The Bēma & the Intermediate State"
+        note="“Absent from the body, present with the Lord” (5:8) affirms a conscious intermediate state. The judgment seat (bēma, 5:10) is the believer’s evaluation for reward and loss — not condemnation — distinct from the great white throne; the same accounting anticipated in 1 Corinthians 3." />
     );
 
-    // 16 — Put off, put on
-    const SlideNewSelf = () => (
-      <Points num={16} chapter="Eph 4:17–32" eyebrow="The New Self"
-        heading="Put Off the Old, Put On the New"
+    // 14 — Ministry of reconciliation
+    const SlideReconciliation = () => (
+      <Points num={14} chapter="2 Cor 5:11–21" eyebrow="Ambassadors for Christ"
+        heading="The Ministry of Reconciliation"
         points={[
-          'No longer walk as the Gentiles do, “in the futility of their minds,” darkened and hardened in heart.',
-          'Put off the old self, “be renewed in the spirit of your minds,” and put on the new self created in righteousness.',
-          'Speak truth, give honest labor, let no corrupting talk come out — “and do not grieve the Holy Spirit of God.”',
-          'Be kind, tenderhearted, “forgiving one another, as God in Christ forgave you” (4:32).',
+          'Christ’s love compels us; He died for all, that those who live might live for Him.',
+          'If anyone is in Christ, he is a new creation — the old has passed, the new has come.',
+          'God was in Christ reconciling the world to Himself, entrusting us with the message of reconciliation.',
+          'We are ambassadors: “Be reconciled to God.” He made the sinless One sin for us, that we might become God’s righteousness.',
+        ]}
+        noteLabel="Imputation & New Creation"
+        note="5:21 is the great exchange: Christ bears our sin, we receive His righteousness — imputed, not infused. In this present age every believer is a “new creation,” reconciled and commissioned, awaiting the renewal of all things." />
+    );
+
+    // 15 — Day of salvation & separation
+    const SlideDaySalvation = () => (
+      <Points num={15} chapter="2 Cor 6" eyebrow="An Open Heart, A Holy Walk"
+        heading="Now Is the Day of Salvation"
+        points={[
+          '“Behold, now is the favorable time; behold, now is the day of salvation” — a plea not to receive grace in vain.',
+          'Paul commends his ministry through endurance, hardship, honor and dishonor, “as having nothing, yet possessing everything.”',
+          'His heart is wide open; he asks the Corinthians to open theirs in return.',
+          'Be not unequally yoked with unbelievers — for the believer is the temple of the living God.',
         ]} />
     );
 
-    // 17 — Walk in love, light, wisdom
-    const SlideWalkLight = () => (
-      <Points num={17} chapter="Eph 5:1–21" eyebrow="Imitators of God"
-        heading="Walk in Love, Light & Wisdom"
+    // 16 — Godly grief
+    const SlideGodlyGrief = () => (
+      <Points num={16} chapter="2 Cor 7" eyebrow="Repentance & Restored Joy"
+        heading="Godly Grief Leads to Life"
         points={[
-          '“Be imitators of God… and walk in love, as Christ loved us and gave himself up for us” (5:1–2).',
-          'Once darkness, now “light in the Lord” — walk as children of light, exposing the unfruitful works of darkness.',
-          'Walk wisely, “making the best use of the time, because the days are evil.”',
-          'Do not get drunk with wine, “but be filled with the Spirit” — singing, giving thanks, submitting to one another.',
+          'Having such promises, let us cleanse ourselves and bring holiness to completion in the fear of God.',
+          'Titus’s arrival brought comfort: the church had received Paul’s severe letter with sorrow.',
+          'Godly grief produces a repentance that leads to salvation, without regret — worldly grief produces death.',
+          'Paul rejoices that his confidence in them has been vindicated in every way.',
         ]} />
     );
 
-    // 18 — Marriage: Christ & the church
-    const SlideMarriage = () => (
-      <Points num={18} chapter="Eph 5:22–33" eyebrow="A Profound Mystery"
-        heading="Christ & the Church"
-        points={[
-          'Wives submit to their husbands “as to the Lord”; the husband is head “as Christ is the head of the church.”',
-          'Husbands, “love your wives, as Christ loved the church and gave himself up for her.”',
-          'Christ sanctifies and cleanses the church “by the washing of water with the word,” to present her in splendor.',
-          'Paul calls it “a profound mystery” — “I am saying that it refers to Christ and the church” (5:32).',
-        ]}
-        noteLabel="The Church as the Bride of Christ"
-        note="Marriage images Christ and His bride, the church — a union belonging to this age and to the mystery. It is distinct from Israel, pictured as the (often unfaithful) wife of Yahweh. The bride is being prepared now for her presentation to Christ." />
+    // 17 — Section 3
+    const SecGiving = () => (
+      <SectionDivider num={17} kicker="Part Three · 2 Corinthians 8–9"
+        title="The Grace of Giving"
+        subtitle="Generosity as a work of grace: the Macedonians’ joyful sacrifice, the pattern of Christ’s self-giving, and the God who loves a cheerful giver." />
     );
 
-    // 19 — Households
-    const SlideHouseholds = () => (
-      <Points num={19} chapter="Eph 6:1–9" eyebrow="Grace in the Home"
-        heading="Households Transformed by Grace"
+    // 18 — The collection
+    const SlideCollection = () => (
+      <Points num={18} chapter="2 Cor 8" eyebrow="A Work of Grace"
+        heading="The Generosity of the Churches"
         points={[
-          'Children, “obey your parents in the Lord, for this is right” — the first command with a promise.',
-          'Fathers, do not provoke your children, “but bring them up in the discipline and instruction of the Lord.”',
-          'Servants, obey “as servants of Christ,” rendering service with goodwill, “as to the Lord and not to man.”',
-          'Masters, treat them the same way, knowing their Master and yours is in heaven, who shows no partiality.',
+          'The Macedonians gave beyond their means out of deep poverty and abundant joy.',
+          'The pattern is Christ: “though he was rich, yet for your sake he became poor, so that you might become rich.”',
+          'Paul urges Corinth to finish what they began a year before — readiness matched by completion.',
+          'The gift is handled with transparent integrity, “honorable not only before the Lord but also before man.”',
         ]} />
     );
 
-    // 20 — Section 3
-    const SecStand = () => (
-      <SectionDivider num={20} kicker="Part Three · Ephesians 6:10–20"
-        title="Our Warfare: Stand Firm"
-        subtitle="The heavenly riches that opened the letter become a battleground at its close — the believer stands, clothed in God’s armor, against the unseen powers of darkness." />
-    );
-
-    // 21 — Armor of God
-    const SlideArmor = () => (
-      <Points num={21} chapter="Eph 6:10–20" eyebrow="The Whole Armor of God"
-        heading="Stand Against the Powers"
+    // 19 — Cheerful giving
+    const SlideCheerful = () => (
+      <Points num={19} chapter="2 Cor 9" eyebrow="Sowing & Reaping"
+        heading="God Loves a Cheerful Giver"
         points={[
-          '“Be strong in the Lord and in the strength of his might” — our struggle is not against flesh and blood.',
-          'We wrestle “against the rulers… the spiritual forces of evil in the heavenly places” (6:12).',
-          'Take up the belt of truth, breastplate of righteousness, gospel shoes, shield of faith, helmet of salvation, sword of the Spirit.',
-          'Stand and “pray at all times in the Spirit,” alert and persevering for all the saints.',
-        ]}
-        noteLabel="Warfare in the Heavenly Places"
-        note="The same heavenlies where the believer is seated with Christ (2:6) are the arena of conflict (6:12). Standing is possible only because the victory is already Christ’s — the saint defends a position already won, not one still in doubt." />
+          'Whoever sows sparingly will reap sparingly; whoever sows bountifully will reap bountifully.',
+          'Each is to give as he has decided in his heart — not reluctantly or under compulsion.',
+          'God is able to make all grace abound, supplying and multiplying the seed for every good work.',
+          'Their generosity overflows in thanksgiving to God — “Thanks be to God for his inexpressible gift!”',
+        ]} />
     );
 
-    // 22 — Dispensational synthesis
+    // 20 — Section 4
+    const SecDefense = () => (
+      <SectionDivider num={20} kicker="Part Four · 2 Corinthians 10–13"
+        title="Paul’s Apostolic Defense"
+        subtitle="Against the “super-apostles,” Paul makes his boast — not in eloquence or power, but in weakness, suffering, and the grace that is sufficient." />
+    );
+
+    // 21 — Weapons & authority
+    const SlideWeapons = () => (
+      <Points num={21} chapter="2 Cor 10" eyebrow="Divine Power, True Authority"
+        heading="Weapons Not of the Flesh"
+        points={[
+          'Paul, charged with being “bold from afar, weak in person,” answers with meekness and gentleness.',
+          'The weapons of his warfare are not fleshly but have divine power to demolish strongholds.',
+          'Every argument and proud obstacle is taken captive to obey Christ.',
+          '“Let the one who boasts, boast in the Lord” — for self-commendation proves nothing.',
+        ]} />
+    );
+
+    // 22 — False apostles
+    const SlideFalseApostles = () => (
+      <Points num={22} chapter="2 Cor 11" eyebrow="The Intruders Exposed"
+        heading="False Apostles, Foolish Boasting"
+        points={[
+          'Paul fears the church will be led astray, as Eve was deceived by the serpent’s cunning.',
+          'The intruders preach “another Jesus,” a different spirit, a different gospel.',
+          'They are false apostles, masquerading — as Satan himself masquerades as an angel of light.',
+          'Forced to “boast,” Paul lists not triumphs but beatings, shipwrecks, hunger, and the daily burden of the churches.',
+        ]}
+        noteLabel="Satan’s Masquerade"
+        note="11:14 unmasks the strategy of the present age: counterfeit ministers of a counterfeit gospel, “whose end will correspond to their deeds.” Discernment guards the church until the Lord Himself sets every account right." />
+    );
+
+    // 23 — Visions & the thorn
+    const SlideThorn = () => (
+      <Points num={23} chapter="2 Cor 12" eyebrow="Strength in Weakness"
+        heading="Caught Up to Paradise"
+        points={[
+          'Paul tells of a man “caught up to the third heaven,” to paradise, hearing things he could not utter.',
+          'To keep him from pride, he was given a thorn in the flesh, a messenger of Satan to harass him.',
+          'Three times he pleaded; the Lord answered, “My grace is sufficient for you, for my power is made perfect in weakness.”',
+          'So he gladly boasts in weakness — “for when I am weak, then I am strong.”',
+        ]} />
+    );
+
+    // 24 — Farewell
+    const SlideFarewell = () => (
+      <Points num={24} chapter="2 Cor 13" eyebrow="Final Charge & Blessing"
+        heading="Examine Yourselves"
+        points={[
+          'Coming a third time, Paul warns the unrepentant that he will not spare.',
+          '“Examine yourselves, to see whether you are in the faith” — Christ is in you, unless you fail the test.',
+          'He prays for their restoration and aims to build up, not tear down, by the authority the Lord gave him.',
+          'The letter closes with the great Trinitarian benediction: grace, love, and fellowship.',
+        ]}
+        noteLabel="The Trinitarian Benediction"
+        note="“The grace of the Lord Jesus Christ and the love of God and the fellowship of the Holy Spirit be with you all” (13:14) — one of the New Testament’s clearest threefold affirmations of the triune God." />
+    );
+
+    // 25 — Dispensational synthesis
     const SlideDispensational = () => {
       const cards = [
-        { k:'The Mystery of the Church', v:'Jew and Gentile in one body was hidden in past ages and revealed to Paul — a new entity, not Israel renamed (3:3–6).' },
-        { k:'Heavenly Calling', v:'The church is blessed and seated “in the heavenly places,” distinct from Israel’s earthly, national promises (1:3; 2:6).' },
-        { k:'This Dispensation of Grace', v:'Paul stewards “the dispensation of the grace of God” — a distinct administration in God’s unfolding plan (3:2, 9).' },
-        { k:'The Fullness of Times', v:'God will yet “unite all things in Christ” in the dispensation of the fullness of times — the coming kingdom and beyond (1:10).' },
+        { k:'Two Covenants', v:'Old and new are contrasted by glory: the Mosaic fades; the Spirit’s ministry surpasses and abides (3:7–11).' },
+        { k:'Israel & the Church', v:'A veil still lies on Israel’s heart, lifted “when one turns to the Lord” — anticipating her future unveiling (3:14–16).' },
+        { k:'The Judgment Seat', v:'Every believer appears before the bēma of Christ for reward and loss, not condemnation (5:10).' },
+        { k:'Present & Future Hope', v:'The Spirit is the down payment now (1:22; 5:5); the eternal house and unveiled glory await (5:1–4).' },
       ];
       return (
-        <SlideChrome num={22} total={TOTAL} chapter="Framework">
+        <SlideChrome num={25} total={TOTAL} chapter="Framework">
           <div className="pad" style={{ justifyContent:'center' }}>
-            <div className="eyebrow" style={{ marginBottom:26 }}>Reading Ephesians Dispensationally</div>
+            <div className="eyebrow" style={{ marginBottom:26 }}>Reading 2 Corinthians Dispensationally</div>
             <h2 className="section" style={{ fontSize:70, marginBottom:44 }}>Where the Framework Shapes the Text</h2>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:26 }}>
               {cards.map((c,i) => (
@@ -810,16 +833,16 @@
       );
     };
 
-    // 23 — Themes & takeaways
+    // 26 — Themes & takeaways
     const SlideThemes = () => {
       const cards = [
-        { k:'Riches in Christ', v:'Chosen, adopted, redeemed, sealed — every spiritual blessing is ours in the heavenly places.' },
-        { k:'One New Body', v:'The cross makes Jew and Gentile one new man — the church, Christ’s body and temple.' },
-        { k:'A Worthy Walk', v:'Heavenly position produces earthly practice: unity, holiness, love, and Spirit-filled living.' },
-        { k:'Stand in His Strength', v:'Clothed in God’s armor, the believer stands firm against the powers in the strength of the Lord.' },
+        { k:'Comfort in Affliction', v:'The God of all comfort meets His servants in suffering, that they may comfort others.' },
+        { k:'Glory of the New Covenant', v:'Gospel ministry of the Spirit surpasses the fading glory of the letter.' },
+        { k:'Reconciled & Sent', v:'In Christ a new creation, made God’s righteousness, and commissioned as ambassadors.' },
+        { k:'Power in Weakness', v:'Treasure in clay jars; grace sufficient; God’s power perfected where we are weak.' },
       ];
       return (
-        <SlideChrome num={23} total={TOTAL} chapter="Takeaways">
+        <SlideChrome num={26} total={TOTAL} chapter="Takeaways">
           <div className="pad" style={{ justifyContent:'center' }}>
             <div className="eyebrow" style={{ marginBottom:26 }}>Key Themes</div>
             <h2 className="section" style={{ fontSize:72, marginBottom:44 }}>What This Letter Leaves Us</h2>
@@ -836,16 +859,16 @@
       );
     };
 
-    // 24 — Closing
+    // 27 — Closing
     const SlideClosing = () => (
-      <SlideChrome num={24} total={TOTAL} noChrome>
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 60%,#3a6cb8 130%)' }} />
+      <SlideChrome num={27} total={TOTAL} noChrome>
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 60%,#0F766E 130%)' }} />
         <div className="grid-bg" style={{ opacity:0.15 }} />
         <div className="pad" style={{ justifyContent:'space-between', color:'#fff' }}>
           <span style={{ fontFamily:'var(--font-mono)', fontSize:22, letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(255,255,255,0.8)' }}>{EVENT_NAME}</span>
           <div style={{ textAlign:'center' }}>
-            <div style={{ fontFamily:'var(--font-mono)', fontSize:24, letterSpacing:'.3em', textTransform:'uppercase', color:'#fff', opacity:0.85, marginBottom:32 }}>Throughout All Generations · Ephesians 3:21</div>
-            <h1 className="display" style={{ color:'#fff', marginBottom:36, fontSize:140, whiteSpace:'nowrap' }}>To Him Be Glory</h1>
+            <div style={{ fontFamily:'var(--font-mono)', fontSize:24, letterSpacing:'.3em', textTransform:'uppercase', color:'#fff', opacity:0.85, marginBottom:32 }}>My Grace Is Sufficient for You</div>
+            <h1 className="display" style={{ color:'#fff', marginBottom:36, fontSize:132 }}>Soli Deo Gloria</h1>
             <a href={BRAND_URL} target="_blank" rel="noopener noreferrer"
                onClick={(e) => openLink(e, BRAND_URL)}
                style={{ display:'inline-flex', alignItems:'center', gap:12, padding:'18px 38px', background:'#fff', color:'#0f1a35', borderRadius:999, fontFamily:'var(--font-mono)', fontSize:26, fontWeight:600, textDecoration:'none', letterSpacing:'.04em', cursor:'pointer', pointerEvents:'auto', position:'relative', zIndex:20 }}>
@@ -861,9 +884,10 @@
 
     Object.assign(window, {
       SlideCover, SlideOverview, SlideBackground, SlidePurpose, SlideRoadmap,
-      SecWealth, SlideBlessings, SlidePrayer1, SlideGrace, SlideQuoteGrace, SlideOneNewMan,
-      SlideMystery, SlidePrayer2, SecWalk, SlideUnity, SlideNewSelf, SlideWalkLight,
-      SlideMarriage, SlideHouseholds, SecStand, SlideArmor,
+      SecComfort, SlideComfort, SlideIntegrity,
+      SecNewCovenant, SlideTriumph, SlideGloryNewCov, SlideTreasure, SlideEternalHouse, SlideReconciliation, SlideDaySalvation, SlideGodlyGrief,
+      SecGiving, SlideCollection, SlideCheerful,
+      SecDefense, SlideWeapons, SlideFalseApostles, SlideThorn, SlideFarewell,
       SlideDispensational, SlideThemes, SlideClosing
     });
   </script>
@@ -872,9 +896,10 @@
   <script type="text/babel">
     const mounts = [
       SlideCover, SlideOverview, SlideBackground, SlidePurpose, SlideRoadmap,
-      SecWealth, SlideBlessings, SlidePrayer1, SlideGrace, SlideQuoteGrace, SlideOneNewMan,
-      SlideMystery, SlidePrayer2, SecWalk, SlideUnity, SlideNewSelf, SlideWalkLight,
-      SlideMarriage, SlideHouseholds, SecStand, SlideArmor,
+      SecComfort, SlideComfort, SlideIntegrity,
+      SecNewCovenant, SlideTriumph, SlideGloryNewCov, SlideTreasure, SlideEternalHouse, SlideReconciliation, SlideDaySalvation, SlideGodlyGrief,
+      SecGiving, SlideCollection, SlideCheerful,
+      SecDefense, SlideWeapons, SlideFalseApostles, SlideThorn, SlideFarewell,
       SlideDispensational, SlideThemes, SlideClosing
     ];
     mounts.forEach((C, i) => {

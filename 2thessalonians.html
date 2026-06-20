@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hold Your Ground — 2 Thessalonians · Rod Martin</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --font-display: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+      --font-text:    'Figtree', ui-sans-serif, system-ui, sans-serif;
+      --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+      --accent:            #C9922A;  /* overridden by JS */
+      --accent-ink:        #7a4e10;  /* WCAG-safe accent for TEXT on light surfaces (~7:1) */
+      --brand-navy:        #1a2a4f;
+      --brand-navy-deep:   #0f1a35;
+      --brand-blue:        var(--accent);
+      --brand-blue-bright: var(--accent);
+      --brand-blue-sky:    #8ec3e8;
+      --brand-blue-pale:   #d9eaf7;
+
+      --bg:        #f6f5f1;
+      --bg-alt:    #ebe9e1;
+      --bg-elev:   #ffffff;
+      --ink:       #0f1a35;
+      --ink-soft:  #34405c;
+      --ink-muted: #6b7390;
+      --ink-faint: #a8adbf;
+      --line:      rgba(15,26,53,0.12);
+      --line-soft: rgba(15,26,53,0.06);
+      --grid:      rgba(15,26,53,0.04);
+      --chip-bg:   rgba(15,26,53,0.05);
+      --chip-ink:  var(--brand-navy);
+
+      --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg:        #0b1226;
+      --bg-alt:    #141c36;
+      --bg-elev:   #1a2444;
+      --ink:       #f2f3f8;
+      --ink-soft:  #d8dceb;
+      --ink-muted: #a8aec8;
+      --ink-faint: #7a819e;
+      --line:      rgba(255,255,255,0.16);
+      --line-soft: rgba(255,255,255,0.08);
+      --grid:      rgba(255,255,255,0.05);
+      --chip-bg:   rgba(255,255,255,0.08);
+      --chip-ink:  var(--brand-blue-sky);
+      --accent-ink:        #C9922A;  /* gold is safe on dark navy (~6.8:1) */
+      --brand-blue:        #8ec3e8;
+      --brand-blue-bright: #8ec3e8;
+    }
+
+    html, body { margin:0;padding:0;background:#000;font-family:var(--font-text);-webkit-font-smoothing:antialiased; }
+    * { box-sizing: border-box; }
+
+    .slide {
+      width:1920px;height:1080px;background:var(--bg);color:var(--ink);
+      position:relative;overflow:hidden;font-family:var(--font-text);display:flex;flex-direction:column;
+    }
+    .grid-bg {
+      position:absolute;inset:0;
+      background-image:linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);
+      background-size:80px 80px;pointer-events:none;
+    }
+    .pad { padding:88px 120px;flex:1;display:flex;flex-direction:column;position:relative;z-index:2; }
+    .slide-footer { display:flex;justify-content:space-between;align-items:center;padding:0 72px 48px;font-family:var(--font-mono);font-size:24px;color:var(--ink-soft);letter-spacing:.04em;position:relative;z-index:3; }
+    .chapter-label { position:absolute;top:128px;right:72px;z-index:3;font-family:var(--font-mono);font-size:24px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-ink); }
+
+    .eyebrow { font-family:var(--font-mono);font-size:24px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink);display:inline-flex;align-items:center;gap:14px; }
+    .eyebrow::before { content:'';width:36px;height:2px;background:currentColor; }
+    .kicker { font-family:var(--font-mono);font-size:24px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-muted); }
+    h1.display { font-family:var(--font-display);font-size:150px;font-weight:800;line-height:.96;letter-spacing:-.035em;margin:0;color:var(--ink); }
+    h2.section { font-family:var(--font-display);font-size:96px;font-weight:800;line-height:1.0;letter-spacing:-.025em;margin:0;color:var(--ink); }
+    .lead { font-family:var(--font-display);font-size:40px;line-height:1.35;font-weight:400;color:var(--ink-soft);margin:0; }
+    .card { background:var(--bg-elev);border:1px solid var(--line);border-radius:28px;padding:56px;position:relative; }
+
+    .slide a { pointer-events:auto !important; cursor:pointer; position:relative; z-index:10; }
+
+    .theme-toggle { position:fixed;top:20px;right:20px;z-index:2147482500;display:inline-flex;align-items:center;gap:6px;padding:6px;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);border-radius:999px;border:1px solid rgba(255,255,255,.1); }
+    .theme-toggle button { appearance:none;border:0;background:transparent;color:rgba(255,255,255,.6);padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all 140ms; }
+    .theme-toggle button.active { background:rgba(255,255,255,.15);color:#fff; }
+    .theme-toggle #btn-filmstrip { padding:8px 10px;display:inline-flex;align-items:center;justify-content:center; }
+    .tweaks-panel { position:fixed;bottom:80px;right:20px;z-index:2147482400;width:280px;background:rgba(15,20,40,.92);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;color:#fff;display:none;box-shadow:0 20px 60px rgba(0,0,0,.4); }
+    .tweaks-panel[data-visible] { display:block; }
+    .tweaks-panel h4 { margin:0 0 16px;font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6); }
+    .tweaks-row { display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:13px; }
+    .tweaks-row .swatches { display:inline-flex;gap:6px; }
+    .tweaks-row .sw { width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform 140ms; }
+    .tweaks-row .sw.active { border-color:#fff;transform:scale(1.1); }
+    .tweaks-row .seg { display:inline-flex;background:rgba(255,255,255,.08);border-radius:8px;padding:2px; }
+    .tweaks-row .seg button { appearance:none;border:0;background:transparent;color:rgba(255,255,255,.7);padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer; }
+    .tweaks-row .seg button.active { background:rgba(255,255,255,.15);color:#fff; }
+  </style>
+</head>
+<body>
+
+  <div class="theme-toggle" id="theme-toggle">
+    <button data-theme-set="light" class="active">☀ Light</button>
+    <button data-theme-set="dark">☾ Dark</button>
+    <button id="btn-filmstrip" title="All slides (G)" aria-label="All slides">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="5" height="5" rx="1"></rect><rect x="9.5" y="1.5" width="5" height="5" rx="1"></rect>
+        <rect x="1.5" y="9.5" width="5" height="5" rx="1"></rect><rect x="9.5" y="9.5" width="5" height="5" rx="1"></rect>
+      </svg>
+    </button>
+  </div>
+
+  <div class="tweaks-panel" id="tweaks-panel">
+    <h4>Tweaks</h4>
+    <div class="tweaks-row">
+      <span>Theme</span>
+      <div class="seg" id="tw-theme">
+        <button data-theme-set="light" class="active">Light</button>
+        <button data-theme-set="dark">Dark</button>
+      </div>
+    </div>
+    <div class="tweaks-row">
+      <span>Accent</span>
+      <div class="swatches" id="tw-accent">
+        <div class="sw active" data-accent="#C9922A" style="background:#C9922A" title="Gold (default)"></div>
+        <div class="sw" data-accent="#5AA8E0" style="background:#5AA8E0" title="Sky"></div>
+        <div class="sw" data-accent="#3a6cb8" style="background:#3a6cb8" title="Blue"></div>
+        <div class="sw" data-accent="#e86a5c" style="background:#e86a5c" title="Coral"></div>
+        <div class="sw" data-accent="#5fa68b" style="background:#5fa68b" title="Sage"></div>
+      </div>
+    </div>
+    <div class="tweaks-row">
+      <span>Grid</span>
+      <div class="seg" id="tw-grid">
+        <button data-grid="on" class="active">On</button>
+        <button data-grid="off">Off</button>
+      </div>
+    </div>
+    <div class="tweaks-row">
+      <span>Density</span>
+      <div class="seg" id="tw-density">
+        <button data-density="tight">Tight</button>
+        <button data-density="default" class="active">Default</button>
+      </div>
+    </div>
+  </div>
+
+  <deck-stage width="1920" height="1080" id="deck">
+    <section id="s01"></section>
+    <section id="s02"></section>
+    <section id="s03"></section>
+    <section id="s04"></section>
+    <section id="s05"></section>
+    <section id="s06"></section>
+    <section id="s07"></section>
+    <section id="s08"></section>
+    <section id="s09"></section>
+    <section id="s10"></section>
+    <section id="s11"></section>
+    <section id="s12"></section>
+    <section id="s13"></section>
+    <section id="s14"></section>
+    <section id="s15"></section>
+    <section id="s16"></section>
+    <section id="s17"></section>
+  </deck-stage>
+
+  <!-- [1] deck-stage web component -->
+  <script>
+  (() => {
+    const DESIGN_W_DEFAULT = 1920;
+    const DESIGN_H_DEFAULT = 1080;
+    const STORAGE_PREFIX = 'deck-stage:slide:';
+    const OVERLAY_HIDE_MS = 1800;
+    const VALIDATE_ATTR = 'no_overflowing_text,no_overlapping_text,slide_sized_text';
+    const pad2 = (n) => String(n).padStart(2, '0');
+
+    const stylesheet = `
+      :host { position:fixed;inset:0;display:block;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;overflow:hidden; }
+      .stage { position:absolute;inset:0;display:flex;align-items:center;justify-content:center; }
+      .canvas { position:relative;transform-origin:center center;flex-shrink:0;background:#fff;will-change:transform; }
+      ::slotted(*) { position:absolute!important;inset:0!important;width:100%!important;height:100%!important;box-sizing:border-box!important;overflow:hidden;opacity:0;pointer-events:none;visibility:hidden; }
+      ::slotted([data-deck-active]) { opacity:1;pointer-events:auto;visibility:visible; }
+      .tapzones { position:fixed;inset:0;display:flex;z-index:2147482000;pointer-events:none; }
+      .tapzone { flex:1;pointer-events:auto;-webkit-tap-highlight-color:transparent; }
+      @media (hover:hover) and (pointer:fine) { .tapzones { display:none; } }
+      .overlay { position:fixed;left:50%;bottom:22px;transform:translate(-50%,6px) scale(0.92);filter:blur(6px);display:flex;align-items:center;gap:4px;padding:4px;background:#000;color:#fff;border-radius:999px;font-size:12px;font-feature-settings:"tnum" 1;letter-spacing:.01em;opacity:0;pointer-events:none;transition:opacity 260ms ease,transform 260ms cubic-bezier(.2,.8,.2,1),filter 260ms ease;transform-origin:center bottom;z-index:2147483000;user-select:none; }
+      .overlay[data-visible] { opacity:1;pointer-events:auto;transform:translate(-50%,0) scale(1);filter:blur(0); }
+      .btn { appearance:none;-webkit-appearance:none;background:transparent;border:0;margin:0;padding:0;color:inherit;font:inherit;cursor:default;display:inline-flex;align-items:center;justify-content:center;height:28px;min-width:28px;border-radius:999px;color:rgba(255,255,255,.72);transition:background 140ms ease,color 140ms ease;-webkit-tap-highlight-color:transparent; }
+      .btn:hover { background:rgba(255,255,255,.12);color:#fff; }
+      .btn:active { background:rgba(255,255,255,.18); }
+      .btn svg { width:14px;height:14px;display:block; }
+      .btn.reset { font-size:11px;font-weight:500;letter-spacing:.02em;padding:0 10px 0 12px;gap:6px; }
+      .btn.reset .kbd { display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:10px;line-height:1;color:rgba(255,255,255,.88);background:rgba(255,255,255,.12);border-radius:4px; }
+      .count { font-variant-numeric:tabular-nums;color:#fff;font-weight:500;padding:0 8px;min-width:42px;text-align:center;font-size:12px; }
+      .count .sep { color:rgba(255,255,255,.45);margin:0 3px;font-weight:400; }
+      .count .total { color:rgba(255,255,255,.55); }
+      .divider { width:1px;height:14px;background:rgba(255,255,255,.18);margin:0 2px; }
+      @media print { :host { position:static;inset:auto;background:none;overflow:visible;color:inherit; } .stage { position:static;display:block; } .canvas { transform:none!important;width:auto!important;height:auto!important;background:none;will-change:auto; } ::slotted(*) { position:relative!important;inset:auto!important;width:var(--deck-design-w)!important;height:var(--deck-design-h)!important;box-sizing:border-box!important;opacity:1!important;visibility:visible!important;pointer-events:auto;break-after:page;page-break-after:always;break-inside:avoid;overflow:hidden; } ::slotted(*:last-child) { break-after:auto;page-break-after:auto; } .overlay,.tapzones { display:none!important; } }
+    `;
+
+    class DeckStage extends HTMLElement {
+      static get observedAttributes() { return ['width','height','noscale']; }
+      constructor() {
+        super();
+        this._root=this.attachShadow({mode:'open'});
+        this._index=0;this._slides=[];this._notes=[];
+        this._hideTimer=null;this._mouseIdleTimer=null;
+        this._storageKey=STORAGE_PREFIX+(location.pathname||'/');
+        this._onKey=this._onKey.bind(this);
+        this._onResize=this._onResize.bind(this);
+        this._onSlotChange=this._onSlotChange.bind(this);
+        this._onMouseMove=this._onMouseMove.bind(this);
+        this._onTapBack=this._onTapBack.bind(this);
+        this._onTapForward=this._onTapForward.bind(this);
+      }
+      get designWidth()  { return parseInt(this.getAttribute('width'),10)||DESIGN_W_DEFAULT; }
+      get designHeight() { return parseInt(this.getAttribute('height'),10)||DESIGN_H_DEFAULT; }
+      connectedCallback() {
+        this._render();this._loadNotes();this._syncPrintPageRule();
+        window.addEventListener('keydown',this._onKey);
+        window.addEventListener('resize',this._onResize);
+        window.addEventListener('mousemove',this._onMouseMove,{passive:true});
+      }
+      disconnectedCallback() {
+        window.removeEventListener('keydown',this._onKey);
+        window.removeEventListener('resize',this._onResize);
+        window.removeEventListener('mousemove',this._onMouseMove);
+        if(this._hideTimer) clearTimeout(this._hideTimer);
+        if(this._mouseIdleTimer) clearTimeout(this._mouseIdleTimer);
+      }
+      attributeChangedCallback() {
+        if(this._canvas){
+          this._canvas.style.width=this.designWidth+'px';
+          this._canvas.style.height=this.designHeight+'px';
+          this._canvas.style.setProperty('--deck-design-w',this.designWidth+'px');
+          this._canvas.style.setProperty('--deck-design-h',this.designHeight+'px');
+          this._fit();this._syncPrintPageRule();
+        }
+      }
+      _render() {
+        const style=document.createElement('style');style.textContent=stylesheet;
+        const stage=document.createElement('div');stage.className='stage';
+        const canvas=document.createElement('div');canvas.className='canvas';
+        canvas.style.width=this.designWidth+'px';canvas.style.height=this.designHeight+'px';
+        canvas.style.setProperty('--deck-design-w',this.designWidth+'px');
+        canvas.style.setProperty('--deck-design-h',this.designHeight+'px');
+        const slot=document.createElement('slot');
+        slot.addEventListener('slotchange',this._onSlotChange);
+        canvas.appendChild(slot);stage.appendChild(canvas);
+        const tapzones=document.createElement('div');tapzones.className='tapzones';tapzones.setAttribute('aria-hidden','true');
+        const tzBack=document.createElement('div');tzBack.className='tapzone tapzone--back';
+        const tzMid=document.createElement('div');tzMid.className='tapzone tapzone--mid';tzMid.style.pointerEvents='none';
+        const tzFwd=document.createElement('div');tzFwd.className='tapzone tapzone--fwd';
+        tzBack.addEventListener('click',this._onTapBack);tzFwd.addEventListener('click',this._onTapForward);
+        tapzones.append(tzBack,tzMid,tzFwd);
+        const overlay=document.createElement('div');
+        overlay.className='overlay';overlay.setAttribute('role','toolbar');overlay.setAttribute('aria-label','Deck controls');
+        overlay.innerHTML=`<button class="btn prev" type="button" aria-label="Previous slide" title="Previous (←)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg></button><span class="count" aria-live="polite"><span class="current">1</span><span class="sep">/</span><span class="total">1</span></span><button class="btn next" type="button" aria-label="Next slide" title="Next (→)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg></button><span class="divider"></span><button class="btn reset" type="button" aria-label="Reset to first slide" title="Reset (R)">Reset<span class="kbd">R</span></button><span class="divider"></span><button class="btn grid-toggle" type="button" aria-label="All slides" title="All slides (G)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="5" height="5" rx="1"/><rect x="9.5" y="1.5" width="5" height="5" rx="1"/><rect x="1.5" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/></svg></button>`;
+        overlay.querySelector('.prev').addEventListener('click',()=>this._go(this._index-1,'click'));
+        overlay.querySelector('.next').addEventListener('click',()=>this._go(this._index+1,'click'));
+        overlay.querySelector('.reset').addEventListener('click',()=>this._go(0,'click'));
+        overlay.querySelector('.grid-toggle').addEventListener('click',()=>this.toggleFilmstrip());
+        this._root.append(style,stage,tapzones,overlay);
+        this._canvas=canvas;this._slot=slot;this._overlay=overlay;
+        this._countEl=overlay.querySelector('.current');this._totalEl=overlay.querySelector('.total');
+      }
+      _syncPrintPageRule() {
+        const id='deck-stage-print-page';let tag=document.getElementById(id);
+        if(!tag){tag=document.createElement('style');tag.id=id;document.head.appendChild(tag);}
+        tag.textContent='@page{size:'+this.designWidth+'px '+this.designHeight+'px;margin:0}@media print{html,body{margin:0!important;padding:0!important;background:none!important;overflow:visible!important;height:auto!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}';
+      }
+      _onSlotChange(){this._collectSlides();this._restoreIndex();this._applyIndex({showOverlay:false,broadcast:true,reason:'init'});this._fit();}
+      _collectSlides(){
+        const assigned=this._slot.assignedElements({flatten:true});
+        this._slides=assigned.filter(el=>{const t=el.tagName;return t!=='TEMPLATE'&&t!=='SCRIPT'&&t!=='STYLE';});
+        this._slides.forEach((slide,i)=>{
+          const n=i+1;let label=slide.getAttribute('data-label');
+          if(!label){const h=slide.querySelector('h1,h2,h3,[data-title]');if(h)label=(h.textContent||'').trim().slice(0,40);}
+          if(!label)label='Slide';
+          slide.setAttribute('data-screen-label',`${pad2(n)} ${label}`);
+          if(!slide.hasAttribute('data-om-validate'))slide.setAttribute('data-om-validate',VALIDATE_ATTR);
+          slide.setAttribute('data-deck-slide',String(i));
+        });
+        if(this._totalEl)this._totalEl.textContent=String(this._slides.length||1);
+        if(this._index>=this._slides.length)this._index=Math.max(0,this._slides.length-1);
+      }
+      _loadNotes(){const tag=document.getElementById('speaker-notes');if(!tag){this._notes=[];return;}try{const p=JSON.parse(tag.textContent||'[]');if(Array.isArray(p))this._notes=p;}catch(e){this._notes=[];}}
+      _restoreIndex(){try{const raw=localStorage.getItem(this._storageKey);if(raw!=null){const n=parseInt(raw,10);if(Number.isFinite(n)&&n>=0&&n<this._slides.length)this._index=n;}}catch(e){}}
+      _persistIndex(){try{localStorage.setItem(this._storageKey,String(this._index));}catch(e){}}
+      _applyIndex({showOverlay=true,broadcast=true,reason='init'}={}){
+        if(!this._slides.length)return;
+        const curr=this._index;
+        this._slides.forEach((s,i)=>{if(i===curr)s.setAttribute('data-deck-active','');else s.removeAttribute('data-deck-active');});
+        if(this._countEl)this._countEl.textContent=String(curr+1);
+        this._persistIndex();
+        if(broadcast){try{window.postMessage({slideIndexChanged:curr},'*');}catch(e){}
+          this.dispatchEvent(new CustomEvent('slidechange',{detail:{index:curr,total:this._slides.length},bubbles:true,composed:true}));}
+        if(showOverlay)this._flashOverlay();
+        this._syncFilmstripActive();
+      }
+      _flashOverlay(){if(!this._overlay)return;this._overlay.setAttribute('data-visible','');if(this._hideTimer)clearTimeout(this._hideTimer);this._hideTimer=setTimeout(()=>this._overlay.removeAttribute('data-visible'),OVERLAY_HIDE_MS);}
+      _fit(){if(!this._canvas)return;if(this.hasAttribute('noscale')){this._canvas.style.transform='none';return;}const s=Math.min(window.innerWidth/this.designWidth,window.innerHeight/this.designHeight);this._canvas.style.transform=`scale(${s})`;}
+      _onResize(){this._fit();}
+      _onMouseMove(){this._flashOverlay();}
+      _onTapBack(e){e.preventDefault();this._go(this._index-1,'tap');}
+      _onTapForward(e){e.preventDefault();this._go(this._index+1,'tap');}
+      _onKey(e){
+        const t=e.target;if(t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))return;
+        if(e.metaKey||e.ctrlKey||e.altKey)return;
+        const key=e.key;let handled=true;
+        if(key==='ArrowRight'||key==='PageDown'||key===' '||key==='Spacebar')this._go(this._index+1,'keyboard');
+        else if(key==='ArrowLeft'||key==='PageUp')this._go(this._index-1,'keyboard');
+        else if(key==='Home')this._go(0,'keyboard');
+        else if(key==='End')this._go(this._slides.length-1,'keyboard');
+        else if(key==='r'||key==='R')this._go(0,'keyboard');
+        else if(/^[0-9]$/.test(key)){const n=key==='0'?9:parseInt(key,10)-1;if(n<this._slides.length)this._go(n,'keyboard');}
+        else handled=false;
+        if(handled){e.preventDefault();this._flashOverlay();}
+      }
+      _go(i,reason='api'){
+        if(!this._slides.length)return;
+        const clamped=Math.max(0,Math.min(this._slides.length-1,i));
+        if(clamped===this._index){this._flashOverlay();return;}
+        this._index=clamped;this._applyIndex({showOverlay:true,broadcast:true,reason});
+      }
+      _buildFilmstrip(){
+        if(this._filmstripOverlay)return;
+        if(!document.getElementById('deck-stage-filmstrip-style')){
+          const s=document.createElement('style');s.id='deck-stage-filmstrip-style';
+          s.textContent=`.ds-filmstrip-overlay{position:fixed;inset:0;z-index:2147483500;pointer-events:none;opacity:0;transition:opacity 280ms ease}.ds-filmstrip-overlay.open{pointer-events:auto;opacity:1}.ds-filmstrip-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px)}.ds-filmstrip-drawer{position:absolute;right:0;top:0;bottom:0;width:400px;background:#111;overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform 300ms cubic-bezier(.22,.9,.3,1);padding:24px 16px 40px;box-sizing:border-box}.ds-filmstrip-overlay.open .ds-filmstrip-drawer{transform:translateX(0)}.ds-filmstrip-header{display:flex;align-items:center;justify-content:space-between;margin:0 4px 18px}.ds-filmstrip-title{color:rgba(255,255,255,.45);font-size:11px;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0}.ds-filmstrip-close{appearance:none;background:rgba(255,255,255,.08);border:0;margin:0;padding:0;color:rgba(255,255,255,.5);width:24px;height:24px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}.ds-filmstrip-close:hover{background:rgba(255,255,255,.15);color:#fff}.ds-filmstrip-close svg{width:12px;height:12px;display:block}.ds-filmstrip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ds-filmstrip-thumb{cursor:pointer;border-radius:5px;overflow:hidden;position:relative;border:2px solid transparent;transition:border-color 160ms ease,transform 120ms ease}.ds-filmstrip-thumb:hover{transform:scale(1.03);border-color:rgba(255,255,255,.35)}.ds-filmstrip-thumb.ds-active{border-color:var(--accent,#C9922A)}.ds-filmstrip-inner{width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;background:#222}.ds-filmstrip-inner>.ds-clone{position:absolute!important;top:0!important;left:0!important;transform-origin:top left!important;pointer-events:none!important;visibility:visible!important;opacity:1!important}.ds-filmstrip-num{position:absolute;top:5px;left:7px;color:rgba(255,255,255,.55);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:9px;font-weight:600;line-height:1;z-index:2}.ds-filmstrip-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));color:rgba(255,255,255,.85);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;font-size:9px;font-weight:500;padding:14px 7px 5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}`;
+          document.head.appendChild(s);
+        }
+        const overlay=document.createElement('div');overlay.className='ds-filmstrip-overlay';
+        const backdrop=document.createElement('div');backdrop.className='ds-filmstrip-backdrop';
+        backdrop.addEventListener('click',()=>this._closeFilmstrip());
+        const drawer=document.createElement('div');drawer.className='ds-filmstrip-drawer';
+        const header=document.createElement('div');header.className='ds-filmstrip-header';
+        const titleEl=document.createElement('p');titleEl.className='ds-filmstrip-title';titleEl.textContent=`All Slides · ${this._slides.length}`;
+        const closeBtn=document.createElement('button');closeBtn.className='ds-filmstrip-close';closeBtn.type='button';closeBtn.setAttribute('aria-label','Close');
+        closeBtn.innerHTML=`<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 1l10 10M11 1L1 11"/></svg>`;
+        closeBtn.addEventListener('click',()=>this._closeFilmstrip());
+        header.append(titleEl,closeBtn);
+        const grid=document.createElement('div');grid.className='ds-filmstrip-grid';
+        this._filmstripThumbs=[];
+        this._slides.forEach((slide,i)=>{
+          const thumb=document.createElement('div');thumb.className='ds-filmstrip-thumb'+(i===this._index?' ds-active':'');thumb.dataset.dsSlide=i;
+          const inner=document.createElement('div');inner.className='ds-filmstrip-inner';
+          const clone=slide.cloneNode(true);clone.className='ds-clone';
+          clone.removeAttribute('data-deck-active');clone.style.cssText='';clone.style.pointerEvents='none';clone.style.visibility='visible';clone.style.opacity='1';
+          clone.querySelectorAll('video').forEach(v=>{v.muted=true;v.autoplay=false;v.removeAttribute('autoplay');v.pause();});
+          inner.appendChild(clone);
+          const num=document.createElement('span');num.className='ds-filmstrip-num';num.textContent=String(i+1).padStart(2,'0');
+          const rawLabel=slide.getAttribute('data-screen-label')||'';const labelText=rawLabel.replace(/^\d+\s*/,'').trim();
+          if(labelText){const labelEl=document.createElement('div');labelEl.className='ds-filmstrip-label';labelEl.textContent=labelText;inner.appendChild(labelEl);}
+          inner.appendChild(num);thumb.appendChild(inner);
+          thumb.addEventListener('click',()=>{this._go(i,'click');this._closeFilmstrip();});
+          grid.appendChild(thumb);this._filmstripThumbs.push({thumb,clone,inner});
+        });
+        drawer.append(header,grid);overlay.append(backdrop,drawer);document.body.appendChild(overlay);
+        this._filmstripOverlay=overlay;
+        requestAnimationFrame(()=>{
+          this._filmstripThumbs.forEach(({clone,inner})=>{
+            const w=inner.offsetWidth;if(!w)return;
+            const scale=w/this.designWidth;
+            clone.style.width=this.designWidth+'px';clone.style.height=this.designHeight+'px';clone.style.transform=`scale(${scale})`;
+          });
+        });
+        this._onFilmstripKey=(e)=>{if(e.key==='Escape')this._closeFilmstrip();if((e.key==='g'||e.key==='G')&&!this._filmstripOverlay.classList.contains('open'))this._openFilmstrip();};
+        window.addEventListener('keydown',this._onFilmstripKey);
+      }
+      _openFilmstrip(){this._buildFilmstrip();this._filmstripThumbs?.forEach(({thumb},i)=>thumb.classList.toggle('ds-active',i===this._index));requestAnimationFrame(()=>this._filmstripOverlay.classList.add('open'));}
+      _closeFilmstrip(){this._filmstripOverlay?.classList.remove('open');}
+      _syncFilmstripActive(){this._filmstripThumbs?.forEach(({thumb},i)=>thumb.classList.toggle('ds-active',i===this._index));}
+      get index(){return this._index;}
+      get length(){return this._slides.length;}
+      goTo(i){this._go(i,'api');}next(){this._go(this._index+1,'api');}prev(){this._go(this._index-1,'api');}reset(){this._go(0,'api');}
+      toggleFilmstrip(){if(this._filmstripOverlay?.classList.contains('open'))this._closeFilmstrip();else this._openFilmstrip();}
+    }
+
+    if(!customElements.get('deck-stage'))customElements.define('deck-stage',DeckStage);
+  })();
+  </script>
+
+  <!-- [2] React + ReactDOM + Babel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+  <!-- [3] Deck configuration -->
+  <script>
+    const BOOK         = '2 Thessalonians';
+    const TALK_TITLE   = 'Hold Your Ground';
+    const OVERVIEW     = 'Endure · Discern · Stand Firm';
+    const VERSION      = 'NIV';
+    const AUTHOR       = 'Rod Martin';
+    const SITE_URL     = 'https://imrodmartin.com';
+    const SITE_LABEL   = 'imrodmartin.com';
+    const ACCENT_COLOR = '#C9922A';
+    const TOTAL        = 17;
+
+    window.__resources = { brandLogo: '', presenterPhoto: '' };
+
+    document.documentElement.style.setProperty('--accent', ACCENT_COLOR);
+    document.documentElement.style.setProperty('--brand-blue-bright', ACCENT_COLOR);
+    document.documentElement.style.setProperty('--brand-blue', ACCENT_COLOR);
+  </script>
+
+  <!-- [4] Shared primitives -->
+  <script type="text/babel">
+    /* global React */
+    const openLink = (e, url) => {
+      e.preventDefault();
+      e.stopPropagation();
+      window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
+    const SlideChrome = ({ num, chapter, children, noChrome = false, className = '' }) => (
+      <div className={`slide ${className}`} data-label={chapter || ''}>
+        <div className="grid-bg" />
+        {!noChrome && chapter && (<div className="chapter-label">{chapter}</div>)}
+        {!noChrome && (
+          <div className="slide-footer">
+            <span>{BOOK} — {OVERVIEW}</span>
+            <span>{String(num).padStart(2,'0')} / {String(TOTAL).padStart(2,'0')}</span>
+          </div>
+        )}
+        {children}
+      </div>
+    );
+
+    // Oversized faint key-word watermark — section/divider slides ONLY.
+    const KeyWord = ({ word, dark = false }) => word ? (
+      <div aria-hidden="true" style={{
+        position:'absolute', left:60, bottom:-14, zIndex:1,
+        fontFamily:'var(--font-display)', fontSize:300, fontWeight:800,
+        lineHeight:1, letterSpacing:'-0.03em', textTransform:'uppercase',
+        whiteSpace:'nowrap', userSelect:'none', pointerEvents:'none',
+        color: dark ? `${ACCENT_COLOR}22` : 'rgba(15,26,53,0.05)',
+      }}>{word}</div>
+    ) : null;
+
+    const IdentityBlock = () => (
+      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+        <span style={{ fontFamily:'var(--font-mono)', fontSize:22, fontWeight:600, letterSpacing:'.18em', textTransform:'uppercase', color:'var(--accent-ink)' }}>The Book of</span>
+        <span style={{ fontFamily:'var(--font-display)', fontSize:30, fontWeight:800, letterSpacing:'-.01em', color:'var(--ink)' }}>{BOOK}</span>
+        <span style={{ fontFamily:'var(--font-display)', fontSize:24, fontWeight:600, color:'var(--ink-soft)' }}>{AUTHOR}</span>
+      </div>
+    );
+
+    const SiteLink = () => (
+      <a href={SITE_URL} target="_blank" rel="noopener noreferrer" onClick={(e)=>openLink(e, SITE_URL)}
+         style={{ fontFamily:'var(--font-mono)', fontSize:22, letterSpacing:'.04em', color:'var(--ink-soft)', textDecoration:'none', cursor:'pointer', pointerEvents:'auto', position:'relative', zIndex:20 }}>
+        {SITE_LABEL}
+      </a>
+    );
+
+    Object.assign(window, { openLink, SlideChrome, KeyWord, IdentityBlock, SiteLink });
+  </script>
+
+  <!-- [5] Reusable slide patterns -->
+  <script type="text/babel">
+    const SlideContent = ({ num, chapter, eyebrow, heading, body }) => (
+      <SlideChrome num={num} chapter={chapter}>
+        <div className="pad" style={{ justifyContent:'center' }}>
+          <div className="eyebrow" style={{ marginBottom:40 }}>{eyebrow}</div>
+          <h2 className="section" style={{ marginBottom:48, maxWidth:1600 }}>{heading}</h2>
+          <p className="lead" style={{ maxWidth:1300 }}>{body}</p>
+        </div>
+      </SlideChrome>
+    );
+
+    const SlideVerse = ({ num, chapter, text, vref, size = 60 }) => (
+      <SlideChrome num={num} chapter={chapter}>
+        <div className="pad" style={{ justifyContent:'center', padding:'0 160px' }}>
+          <div aria-hidden="true" style={{ fontFamily:'var(--font-mono)', fontSize:160, color:ACCENT_COLOR, lineHeight:0.5, marginBottom:28, opacity:0.35 }}>&ldquo;</div>
+          <p style={{ fontFamily:'var(--font-display)', fontSize:size, fontWeight:600, lineHeight:1.25, letterSpacing:'-.02em', color:'var(--ink)', margin:0, maxWidth:1520 }}>{text}</p>
+          <div style={{ marginTop:48, display:'flex', alignItems:'center', gap:20 }}>
+            <span style={{ width:48, height:2, background:'var(--accent-ink)' }} />
+            <span style={{ fontFamily:'var(--font-mono)', fontSize:24, fontWeight:600, letterSpacing:'.18em', textTransform:'uppercase', color:'var(--accent-ink)' }}>{vref} · {VERSION}</span>
+          </div>
+        </div>
+      </SlideChrome>
+    );
+
+    const SlideCards = ({ num, chapter, eyebrow, heading, cards, noChrome = false }) => (
+      <SlideChrome num={num} chapter={chapter} noChrome={noChrome}>
+        <div className="pad" style={{ justifyContent:'center' }}>
+          <div className="eyebrow" style={{ marginBottom:32 }}>{eyebrow}</div>
+          <h2 className="section" style={{ marginBottom:64 }}>{heading}</h2>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:32 }}>
+            {cards.map((it,i) => (
+              <div key={i} className="card" style={{ padding:48 }}>
+                <div style={{ fontFamily:'var(--font-display)', fontSize:54, fontWeight:800, color:'var(--accent-ink)', letterSpacing:'-.02em', lineHeight:1, marginBottom:28 }}>{it.title}</div>
+                <div style={{ fontFamily:'var(--font-text)', fontSize:25, lineHeight:1.45, color:'var(--ink-soft)' }}>{it.body}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </SlideChrome>
+    );
+
+    const SlideChapter = ({ num, chapNo, title, subtitle, word }) => (
+      <SlideChrome num={num} noChrome>
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 70%,#243a63 100%)' }} />
+        <div className="grid-bg" style={{ opacity:0.15 }} />
+        <KeyWord word={word} dark />
+        <div className="pad" style={{ justifyContent:'center', color:'#fff' }}>
+          <div style={{ fontFamily:'var(--font-mono)', fontSize:24, letterSpacing:'.3em', textTransform:'uppercase', color:ACCENT_COLOR, marginBottom:40 }}>Chapter {chapNo}</div>
+          <h2 className="section" style={{ color:'#fff', fontSize:140, marginBottom:40 }}>{title}</h2>
+          <p style={{ fontFamily:'var(--font-display)', fontSize:36, fontWeight:400, color:'rgba(255,255,255,0.78)', maxWidth:1150, lineHeight:1.35, margin:0 }}>{subtitle}</p>
+        </div>
+      </SlideChrome>
+    );
+
+    Object.assign(window, { SlideContent, SlideVerse, SlideCards, SlideChapter });
+  </script>
+
+  <!-- [5b] Slide instances A -->
+  <script type="text/babel">
+    /* 01 — Cover */
+    const Slide01 = () => (
+      <SlideChrome num={1} noChrome>
+        <div style={{ position:'absolute', top:-200, right:-220, width:920, height:920, borderRadius:'50%', background:`radial-gradient(circle,${ACCENT_COLOR}22 0%,transparent 70%)` }} />
+        <div className="pad" style={{ justifyContent:'space-between' }}>
+          <IdentityBlock />
+          <div>
+            <div className="eyebrow" style={{ marginBottom:36 }}>Verse by Verse · {VERSION}</div>
+            <h1 className="display" style={{ marginBottom:28, whiteSpace:'nowrap' }}>{TALK_TITLE}</h1>
+            <p style={{ fontFamily:'var(--font-display)', fontSize:46, lineHeight:1.2, fontWeight:400, color:'var(--ink-soft)', margin:0, maxWidth:1420, letterSpacing:'-.01em' }}>
+              Enduring persecution and discerning the Day of the Lord—standing firm until Christ appears.
+            </p>
+          </div>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end' }}>
+            <SiteLink />
+            <span style={{ fontFamily:'var(--font-mono)', fontSize:24, color:'var(--ink-soft)', letterSpacing:'.04em' }}>01 / {String(TOTAL).padStart(2,'0')}</span>
+          </div>
+        </div>
+      </SlideChrome>
+    );
+
+    /* 02 — Hook */
+    const Slide02 = () => (
+      <SlideChrome num={2} noChrome>
+        <div className="grid-bg" />
+        <div className="pad" style={{ justifyContent:'center' }}>
+          <div className="eyebrow" style={{ marginBottom:40 }}>The Setting</div>
+          <h2 className="section" style={{ marginBottom:48, maxWidth:1600 }}>Steady when the world says the end has come</h2>
+          <p className="lead" style={{ maxWidth:1320 }}>
+            Paul writes to a young, persecuted church—rattled by a forged letter claiming the Day of the Lord had already arrived. His answer is threefold: endure the suffering, discern the truth, and stand firm in what you were taught until Christ Himself is revealed.
+          </p>
+        </div>
+      </SlideChrome>
+    );
+
+    /* 03 — Background */
+    const Slide03 = () => (
+      <SlideCards num={3} noChrome eyebrow="Background" heading="One letter, one crisis"
+        cards={[
+          { title:'AD 51–52', body:'Written from Corinth within months of 1 Thessalonians, to the same church under growing pressure.' },
+          { title:'The Lie', body:'A forged letter claimed "the day of the Lord has come" (2:2), spreading fear—and idleness.' },
+          { title:'The Aim', body:'Comfort the persecuted, correct the confused, and call the idle back to faithful work.' },
+        ]} />
+    );
+
+    /* 04 — Roadmap */
+    const Slide04 = () => (
+      <SlideCards num={4} noChrome eyebrow="The Book at a Glance" heading="Three movements"
+        cards={[
+          { title:'Endure', body:'Ch. 1 — Faith grows under fire; God will judge the persecutors and give His people relief.' },
+          { title:'Discern', body:'Ch. 2 — The Day of the Lord and the man of lawlessness; do not be deceived.' },
+          { title:'Stand', body:'Ch. 3 — Pray, work, and never tire of doing what is good.' },
+        ]} />
+    );
+
+    /* 05 — Chapter 1 divider */
+    const Slide05 = () => (
+      <SlideChapter num={5} chapNo="1" title="Endurance Under Fire" word="ENDURE"
+        subtitle="Thanksgiving and the promise of God's righteous judgment—relief for the afflicted, recompense for the oppressor." />
+    );
+
+    /* 06 — Ch1 content */
+    const Slide06 = () => (
+      <SlideContent num={6} chapter="Chapter 1"
+        eyebrow="Chapter 1 · Thanksgiving"
+        heading="Faith that grows under pressure"
+        body="Their faith is growing and their love is increasing—not despite persecution but through it. Paul holds up their endurance as evidence of God's righteous judgment, and prays that God would count them worthy of His calling." />
+    );
+
+    /* 07 — Ch1 verse */
+    const Slide07 = () => (
+      <SlideVerse num={7} chapter="Chapter 1 · 6–7" size={46}
+        vref="2 Thessalonians 1:6–7"
+        text={'God is just: He will pay back trouble to those who trouble you and give relief to you who are troubled, and to us as well. This will happen when the Lord Jesus is revealed from heaven in blazing fire with his powerful angels.'} />
+    );
+
+    /* 08 — Chapter 2 divider */
+    const Slide08 = () => (
+      <SlideChapter num={8} chapNo="2" title="The Day of the Lord" word="DISCERN"
+        subtitle="That day has not yet come. First the rebellion, then the man of lawlessness—revealed, and destroyed at Christ's appearing." />
+    );
+
+    Object.assign(window, { Slide01, Slide02, Slide03, Slide04, Slide05, Slide06, Slide07, Slide08 });
+  </script>
+
+  <!-- [5c] Slide instances B -->
+  <script type="text/babel">
+    /* 09 — Ch2 content */
+    const Slide09 = () => (
+      <SlideContent num={9} chapter="Chapter 2"
+        eyebrow="Chapter 2 · The Day of the Lord"
+        heading="That day has not yet come"
+        body="Before the Day of the Lord, two things must happen: the rebellion, and the unveiling of the man of lawlessness who exalts himself in God's temple, proclaiming himself to be God. So the church must not be shaken—Christ has not yet poured out that wrath." />
+    );
+
+    /* 10 — Ch2 verse */
+    const Slide10 = () => (
+      <SlideVerse num={10} chapter="Chapter 2 · 3" size={52}
+        vref="2 Thessalonians 2:3"
+        text={'Don’t let anyone deceive you in any way, for that day will not come until the rebellion occurs and the man of lawlessness is revealed, the man doomed to destruction.'} />
+    );
+
+    /* 11 — Ch2 teaching */
+    const Slide11 = () => (
+      <SlideContent num={11} chapter="Chapter 2"
+        eyebrow="Chapter 2 · Lawlessness & the Restrainer"
+        heading="Restrained—until he is revealed"
+        body="Something now holds the lawless one back. In the dispensational reading, this restraining work is the Holy Spirit acting through the church; when that restraint is removed, the lawless one appears with counterfeit signs—only to be destroyed by the breath of Christ's mouth at His glorious appearing." />
+    );
+
+    /* 12 — Ch2 verse */
+    const Slide12 = () => (
+      <SlideVerse num={12} chapter="Chapter 2 · 15" size={58}
+        vref="2 Thessalonians 2:15"
+        text={'So then, brothers and sisters, stand firm and hold fast to the teachings we passed on to you, whether by word of mouth or by letter.'} />
+    );
+
+    /* 13 — Chapter 3 divider */
+    const Slide13 = () => (
+      <SlideChapter num={13} chapNo="3" title="Faithful Until He Comes" word="STAND"
+        subtitle="The Lord is faithful. While we wait, we pray, we work, and we never tire of doing good." />
+    );
+
+    /* 14 — Ch3 cards */
+    const Slide14 = () => (
+      <SlideCards num={14} chapter="Chapter 3" eyebrow="Chapter 3 · Faithful Living" heading="While we wait, we work"
+        cards={[
+          { title:'Pray', body:'Pray that the Lord’s message spreads—and that workers are delivered from wicked people.' },
+          { title:'Work', body:'"The one unwilling to work shall not eat." Idleness fueled by end-times speculation is corrected.' },
+          { title:'Do Good', body:'Never tire of doing what is good, even toward the disruptive and the idle.' },
+        ]} />
+    );
+
+    /* 15 — Ch3 verse */
+    const Slide15 = () => (
+      <SlideVerse num={15} chapter="Chapter 3 · 3" size={68}
+        vref="2 Thessalonians 3:3"
+        text={'But the Lord is faithful, and he will strengthen you and protect you from the evil one.'} />
+    );
+
+    /* 16 — Takeaways */
+    const Slide16 = () => (
+      <SlideCards num={16} noChrome eyebrow="Takeaways" heading="Hold your ground"
+        cards={[
+          { title:'Endure', body:'Suffering now is not God’s absence—it is woven into His just and certain judgment.' },
+          { title:'Discern', body:'Don’t be rattled by sensational claims about the end. Test everything by the Word.' },
+          { title:'Stand', body:'Anchor in apostolic teaching and keep working faithfully until Christ appears.' },
+        ]} />
+    );
+
+    /* 17 — Closing */
+    const Slide17 = () => (
+      <SlideChrome num={17} noChrome>
+        <div className="grid-bg" />
+        <div style={{ position:'absolute', bottom:-200, left:-200, width:900, height:900, borderRadius:'50%', background:`radial-gradient(circle,${ACCENT_COLOR}22 0%,transparent 70%)` }} />
+        <div className="pad" style={{ justifyContent:'space-between' }}>
+          <IdentityBlock />
+          <div style={{ textAlign:'center' }}>
+            <div style={{ display:'flex', justifyContent:'center', marginBottom:36 }}>
+              <span style={{ width:80, height:2, background:'var(--accent-ink)', display:'inline-block' }} />
+            </div>
+            <h1 className="display" style={{ marginBottom:36, whiteSpace:'nowrap' }}>{TALK_TITLE}</h1>
+            <p style={{ fontFamily:'var(--font-display)', fontSize:38, fontStyle:'italic', fontWeight:400, color:'var(--ink-soft)', maxWidth:1200, margin:'0 auto 10px', lineHeight:1.3 }}>
+              &ldquo;May the Lord direct your hearts into God&rsquo;s love and Christ&rsquo;s perseverance.&rdquo;
+            </p>
+            <p style={{ fontFamily:'var(--font-mono)', fontSize:22, letterSpacing:'.12em', textTransform:'uppercase', color:'var(--accent-ink)', margin:0 }}>2 Thessalonians 3:5 · {VERSION}</p>
+          </div>
+          <div style={{ display:'flex', justifyContent:'flex-start' }}>
+            <SiteLink />
+          </div>
+        </div>
+      </SlideChrome>
+    );
+
+    Object.assign(window, { Slide09, Slide10, Slide11, Slide12, Slide13, Slide14, Slide15, Slide16, Slide17 });
+  </script>
+
+  <!-- [6] Mount -->
+  <script type="text/babel">
+    const mounts = [
+      Slide01, Slide02, Slide03, Slide04, Slide05, Slide06, Slide07, Slide08, Slide09,
+      Slide10, Slide11, Slide12, Slide13, Slide14, Slide15, Slide16, Slide17,
+    ];
+    mounts.forEach((C, i) => {
+      const el = document.getElementById(`s${String(i + 1).padStart(2, '0')}`);
+      if (el) ReactDOM.createRoot(el).render(<C />);
+    });
+  </script>
+
+  <!-- [7] Theme + tweaks controller -->
+  <script>
+    // Disable shadow-DOM tapzones so mouse clicks reach links in slides.
+    (function disableTapzones() {
+      function inject() {
+        const deck = document.getElementById('deck');
+        if (deck && deck.shadowRoot) {
+          const s = document.createElement('style');
+          s.textContent = '.tapzones { display: none !important; }';
+          deck.shadowRoot.appendChild(s);
+        }
+      }
+      if (document.readyState === 'complete') { inject(); }
+      else { window.addEventListener('load', inject); }
+      setTimeout(inject, 500);
+    })();
+
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('deck:theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+
+    function syncThemeButtons(theme) {
+      document.querySelectorAll('[data-theme-set]').forEach(b => b.classList.toggle('active', b.dataset.themeSet === theme));
+    }
+    syncThemeButtons(savedTheme);
+    document.querySelectorAll('[data-theme-set]').forEach(b => {
+      b.addEventListener('click', () => { const t = b.dataset.themeSet; html.setAttribute('data-theme', t); localStorage.setItem('deck:theme', t); syncThemeButtons(t); });
+    });
+
+    function applyAccent(color) {
+      html.style.setProperty('--accent', color);
+      html.style.setProperty('--brand-blue-bright', color);
+      html.style.setProperty('--brand-blue', color);
+      document.querySelectorAll('#tw-accent .sw').forEach(el => el.classList.toggle('active', el.dataset.accent === color));
+    }
+    const savedAccent = localStorage.getItem('deck:accent') || ACCENT_COLOR;
+    applyAccent(savedAccent);
+    document.querySelectorAll('#tw-accent .sw').forEach(el => {
+      el.addEventListener('click', () => { const c = el.dataset.accent; localStorage.setItem('deck:accent', c); applyAccent(c); });
+    });
+
+    function applyGrid(state) {
+      document.querySelectorAll('.grid-bg').forEach(el => el.style.display = state === 'off' ? 'none' : '');
+      document.querySelectorAll('#tw-grid button').forEach(b => b.classList.toggle('active', b.dataset.grid === state));
+    }
+    const savedGrid = localStorage.getItem('deck:grid') || 'on';
+    setTimeout(() => applyGrid(savedGrid), 400);
+    document.querySelectorAll('#tw-grid button').forEach(b => {
+      b.addEventListener('click', () => { const s = b.dataset.grid; localStorage.setItem('deck:grid', s); applyGrid(s); });
+    });
+
+    function applyDensity(state) {
+      if (state === 'tight') document.querySelectorAll('.pad').forEach(el => el.style.padding = '64px 96px');
+      else document.querySelectorAll('.pad').forEach(el => el.style.padding = '');
+      document.querySelectorAll('#tw-density button').forEach(b => b.classList.toggle('active', b.dataset.density === state));
+    }
+    const savedDensity = localStorage.getItem('deck:density') || 'default';
+    setTimeout(() => applyDensity(savedDensity), 400);
+    document.querySelectorAll('#tw-density button').forEach(b => {
+      b.addEventListener('click', () => { const s = b.dataset.density; localStorage.setItem('deck:density', s); applyDensity(s); });
+    });
+
+    document.getElementById('btn-filmstrip').addEventListener('click', () => document.getElementById('deck').toggleFilmstrip());
+
+    const panel = document.getElementById('tweaks-panel');
+    window.addEventListener('message', (e) => {
+      if (!e.data || typeof e.data !== 'object') return;
+      if (e.data.type === '__activate_edit_mode')   panel.setAttribute('data-visible', '');
+      if (e.data.type === '__deactivate_edit_mode') panel.removeAttribute('data-visible');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 't' || e.key === 'T') {
+        if (panel.hasAttribute('data-visible')) panel.removeAttribute('data-visible');
+        else panel.setAttribute('data-visible', '');
+      }
+    });
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+  </script>
+
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Book of Ephesians — Rod Martin · A Chapter-by-Chapter Study</title>
+  <title>The Book of Galatians — Rod Martin · A Chapter-by-Chapter Study</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -12,13 +12,13 @@
       --font-text:    'Figtree', ui-sans-serif, system-ui, sans-serif;
       --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
-      --accent:            #3a6cb8;
+      --accent:            #7c3aed;
       --brand-navy:        #1a2a4f;
       --brand-navy-deep:   #0f1a35;
       --brand-blue:        var(--accent);
       --brand-blue-bright: var(--accent);
-      --brand-blue-sky:    #b9d0ef;
-      --brand-blue-pale:   #dfeaf8;
+      --brand-blue-sky:    #c4b5fd;
+      --brand-blue-pale:   #e7ddf7;
 
       --bg:        #f6f5f1;
       --bg-alt:    #ebe9e1;
@@ -49,9 +49,9 @@
       --grid:      rgba(255,255,255,0.05);
       --chip-bg:   rgba(255,255,255,0.08);
       --chip-ink:  var(--brand-blue-sky);
-      --accent:            #7aa5e0;
-      --brand-blue:        #7aa5e0;
-      --brand-blue-bright: #7aa5e0;
+      --accent:            #a78bfa;
+      --brand-blue:        #a78bfa;
+      --brand-blue-bright: #a78bfa;
     }
 
     html, body { margin:0;padding:0;background:#000;font-family:var(--font-text);-webkit-font-smoothing:antialiased; }
@@ -122,9 +122,9 @@
     <div class="tweaks-row">
       <span>Accent</span>
       <div class="swatches" id="tw-accent">
-        <div class="sw active" data-accent="#3a6cb8" style="background:#3a6cb8" title="Blue (default)"></div>
-        <div class="sw" data-accent="#7c3aed" style="background:#7c3aed" title="Violet"></div>
+        <div class="sw active" data-accent="#7c3aed" style="background:#7c3aed" title="Violet (default)"></div>
         <div class="sw" data-accent="#0F766E" style="background:#0F766E" title="Teal"></div>
+        <div class="sw" data-accent="#3a6cb8" style="background:#3a6cb8" title="Blue"></div>
         <div class="sw" data-accent="#8B1A1A" style="background:#8B1A1A" title="Crimson"></div>
         <div class="sw" data-accent="#7a4e10" style="background:#7a4e10" title="Bronze"></div>
       </div>
@@ -317,7 +317,7 @@
         if(this._filmstripOverlay)return;
         if(!document.getElementById('deck-stage-filmstrip-style')){
           const s=document.createElement('style');s.id='deck-stage-filmstrip-style';
-          s.textContent=`.ds-filmstrip-overlay{position:fixed;inset:0;z-index:2147483500;pointer-events:none;opacity:0;transition:opacity 280ms ease}.ds-filmstrip-overlay.open{pointer-events:auto;opacity:1}.ds-filmstrip-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px)}.ds-filmstrip-drawer{position:absolute;right:0;top:0;bottom:0;width:400px;background:#111;overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform 300ms cubic-bezier(.22,.9,.3,1);padding:24px 16px 40px;box-sizing:border-box}.ds-filmstrip-overlay.open .ds-filmstrip-drawer{transform:translateX(0)}.ds-filmstrip-header{display:flex;align-items:center;justify-content:space-between;margin:0 4px 18px}.ds-filmstrip-title{color:rgba(255,255,255,.45);font-size:11px;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0}.ds-filmstrip-close{appearance:none;background:rgba(255,255,255,.08);border:0;margin:0;padding:0;color:rgba(255,255,255,.5);width:24px;height:24px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}.ds-filmstrip-close:hover{background:rgba(255,255,255,.15);color:#fff}.ds-filmstrip-close svg{width:12px;height:12px;display:block}.ds-filmstrip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ds-filmstrip-thumb{cursor:pointer;border-radius:5px;overflow:hidden;position:relative;border:2px solid transparent;transition:border-color 160ms ease,transform 120ms ease}.ds-filmstrip-thumb:hover{transform:scale(1.03);border-color:rgba(255,255,255,.35)}.ds-filmstrip-thumb.ds-active{border-color:var(--accent,#3a6cb8)}.ds-filmstrip-inner{width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;background:#222}.ds-filmstrip-inner>.ds-clone{position:absolute!important;top:0!important;left:0!important;transform-origin:top left!important;pointer-events:none!important;visibility:visible!important;opacity:1!important}.ds-filmstrip-num{position:absolute;top:5px;left:7px;color:rgba(255,255,255,.55);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:9px;font-weight:600;line-height:1;z-index:2}.ds-filmstrip-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));color:rgba(255,255,255,.85);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;font-size:9px;font-weight:500;padding:14px 7px 5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}`;
+          s.textContent=`.ds-filmstrip-overlay{position:fixed;inset:0;z-index:2147483500;pointer-events:none;opacity:0;transition:opacity 280ms ease}.ds-filmstrip-overlay.open{pointer-events:auto;opacity:1}.ds-filmstrip-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px)}.ds-filmstrip-drawer{position:absolute;right:0;top:0;bottom:0;width:400px;background:#111;overflow-y:auto;overflow-x:hidden;transform:translateX(100%);transition:transform 300ms cubic-bezier(.22,.9,.3,1);padding:24px 16px 40px;box-sizing:border-box}.ds-filmstrip-overlay.open .ds-filmstrip-drawer{transform:translateX(0)}.ds-filmstrip-header{display:flex;align-items:center;justify-content:space-between;margin:0 4px 18px}.ds-filmstrip-title{color:rgba(255,255,255,.45);font-size:11px;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0}.ds-filmstrip-close{appearance:none;background:rgba(255,255,255,.08);border:0;margin:0;padding:0;color:rgba(255,255,255,.5);width:24px;height:24px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}.ds-filmstrip-close:hover{background:rgba(255,255,255,.15);color:#fff}.ds-filmstrip-close svg{width:12px;height:12px;display:block}.ds-filmstrip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ds-filmstrip-thumb{cursor:pointer;border-radius:5px;overflow:hidden;position:relative;border:2px solid transparent;transition:border-color 160ms ease,transform 120ms ease}.ds-filmstrip-thumb:hover{transform:scale(1.03);border-color:rgba(255,255,255,.35)}.ds-filmstrip-thumb.ds-active{border-color:var(--accent,#7c3aed)}.ds-filmstrip-inner{width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;background:#222}.ds-filmstrip-inner>.ds-clone{position:absolute!important;top:0!important;left:0!important;transform-origin:top left!important;pointer-events:none!important;visibility:visible!important;opacity:1!important}.ds-filmstrip-num{position:absolute;top:5px;left:7px;color:rgba(255,255,255,.55);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:9px;font-weight:600;line-height:1;z-index:2}.ds-filmstrip-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));color:rgba(255,255,255,.85);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;font-size:9px;font-weight:500;padding:14px 7px 5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}`;
           document.head.appendChild(s);
         }
         const overlay=document.createElement('div');overlay.className='ds-filmstrip-overlay';
@@ -379,10 +379,10 @@
   <!-- [3] Deck configuration -->
   <script>
     const PRESENTER_NAME = 'Rod Martin';
-    const BRAND_NAME     = 'Ephesians';
+    const BRAND_NAME     = 'Galatians';
     const BRAND_URL      = 'https://imrodmartin.com';
-    const ACCENT_COLOR   = '#3a6cb8';
-    const TALK_TITLE     = 'The Book of Ephesians';
+    const ACCENT_COLOR   = '#7c3aed';
+    const TALK_TITLE     = 'The Book of Galatians';
     const EVENT_NAME     = 'A Chapter-by-Chapter Study';
     const TOTAL          = 24;
 
@@ -419,7 +419,7 @@
           <>
             <div className="slide-header">
               <div style={{ display:'flex',alignItems:'center',gap:12 }}>
-                <span style={{ fontFamily:'var(--font-mono)',fontSize:20,letterSpacing:'.18em',textTransform:'uppercase',fontWeight:700,color:'var(--ink)' }}>Ephesians</span>
+                <span style={{ fontFamily:'var(--font-mono)',fontSize:20,letterSpacing:'.18em',textTransform:'uppercase',fontWeight:700,color:'var(--ink)' }}>Galatians</span>
               </div>
               <div style={{ display:'flex',gap:32,alignItems:'center' }}>
                 {chapter && <span style={{ fontFamily:'var(--font-mono)',fontSize:22,fontWeight:600,letterSpacing:'.2em',textTransform:'uppercase',color:'var(--accent)' }}>{chapter}</span>}
@@ -465,7 +465,7 @@
 
     const SectionDivider = ({ num, kicker, title, titleSize = 124, subtitle }) => (
       <SlideChrome num={num} total={TOTAL} noChrome>
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 55%,#3a6cb8 135%)' }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 55%,#7c3aed 135%)' }} />
         <div className="grid-bg" style={{ opacity:0.15 }} />
         <div className="pad" style={{ justifyContent:'center', color:'#fff' }}>
           <div style={{ fontFamily:'var(--font-mono)', fontSize:24, letterSpacing:'.3em', textTransform:'uppercase', color:'#fff', opacity:0.85, marginBottom:36 }}>{kicker}</div>
@@ -477,7 +477,7 @@
 
     const QuoteBig = ({ num, quote, srcRef }) => (
       <SlideChrome num={num} total={TOTAL} noChrome>
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 60%,#3a6cb8 135%)' }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 60%,#7c3aed 135%)' }} />
         <div className="grid-bg" style={{ opacity:0.15 }} />
         <div className="pad" style={{ justifyContent:'center', color:'#fff' }}>
           <div style={{ fontFamily:'var(--font-display)', fontSize:140, lineHeight:1, color:'rgba(255,255,255,0.22)', fontWeight:800, marginBottom:-30 }}>&ldquo;</div>
@@ -502,9 +502,9 @@
           </div>
           <div>
             <div className="eyebrow" style={{ marginBottom:40 }}>The Book of</div>
-            <h1 className="display" style={{ marginBottom:36, whiteSpace:'nowrap' }}>Ephesians</h1>
-            <p style={{ fontFamily:'var(--font-display)', fontSize:48, lineHeight:1.2, fontWeight:400, color:'var(--ink-soft)', margin:0, maxWidth:1420, letterSpacing:'-.01em' }}>
-              The believer’s wealth, walk, and warfare — seated with Christ in the heavenly places.
+            <h1 className="display" style={{ marginBottom:36, whiteSpace:'nowrap' }}>Galatians</h1>
+            <p style={{ fontFamily:'var(--font-display)', fontSize:48, lineHeight:1.2, fontWeight:400, color:'var(--ink-soft)', margin:0, maxWidth:1380, letterSpacing:'-.01em' }}>
+              The charter of Christian freedom — justified by faith alone, not by works of the law.
             </p>
           </div>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', fontFamily:'var(--font-mono)', fontSize:26, color:'var(--ink-soft)', letterSpacing:'.04em' }}>
@@ -518,18 +518,18 @@
     // 02 — Overview
     const SlideOverview = () => {
       const cards = [
-        { k:'Author', v:'Paul, an apostle of Christ Jesus by the will of God (1:1)' },
-        { k:'Written', v:'c. A.D. 60–62 — from Roman imprisonment, a “Prison Epistle” (3:1; 4:1; 6:20)' },
-        { k:'Recipients', v:'The saints at Ephesus — likely a circular letter to the churches of Asia' },
-        { k:'Occasion', v:'No crisis; a positive unveiling of the church’s riches and calling in Christ' },
-        { k:'Theme', v:'The mystery of the church — Christ’s body and bride, seated in the heavenlies' },
-        { k:'Key texts', v:'1:3; 1:10; 2:8–9; 3:6; 4:4–6; 5:25–32; 6:11' },
+        { k:'Author', v:'Paul the apostle, with all the brothers who are with him (1:1–2)' },
+        { k:'Written', v:'c. A.D. 48–49 — likely the earliest of Paul’s letters (South Galatian view)' },
+        { k:'Recipients', v:'The churches of Galatia, planted on Paul’s first missionary journey' },
+        { k:'Occasion', v:'Judaizers demanding circumcision and law-keeping for salvation' },
+        { k:'Theme', v:'Justification by faith apart from the works of the law' },
+        { k:'Key texts', v:'2:16; 2:20; 3:11; 3:28; 5:1; 5:22–23' },
       ];
       return (
         <SlideChrome num={2} total={TOTAL} chapter="Overview">
           <div className="pad" style={{ justifyContent:'center' }}>
             <div className="eyebrow" style={{ marginBottom:26 }}>The Book at a Glance</div>
-            <h2 className="section" style={{ fontSize:80, marginBottom:48 }}>The Heavenly Calling of the Church</h2>
+            <h2 className="section" style={{ fontSize:80, marginBottom:48 }}>Paul’s Manifesto of Grace</h2>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:26 }}>
               {cards.map((c,i) => (
                 <div key={i} className="card" style={{ padding:'34px 36px' }}>
@@ -545,49 +545,49 @@
 
     // 03 — Background
     const SlideBackground = () => (
-      <Points num={3} chapter="Setting" eyebrow="The City & the Letter"
-        heading="From a Roman Prison to Ephesus"
+      <Points num={3} chapter="Setting" eyebrow="The Galatian Crisis"
+        heading="A Gospel Under Attack"
         points={[
-          'Ephesus was a leading city of Asia Minor, home to the temple of Artemis and deep occult practice (Acts 19).',
-          'Paul spent nearly three years there; the gospel so spread that magic books were burned and idol-makers rioted.',
-          'Now a prisoner in Rome, Paul writes not to fight error but to lift the church’s eyes to its wealth in Christ.',
-          'The oldest manuscripts omit “in Ephesus,” suggesting a circular letter carried among the Asian churches.',
+          'Paul had preached the gospel of grace in Galatia and seen churches born in faith.',
+          'After he left, Judaizers arrived teaching that Gentiles must be circumcised and keep the Law of Moses to be saved.',
+          'They also undermined Paul himself — denying he was a true apostle in order to discredit his message.',
+          'The believers were “quickly deserting” the One who called them, turning to a different gospel (1:6).',
         ]}
-        noteLabel="A Letter of Position, Not Polemic"
-        note="Where Galatians defends the gospel against legalism, Ephesians unfolds its riches. It is the high-water mark of revelation on the church — a body and temple unknown to past ages, now disclosed in this present dispensation of grace." />
+        noteLabel="Why This Letter Matters"
+        note="Galatians is the clearest New Testament statement that salvation is by grace through faith alone — the dividing line between the gospel and every system that adds human works to the finished work of Christ." />
     );
 
     // 04 — Purpose
     const SlidePurpose = () => (
       <Points num={4} chapter="Occasion" eyebrow="Why Paul Wrote"
-        heading="That You May Know Your Riches"
+        heading="No Thanksgiving, Only Alarm"
         points={[
-          'To reveal the “mystery” hidden in past ages — Jew and Gentile made one new body in Christ (3:3–6).',
-          'To lift believers to see their heavenly position: chosen, adopted, redeemed, and sealed (1:3–14).',
-          'To call the church to a worthy walk — unity, holiness, love, and Spirit-filled living (4:1).',
-          'To arm the saints for spiritual warfare against the powers of darkness (6:10–18).',
+          'Unlike his other letters, Paul opens with no word of thanks — only astonishment that they would abandon grace.',
+          'To defend the divine origin and authority of the gospel he received by revelation from Jesus Christ.',
+          'To prove that justification comes by faith in Christ, never by the works of the law.',
+          'To show that true freedom is not license, but a life empowered and led by the Spirit.',
         ]} />
     );
 
     // 05 — Roadmap
     const SlideRoadmap = () => {
       const rows = [
-        { r:'1–3', t:'Sit', s:'Our position — seated with Christ in the heavenlies' },
-        { r:'1:3', t:'Blessed', s:'Every spiritual blessing in Christ' },
-        { r:'2:8', t:'Saved', s:'By grace through faith, not works' },
-        { r:'4–6:9', t:'Walk', s:'Our practice — a life worthy of the calling' },
-        { r:'4:4', t:'One Body', s:'The unity of the Spirit' },
-        { r:'6:10', t:'Stand', s:'Our conflict — the whole armor of God' },
+        { r:'1–2', t:'Personal', s:'Paul defends the gospel he received from Christ' },
+        { r:'2:16', t:'Thesis', s:'Justified by faith, not by works of the law' },
+        { r:'3–4', t:'Doctrinal', s:'The case for justification by faith' },
+        { r:'3:28', t:'One in Christ', s:'Heirs of the promise to Abraham' },
+        { r:'5–6', t:'Practical', s:'Freedom lived out by the Spirit' },
+        { r:'5:22', t:'The Fruit', s:'The Spirit’s harvest in the believer' },
       ];
       return (
         <SlideChrome num={5} total={TOTAL} chapter="Structure">
           <div className="pad" style={{ justifyContent:'center' }}>
             <div className="eyebrow" style={{ marginBottom:24 }}>How the Letter Unfolds</div>
-            <h2 className="section" style={{ fontSize:80, marginBottom:44 }}>Sit · Walk · Stand</h2>
+            <h2 className="section" style={{ fontSize:72, marginBottom:44 }}>The Shape of the Letter</h2>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'22px 64px' }}>
               {rows.map((row,i) => (
                 <div key={i} style={{ display:'flex', gap:20, alignItems:'baseline', borderTop:'1px solid var(--line)', paddingTop:16 }}>
-                  <span style={{ fontFamily:'var(--font-mono)', fontSize:21, fontWeight:600, color:'var(--accent)', minWidth:96, flexShrink:0 }}>{row.r}</span>
+                  <span style={{ fontFamily:'var(--font-mono)', fontSize:21, fontWeight:600, color:'var(--accent)', minWidth:84, flexShrink:0 }}>{row.r}</span>
                   <div>
                     <div style={{ fontFamily:'var(--font-display)', fontSize:30, fontWeight:700, color:'var(--ink)' }}>{row.t}</div>
                     <div style={{ fontFamily:'var(--font-text)', fontSize:21, color:'var(--ink-soft)', marginTop:4 }}>{row.s}</div>
@@ -601,201 +601,201 @@
     };
 
     // 06 — Section 1
-    const SecWealth = () => (
-      <SectionDivider num={6} kicker="Part One · Ephesians 1–3"
-        title="Our Wealth in Christ"
-        subtitle="Before a single command, Paul lifts the church to its heavenly position — chosen, redeemed, raised, and seated with Christ far above all rule and authority." />
+    const SecPersonal = () => (
+      <SectionDivider num={6} kicker="Part One · Galatians 1–2"
+        title="The Gospel Defended"
+        subtitle="Paul stakes everything on the source of his message: not from men, but received by revelation from Jesus Christ — and confirmed, not corrected, by the apostles." />
     );
 
-    // 07 — Every spiritual blessing
-    const SlideBlessings = () => (
-      <Points num={7} chapter="Eph 1:1–14" eyebrow="The Father’s Eternal Purpose"
-        heading="Every Spiritual Blessing"
+    // 07 — No other gospel
+    const SlideNoOtherGospel = () => (
+      <Points num={7} chapter="Gal 1:1–10" eyebrow="One Gospel, No Other"
+        heading="Let Him Be Accursed"
         points={[
-          'God has blessed us “with every spiritual blessing in the heavenly places in Christ” (1:3).',
-          'The Father chose us before the foundation of the world and predestined us for adoption as sons.',
-          'In the Son we have redemption through His blood — forgiveness “according to the riches of his grace.”',
-          'Believing, we were sealed with the promised Holy Spirit, “the guarantee of our inheritance” (1:13–14).',
-        ]}
-        noteLabel="Heavenly Position & the Sealing Spirit"
-        note="The church’s blessings are heavenly and positional — distinct from Israel’s earthly, national promises. The sealing of the Spirit (cf. 1 Cor 12:13) marks the believer’s baptism into the one body, a present-age reality that guarantees a future inheritance." />
-    );
-
-    // 08 — Paul's first prayer
-    const SlidePrayer1 = () => (
-      <Points num={8} chapter="Eph 1:15–23" eyebrow="Paul’s First Prayer"
-        heading="Christ, Head Over the Church"
-        points={[
-          'Paul prays for a “spirit of wisdom and revelation” that they might know the hope of their calling.',
-          'He asks that they grasp the immeasurable greatness of God’s power — the same that raised Christ from the dead.',
-          'God seated Christ at His right hand “far above all rule and authority,” in this age and the age to come.',
-          'He gave Christ as head over all things “to the church, which is his body, the fullness of him who fills all in all.”',
+          'Paul’s apostleship is “not from men nor through man, but through Jesus Christ and God the Father.”',
+          'He marvels that the Galatians are so quickly deserting the One who called them in grace.',
+          'There is no “other gospel” — only some who trouble them and want to distort the gospel of Christ.',
+          'Twice he pronounces a curse on anyone — even an angel — who preaches a contrary gospel (1:8–9).',
         ]} />
     );
 
-    // 09 — By grace through faith
-    const SlideGrace = () => (
-      <Points num={9} chapter="Eph 2:1–10" eyebrow="From Death to Life"
-        heading="Made Alive Together with Christ"
+    // 08 — Gospel by revelation
+    const SlideRevelation = () => (
+      <Points num={8} chapter="Gal 1:11–24" eyebrow="The Source of the Message"
+        heading="Received by Revelation"
         points={[
-          'We were “dead in trespasses and sins,” by nature children of wrath, walking after the world, flesh, and devil.',
-          'But God, “being rich in mercy,” made us alive together with Christ — “by grace you have been saved.”',
-          'He raised us up and seated us with Him in the heavenly places, to display His grace in the ages to come.',
-          'Salvation is by grace through faith, “not a result of works” — yet we are created in Christ for good works (2:10).',
+          'The gospel Paul preaches is not man’s gospel; he received it through a revelation of Jesus Christ.',
+          'Once a zealous persecutor of the church, he was set apart before birth and called by God’s grace.',
+          'He did not rush to consult the apostles, but was commissioned directly by the risen Lord.',
+          'The churches of Judea glorified God in him: “He who once persecuted us is now preaching the faith.”',
         ]} />
     );
 
-    // 10 — Quote: by grace
-    const SlideQuoteGrace = () => (
-      <QuoteBig num={10}
-        quote="For by grace you have been saved through faith. And this is not your own doing; it is the gift of God."
-        srcRef="Ephesians 2:8–9" />
-    );
-
-    // 11 — One new man
-    const SlideOneNewMan = () => (
-      <Points num={11} chapter="Eph 2:11–22" eyebrow="Jew & Gentile Reconciled"
-        heading="One New Man, One New Temple"
+    // 09 — Jerusalem & Antioch
+    const SlideJerusalem = () => (
+      <Points num={9} chapter="Gal 2:1–14" eyebrow="Confirmed, Not Corrected"
+        heading="One Gospel, Two Tests"
         points={[
-          'Gentiles were once “separated from Christ, alienated from the commonwealth of Israel,” strangers to the covenants.',
-          'But in Christ’s blood the “dividing wall of hostility” is broken down, abolishing the law of commandments.',
-          'He creates “one new man in place of the two,” reconciling both to God in one body through the cross.',
-          'Together they are built into “a holy temple in the Lord,” a dwelling place for God by the Spirit.',
-        ]}
-        noteLabel="A New Entity, Not Israel Expanded"
-        note="The church is not Gentiles absorbed into Israel, nor Israel redefined — it is “one new man,” a previously unrevealed body in which Jew and Gentile share equally. Israel’s distinct, literal covenant promises remain; the church is a work of grace within God’s larger program." />
-    );
-
-    // 12 — The mystery (centerpiece)
-    const SlideMystery = () => (
-      <Points num={12} chapter="Eph 3:1–13" eyebrow="The Dispensational Keystone"
-        heading="The Mystery Now Revealed"
-        points={[
-          'Paul was given “the stewardship (oikonomia) of God’s grace” — the dispensation of grace for the Gentiles (3:2).',
-          'The mystery was “not made known to the sons of men in other generations,” but now revealed to His apostles.',
-          'The mystery: Gentiles are “fellow heirs, members of the same body, and partakers of the promise” in Christ (3:6).',
-          'This eternal purpose, “hidden for ages in God,” now displays His manifold wisdom even to heavenly powers.',
-        ]}
-        noteLabel="The Church: A Mystery Hidden in Past Ages"
-        note="This is the heart of dispensational truth. The church — Jew and Gentile in one body — was unforeseen in the Old Testament, hidden in God until revealed to Paul. The present “dispensation of the grace of God” is a distinct administration in God’s unfolding plan, not a continuation of the Mosaic age nor a replacement of Israel." />
-    );
-
-    // 13 — Paul's second prayer
-    const SlidePrayer2 = () => (
-      <Points num={13} chapter="Eph 3:14–21" eyebrow="Paul’s Second Prayer"
-        heading="Strengthened to Know His Love"
-        points={[
-          'Paul bows to the Father, praying for strength “through his Spirit in your inner being.”',
-          'That Christ may dwell in their hearts through faith — that they be “rooted and grounded in love.”',
-          'That they may grasp the breadth, length, height, and depth of the love of Christ that surpasses knowledge.',
-          'The doxology: “to him be glory in the church and in Christ Jesus throughout all generations” (3:21).',
+          'At Jerusalem the “pillars” added nothing to Paul’s gospel and gave him the right hand of fellowship.',
+          'Titus, a Greek, was not compelled to be circumcised — a victory for Gentile freedom.',
+          'False brothers had slipped in “to spy out our freedom” and bring the church into bondage.',
+          'At Antioch Paul rebuked Peter to his face for withdrawing from Gentiles — the gospel was at stake.',
         ]} />
     );
 
-    // 14 — Section 2
-    const SecWalk = () => (
-      <SectionDivider num={14} kicker="Part Two · Ephesians 4–6:9"
-        title="Our Walk in the World"
-        subtitle="Doctrine becomes duty. The “therefore” of chapter 4 turns heavenly position into earthly practice — a life that matches the calling we have received." />
-    );
-
-    // 15 — Unity & gifts
-    const SlideUnity = () => (
-      <Points num={15} chapter="Eph 4:1–16" eyebrow="The Worthy Walk Begins"
-        heading="The Unity of the Body"
+    // 10 — Justified by faith
+    const SlideJustified = () => (
+      <Points num={10} chapter="Gal 2:15–21" eyebrow="The Heart of the Letter"
+        heading="Justified by Faith, Not Works"
         points={[
-          '“Walk in a manner worthy of the calling” — with humility, gentleness, patience, bearing with one another in love.',
-          'There is “one body and one Spirit… one Lord, one faith, one baptism, one God and Father of all” (4:4–6).',
-          'The ascended Christ gave apostles, prophets, evangelists, pastors and teachers to equip the saints for ministry.',
-          'The goal is maturity — that we grow up “into him who is the head, into Christ,” the body building itself in love.',
+          '“A person is not justified by works of the law but through faith in Jesus Christ” (2:16).',
+          'If righteousness came through the law, then Christ died for no purpose (2:21).',
+          '“I have been crucified with Christ. It is no longer I who live, but Christ who lives in me” (2:20).',
+          'The life Paul now lives in the flesh he lives by faith in the Son of God, who loved him and gave Himself for him.',
         ]}
-        noteLabel="One Baptism, One Body"
-        note="The “one baptism” of 4:5 is the Spirit’s baptism that forms the one body (1 Cor 12:13) — the defining work of this dispensation. The gifted men are given to bring the body to maturity, a present-age ministry distinct from Israel’s priesthood and prophets." />
+        noteLabel="Justification: Declared Righteous"
+        note="Justification is a legal declaration, not a process — God credits Christ’s righteousness to the believer by faith alone. This forensic, imputed righteousness is received instantly and completely; the law has no part in attaining or maintaining it." />
     );
 
-    // 16 — Put off, put on
-    const SlideNewSelf = () => (
-      <Points num={16} chapter="Eph 4:17–32" eyebrow="The New Self"
-        heading="Put Off the Old, Put On the New"
+    // 11 — Quote: crucified with Christ
+    const SlideQuote = () => (
+      <QuoteBig num={11}
+        quote="I have been crucified with Christ. It is no longer I who live, but Christ who lives in me."
+        srcRef="Galatians 2:20" />
+    );
+
+    // 12 — Section 2
+    const SecDoctrinal = () => (
+      <SectionDivider num={12} kicker="Part Two · Galatians 3–4"
+        title="Justification by Faith"
+        subtitle="Paul builds his case from Scripture, Abraham, and the very purpose of the law — proving that the promise always came by faith, never by works." />
+    );
+
+    // 13 — Faith vs works, Abraham, the curse
+    const SlideFaithVsWorks = () => (
+      <Points num={13} chapter="Gal 3:1–14" eyebrow="The Argument from Experience & Scripture"
+        heading="By Faith, Not Flesh"
         points={[
-          'No longer walk as the Gentiles do, “in the futility of their minds,” darkened and hardened in heart.',
-          'Put off the old self, “be renewed in the spirit of your minds,” and put on the new self created in righteousness.',
-          'Speak truth, give honest labor, let no corrupting talk come out — “and do not grieve the Holy Spirit of God.”',
-          'Be kind, tenderhearted, “forgiving one another, as God in Christ forgave you” (4:32).',
+          '“O foolish Galatians!” — Did they receive the Spirit by works of the law, or by hearing with faith?',
+          'Abraham “believed God, and it was counted to him as righteousness” — the gospel preached beforehand.',
+          'All who rely on works of the law are under a curse, for no one keeps it perfectly (3:10).',
+          'Christ redeemed us by becoming a curse for us — that the blessing of Abraham might come to the Gentiles.',
         ]} />
     );
 
-    // 17 — Walk in love, light, wisdom
-    const SlideWalkLight = () => (
-      <Points num={17} chapter="Eph 5:1–21" eyebrow="Imitators of God"
-        heading="Walk in Love, Light & Wisdom"
+    // 14 — Purpose of the law
+    const SlideLawPurpose = () => (
+      <Points num={14} chapter="Gal 3:15–29" eyebrow="What Was the Law For?"
+        heading="The Law Was Our Guardian"
         points={[
-          '“Be imitators of God… and walk in love, as Christ loved us and gave himself up for us” (5:1–2).',
-          'Once darkness, now “light in the Lord” — walk as children of light, exposing the unfruitful works of darkness.',
-          'Walk wisely, “making the best use of the time, because the days are evil.”',
-          'Do not get drunk with wine, “but be filled with the Spirit” — singing, giving thanks, submitting to one another.',
+          'The promise to Abraham came 430 years before the law — and a later law cannot annul an earlier covenant (3:17).',
+          'The law was “added because of transgressions” until the Seed, who is Christ, should come (3:19).',
+          'The law was our guardian (paidagogos) until Christ, that we might be justified by faith (3:24).',
+          'In Christ there is neither Jew nor Greek, slave nor free, male nor female — all are heirs of the promise (3:28–29).',
+        ]}
+        noteLabel="Law & Promise as Distinct Administrations"
+        note="The unconditional Abrahamic covenant precedes and stands above the conditional Mosaic law. The law was a temporary, parenthetical guardian — never the means of justification and now no longer the believer’s rule of life. Its purpose was to expose sin and drive us to Christ, the promised Seed." />
+    );
+
+    // 15 — Sons & heirs
+    const SlideSonsHeirs = () => (
+      <Points num={15} chapter="Gal 4:1–20" eyebrow="From Slaves to Sons"
+        heading="Adopted Sons & Heirs"
+        points={[
+          'While we were children we were enslaved — but “when the fullness of time had come, God sent forth his Son” (4:4).',
+          'He came to redeem those under the law, so that we might receive adoption as sons.',
+          'God sent the Spirit of His Son into our hearts, crying “Abba! Father” — so we are sons and heirs.',
+          'Paul pleads: why turn back to the “weak and worthless elementary principles” and be enslaved again?',
+        ]}
+        noteLabel="Adoption & the Indwelling Spirit"
+        note="Sonship and the indwelling Spirit are present-age realities for every believer — full, immediate access to the Father. “The fullness of time” marks God’s sovereign ordering of the ages, sending the Son at the appointed moment in redemptive history." />
+    );
+
+    // 16 — Hagar & Sarah
+    const SlideTwoCovenants = () => (
+      <Points num={16} chapter="Gal 4:21–31" eyebrow="An Illustration of Two Covenants"
+        heading="Hagar & Sarah"
+        points={[
+          'Abraham had two sons: one by the slave Hagar (born “according to the flesh”), one by the free Sarah (“through promise”).',
+          'These two women illustrate two covenants: Sinai bears children for slavery; the promise brings children of freedom.',
+          'The present earthly Jerusalem is in bondage, but “the Jerusalem above is free, and she is our mother.”',
+          '“So, brothers, we are not children of the slave but of the free woman” — heirs by promise, not by law.',
+        ]}
+        noteLabel="A Comparison, Not Replacement"
+        note="Paul uses Hagar and Sarah as an inspired illustration of two principles — law-bondage versus promise-freedom — not as a basis for spiritualizing away Israel’s literal covenant promises. The believer’s standing rests on the promise, while God’s distinct future for national Israel remains intact." />
+    );
+
+    // 17 — Section 3
+    const SecPractical = () => (
+      <SectionDivider num={17} kicker="Part Three · Galatians 5–6"
+        title="Walk by the Spirit"
+        subtitle="Freedom is not a license to sin but a call to serve in love — a life that bears the fruit of the Spirit rather than the works of the flesh." />
+    );
+
+    // 18 — Stand firm in freedom
+    const SlideFreedom = () => (
+      <Points num={18} chapter="Gal 5:1–15" eyebrow="The Charter of Liberty"
+        heading="For Freedom Christ Set You Free"
+        points={[
+          '“For freedom Christ has set us free; stand firm, and do not submit again to a yoke of slavery” (5:1).',
+          'To accept circumcision for salvation is to fall from grace and be obligated to keep the whole law.',
+          'What counts is not law-keeping but “faith working through love” (5:6).',
+          'Freedom is not an opportunity for the flesh — “through love serve one another”; the whole law is fulfilled in love of neighbor.',
         ]} />
     );
 
-    // 18 — Marriage: Christ & the church
-    const SlideMarriage = () => (
-      <Points num={18} chapter="Eph 5:22–33" eyebrow="A Profound Mystery"
-        heading="Christ & the Church"
+    // 19 — Walk by the Spirit
+    const SlideWalkSpirit = () => (
+      <Points num={19} chapter="Gal 5:16–26" eyebrow="Flesh vs. Spirit"
+        heading="The Fruit of the Spirit"
         points={[
-          'Wives submit to their husbands “as to the Lord”; the husband is head “as Christ is the head of the church.”',
-          'Husbands, “love your wives, as Christ loved the church and gave himself up for her.”',
-          'Christ sanctifies and cleanses the church “by the washing of water with the word,” to present her in splendor.',
-          'Paul calls it “a profound mystery” — “I am saying that it refers to Christ and the church” (5:32).',
+          '“Walk by the Spirit, and you will not gratify the desires of the flesh” — the two are at war within.',
+          'The works of the flesh are obvious: immorality, idolatry, strife, envy, and the like — these forfeit the kingdom.',
+          'The fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control.',
+          'Those who belong to Christ have crucified the flesh — “let us also keep in step with the Spirit” (5:25).',
         ]}
-        noteLabel="The Church as the Bride of Christ"
-        note="Marriage images Christ and His bride, the church — a union belonging to this age and to the mystery. It is distinct from Israel, pictured as the (often unfaithful) wife of Yahweh. The bride is being prepared now for her presentation to Christ." />
+        noteLabel="Sanctification by the Spirit"
+        note="The believer’s walk is not law-driven but Spirit-empowered. Grace does not abolish holiness — it produces it from within. The Spirit who indwells every believer in this age bears fruit that no law could ever command into existence." />
     );
 
-    // 19 — Households
-    const SlideHouseholds = () => (
-      <Points num={19} chapter="Eph 6:1–9" eyebrow="Grace in the Home"
-        heading="Households Transformed by Grace"
+    // 20 — Doing good to all
+    const SlideDoingGood = () => (
+      <Points num={20} chapter="Gal 6:1–10" eyebrow="Freedom Among the Family"
+        heading="Bear One Another’s Burdens"
         points={[
-          'Children, “obey your parents in the Lord, for this is right” — the first command with a promise.',
-          'Fathers, do not provoke your children, “but bring them up in the discipline and instruction of the Lord.”',
-          'Servants, obey “as servants of Christ,” rendering service with goodwill, “as to the Lord and not to man.”',
-          'Masters, treat them the same way, knowing their Master and yours is in heaven, who shows no partiality.',
+          'Restore the one caught in sin gently, watching yourself — and so fulfill the law of Christ (6:1–2).',
+          'Each will bear his own load; do not be deceived — “whatever one sows, that will he also reap.”',
+          'Sow to the flesh and reap corruption; sow to the Spirit and reap eternal life.',
+          '“Let us not grow weary of doing good… do good to everyone, and especially to the household of faith.”',
         ]} />
     );
 
-    // 20 — Section 3
-    const SecStand = () => (
-      <SectionDivider num={20} kicker="Part Three · Ephesians 6:10–20"
-        title="Our Warfare: Stand Firm"
-        subtitle="The heavenly riches that opened the letter become a battleground at its close — the believer stands, clothed in God’s armor, against the unseen powers of darkness." />
-    );
-
-    // 21 — Armor of God
-    const SlideArmor = () => (
-      <Points num={21} chapter="Eph 6:10–20" eyebrow="The Whole Armor of God"
-        heading="Stand Against the Powers"
+    // 21 — The cross & new creation
+    const SlideNewCreation = () => (
+      <Points num={21} chapter="Gal 6:11–18" eyebrow="Paul’s Final Word"
+        heading="Boast Only in the Cross"
         points={[
-          '“Be strong in the Lord and in the strength of his might” — our struggle is not against flesh and blood.',
-          'We wrestle “against the rulers… the spiritual forces of evil in the heavenly places” (6:12).',
-          'Take up the belt of truth, breastplate of righteousness, gospel shoes, shield of faith, helmet of salvation, sword of the Spirit.',
-          'Stand and “pray at all times in the Spirit,” alert and persevering for all the saints.',
+          'The Judaizers want to boast in the flesh — Paul will boast only in the cross of our Lord Jesus Christ.',
+          'Through the cross “the world has been crucified to me, and I to the world.”',
+          'Neither circumcision nor uncircumcision counts for anything — but a new creation (6:15).',
+          'Peace and mercy be upon all who walk by this rule, “and upon the Israel of God” (6:16).',
         ]}
-        noteLabel="Warfare in the Heavenly Places"
-        note="The same heavenlies where the believer is seated with Christ (2:6) are the arena of conflict (6:12). Standing is possible only because the victory is already Christ’s — the saint defends a position already won, not one still in doubt." />
+        noteLabel="The “Israel of God” (6:16)"
+        note="In the dispensational reading, “the Israel of God” refers to believing Jews — the faithful remnant within the church — not the church replacing Israel. Paul maintains the Israel/church distinction even here, blessing both Gentile believers “who walk by this rule” and his believing kinsmen." />
     );
 
     // 22 — Dispensational synthesis
     const SlideDispensational = () => {
       const cards = [
-        { k:'The Mystery of the Church', v:'Jew and Gentile in one body was hidden in past ages and revealed to Paul — a new entity, not Israel renamed (3:3–6).' },
-        { k:'Heavenly Calling', v:'The church is blessed and seated “in the heavenly places,” distinct from Israel’s earthly, national promises (1:3; 2:6).' },
-        { k:'This Dispensation of Grace', v:'Paul stewards “the dispensation of the grace of God” — a distinct administration in God’s unfolding plan (3:2, 9).' },
-        { k:'The Fullness of Times', v:'God will yet “unite all things in Christ” in the dispensation of the fullness of times — the coming kingdom and beyond (1:10).' },
+        { k:'Law vs. Grace', v:'The law was a temporary guardian until Christ — never the means of justification or the believer’s rule of life (3:24–25).' },
+        { k:'Abrahamic Promise', v:'The unconditional promise precedes the law by 430 years and is fulfilled in Christ, the Seed (3:16–17).' },
+        { k:'Israel & the Church', v:'Believers are heirs of the promise, yet Paul preserves a distinct “Israel of God” (6:16).' },
+        { k:'The Spirit Now', v:'Adoption, the indwelling Spirit, and Spirit-led sanctification are present-age realities for every believer (4:6; 5:16).' },
       ];
       return (
         <SlideChrome num={22} total={TOTAL} chapter="Framework">
           <div className="pad" style={{ justifyContent:'center' }}>
-            <div className="eyebrow" style={{ marginBottom:26 }}>Reading Ephesians Dispensationally</div>
+            <div className="eyebrow" style={{ marginBottom:26 }}>Reading Galatians Dispensationally</div>
             <h2 className="section" style={{ fontSize:70, marginBottom:44 }}>Where the Framework Shapes the Text</h2>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:26 }}>
               {cards.map((c,i) => (
@@ -813,10 +813,10 @@
     // 23 — Themes & takeaways
     const SlideThemes = () => {
       const cards = [
-        { k:'Riches in Christ', v:'Chosen, adopted, redeemed, sealed — every spiritual blessing is ours in the heavenly places.' },
-        { k:'One New Body', v:'The cross makes Jew and Gentile one new man — the church, Christ’s body and temple.' },
-        { k:'A Worthy Walk', v:'Heavenly position produces earthly practice: unity, holiness, love, and Spirit-filled living.' },
-        { k:'Stand in His Strength', v:'Clothed in God’s armor, the believer stands firm against the powers in the strength of the Lord.' },
+        { k:'One Gospel', v:'Salvation is by grace through faith in Christ alone — any addition is “another gospel.”' },
+        { k:'Justified by Faith', v:'God declares the believer righteous by faith, apart from the works of the law.' },
+        { k:'Crucified with Christ', v:'The old self died with Christ; now He lives in us — life by faith, not by law.' },
+        { k:'Freedom in the Spirit', v:'True liberty serves in love and bears the Spirit’s fruit, not the flesh’s works.' },
       ];
       return (
         <SlideChrome num={23} total={TOTAL} chapter="Takeaways">
@@ -839,13 +839,13 @@
     // 24 — Closing
     const SlideClosing = () => (
       <SlideChrome num={24} total={TOTAL} noChrome>
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 60%,#3a6cb8 130%)' }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0f1a35 0%,#1a2a4f 60%,#7c3aed 130%)' }} />
         <div className="grid-bg" style={{ opacity:0.15 }} />
         <div className="pad" style={{ justifyContent:'space-between', color:'#fff' }}>
           <span style={{ fontFamily:'var(--font-mono)', fontSize:22, letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(255,255,255,0.8)' }}>{EVENT_NAME}</span>
           <div style={{ textAlign:'center' }}>
-            <div style={{ fontFamily:'var(--font-mono)', fontSize:24, letterSpacing:'.3em', textTransform:'uppercase', color:'#fff', opacity:0.85, marginBottom:32 }}>Throughout All Generations · Ephesians 3:21</div>
-            <h1 className="display" style={{ color:'#fff', marginBottom:36, fontSize:140, whiteSpace:'nowrap' }}>To Him Be Glory</h1>
+            <div style={{ fontFamily:'var(--font-mono)', fontSize:24, letterSpacing:'.3em', textTransform:'uppercase', color:'#fff', opacity:0.85, marginBottom:32 }}>For Freedom Christ Has Set Us Free</div>
+            <h1 className="display" style={{ color:'#fff', marginBottom:36, fontSize:132 }}>Soli Deo Gloria</h1>
             <a href={BRAND_URL} target="_blank" rel="noopener noreferrer"
                onClick={(e) => openLink(e, BRAND_URL)}
                style={{ display:'inline-flex', alignItems:'center', gap:12, padding:'18px 38px', background:'#fff', color:'#0f1a35', borderRadius:999, fontFamily:'var(--font-mono)', fontSize:26, fontWeight:600, textDecoration:'none', letterSpacing:'.04em', cursor:'pointer', pointerEvents:'auto', position:'relative', zIndex:20 }}>
@@ -861,9 +861,9 @@
 
     Object.assign(window, {
       SlideCover, SlideOverview, SlideBackground, SlidePurpose, SlideRoadmap,
-      SecWealth, SlideBlessings, SlidePrayer1, SlideGrace, SlideQuoteGrace, SlideOneNewMan,
-      SlideMystery, SlidePrayer2, SecWalk, SlideUnity, SlideNewSelf, SlideWalkLight,
-      SlideMarriage, SlideHouseholds, SecStand, SlideArmor,
+      SecPersonal, SlideNoOtherGospel, SlideRevelation, SlideJerusalem, SlideJustified, SlideQuote,
+      SecDoctrinal, SlideFaithVsWorks, SlideLawPurpose, SlideSonsHeirs, SlideTwoCovenants,
+      SecPractical, SlideFreedom, SlideWalkSpirit, SlideDoingGood, SlideNewCreation,
       SlideDispensational, SlideThemes, SlideClosing
     });
   </script>
@@ -872,9 +872,9 @@
   <script type="text/babel">
     const mounts = [
       SlideCover, SlideOverview, SlideBackground, SlidePurpose, SlideRoadmap,
-      SecWealth, SlideBlessings, SlidePrayer1, SlideGrace, SlideQuoteGrace, SlideOneNewMan,
-      SlideMystery, SlidePrayer2, SecWalk, SlideUnity, SlideNewSelf, SlideWalkLight,
-      SlideMarriage, SlideHouseholds, SecStand, SlideArmor,
+      SecPersonal, SlideNoOtherGospel, SlideRevelation, SlideJerusalem, SlideJustified, SlideQuote,
+      SecDoctrinal, SlideFaithVsWorks, SlideLawPurpose, SlideSonsHeirs, SlideTwoCovenants,
+      SecPractical, SlideFreedom, SlideWalkSpirit, SlideDoingGood, SlideNewCreation,
       SlideDispensational, SlideThemes, SlideClosing
     ];
     mounts.forEach((C, i) => {
